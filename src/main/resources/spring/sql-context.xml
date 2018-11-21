@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="sqlSelectMovies" class="java.lang.String">
+        <constructor-arg value="SELECT t.* FROM movie t"/>
+    </bean>
+    <bean id="sqlFetchMovie" class="java.lang.String">
+        <constructor-arg value="SELECT t.* FROM movie t WHERE t.id = ?"/>
+    </bean>
+    <bean id="dmlUpdateMovie" class="java.lang.String">
+        <constructor-arg value="UPDATE movie t SET t.name = :name WHERE t.id = :id"/>
+    </bean>
+    <bean id="dmlInsertMovie" class="java.lang.String">
+        <constructor-arg value="INSERT INTO movie(id, name, price) values (movie_seq.nextval, :name, :price)"/>
+    </bean>
+    <bean id="dmlDeleteMovie" class="java.lang.String">
+        <constructor-arg value="DELETE movie t WHERE t.id = ?"/>
+    </bean>
+</beans>
