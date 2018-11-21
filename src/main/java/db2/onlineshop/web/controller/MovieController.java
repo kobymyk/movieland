@@ -32,7 +32,7 @@ public class MovieController {
 
     @RequestMapping(path = "/movies", method = RequestMethod.GET)
     @ResponseBody
-    public String getMovies() {
+    public String getHtmlMovies() {
         log.info("MovieController/start");
         long startTime = System.currentTimeMillis();
         List<Movie> items = movieService.getMovies();
@@ -45,7 +45,7 @@ public class MovieController {
 
     @RequestMapping(path = "/v1/movie", method = RequestMethod.GET)
     @ResponseBody
-    public String getMoviesAsJson() throws JsonProcessingException {
+    public String getJsonMovies() throws JsonProcessingException {
         log.info("getMoviesAsJson/start");
         long startTime = System.currentTimeMillis();
         List<Movie> items = movieService.getMovies();

@@ -7,7 +7,7 @@ public class Movie {
     private int yearOfRelease;
     private double rating;
     private double price;
-    private double picturePath;
+    private String picturePath;
 
     public int getId() {
         return id;
@@ -33,7 +33,7 @@ public class Movie {
         return price;
     }
 
-    public double getPicturePath() {
+    public String getPicturePath() {
         return picturePath;
     }
 
@@ -61,7 +61,7 @@ public class Movie {
         this.price = price;
     }
 
-    public void setPicturePath(double picturePath) {
+    public void setPicturePath(String picturePath) {
         this.picturePath = picturePath;
     }
 }

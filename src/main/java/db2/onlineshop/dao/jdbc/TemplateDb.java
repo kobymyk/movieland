@@ -43,25 +43,25 @@ public abstract class TemplateDb<T, K> implements Persistent<T, K> {
 
     @Override
     public final T fetchRow(K key) {
-        log.info("fetchRow::start:key={}", key);
+        log.info("fetchRow:key={}", key);
+        long startTime = System.currentTimeMillis();
         T result = (T) jdbcTemplate.queryForObject(getSqlFetchRow(), new Object[]{key}, getRowMapper());
-        log.info("fetchRow::end");
+        log.info("fetchRow:duration={}", System.currentTimeMillis() - startTime);
 
         return result;
     }
 
     @Override
     public List<T> selectAll() {
-        log.info("selectAll::start");
+        long startTime = System.currentTimeMillis();
         List<T> result  = jdbcTemplate.query(getSqlSelectAll(), new BeanPropertyRowMapper(getEntityClass()));
-        log.info("selectAll::end");
+        log.info("selectAll:duration={}", System.currentTimeMillis() - startTime);
 
         return result;
     }
 
     @Override
     public int updateRow(T version) {
-        log.info("updateRow::start");
         int result = namedJdbcTemplate.update(getDmlUpdateRow(), prepareUpdate(version));
         log.info("updateRow::end");
 
@@ -70,7 +70,6 @@ public abstract class TemplateDb<T, K> implements Persistent<T, K> {
 
     @Override
     public int insertRow(T version) {
-        log.info("insertRow::start");
         int result = namedJdbcTemplate.update(getDmlInsertRow(), prepareInsert(version));
         log.info("insertRow::end");
 

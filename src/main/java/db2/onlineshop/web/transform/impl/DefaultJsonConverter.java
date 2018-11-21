@@ -10,10 +10,11 @@ public class DefaultJsonConverter implements JsonConverter {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     public String toJson(Object anyObject) throws JsonProcessingException {
+        long startTime = System.currentTimeMillis();
         ObjectMapper objectMapper = new ObjectMapper();
-        log.info("toJson::start");
+        log.info("toJson:anyObject.ClassName={}", anyObject.getClass().getName());
         String result = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(anyObject);
-        log.info("toJson::end");
+        log.info("toJson:duration={}", System.currentTimeMillis() - startTime);
 
         return result;
     }
