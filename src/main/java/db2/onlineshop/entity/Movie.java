@@ -1,5 +1,8 @@
 package db2.onlineshop.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(value = { "picturePath" })
 public class Movie {
     private int id;
     private String name;
@@ -63,5 +66,18 @@ public class Movie {
 
     public void setPicturePath(String picturePath) {
         this.picturePath = picturePath;
+    }
+
+    public Movie(int id, String name, String nameNative, int yearOfRelease, double rating, double price, String picturePath) {
+        this.id = id;
+        this.name = name;
+        this.nameNative = nameNative;
+        this.yearOfRelease = yearOfRelease;
+        this.rating = rating;
+        this.price = price;
+        this.picturePath = picturePath;
+    }
+
+    public Movie() {
     }
 }
