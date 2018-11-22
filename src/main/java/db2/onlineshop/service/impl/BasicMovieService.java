@@ -34,13 +34,13 @@ public class BasicMovieService implements MovieService {
     }
 
     @Override
-    public Movie getMovie(String key) {
-        return (Movie) movieDb.fetchRow(key);
+    public Movie getMovie(int id) {
+        return (Movie) movieDb.fetchRow(id);
     }
 
     @Override
-    public int removeMovie(String key) {
-        return movieDb.deleteRow(key);
+    public int removeMovie(int id) {
+        return movieDb.deleteRow(id);
     }
 
     private Movie fromParams(Map params) {
