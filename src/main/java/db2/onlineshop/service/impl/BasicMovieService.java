@@ -21,13 +21,17 @@ public class BasicMovieService implements MovieService {
         return movieDb.selectAll();
     }
 
+    @Override
     public List<Movie> getRandomMovies(int maxCount) {
         List<Movie> result = new ArrayList<>();
+        Random random = new Random();
         int maxId = movieDb.getMaxKey();
         int count = 0;
+        int id;
         Movie movie = null;
         while (count < maxCount) {
-            movie = movieDb.fetchRow(new Random().nextInt(maxId));
+            id = random.nextInt(maxId);
+            movie = movieDb.fetchRow(id);
             if (movie != null) {
                 count++;
                 result.add(movie);

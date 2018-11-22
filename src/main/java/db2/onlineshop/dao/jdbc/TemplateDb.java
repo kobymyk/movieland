@@ -4,6 +4,7 @@ import db2.onlineshop.dao.Persistent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -44,9 +45,14 @@ public abstract class TemplateDb<T, K> implements Persistent<T, K> {
 
     @Override
     public final T fetchRow(K key) {
-        log.info("fetchRow:key={}", key);
         long startTime = System.currentTimeMillis();
-        T result = (T) jdbcTemplate.queryForObject(getSqlFetchRow(), new Object[]{key}, getRowMapper());
+        log.info("fetchRow:key={}", key);
+        T result = null;
+        try {
+            result = (T) jdbcTemplate.queryForObject(getSqlFetchRow(), getRowMapper(), key);
+        } catch (EmptyResultDataAccessException e) {
+            log.debug("fetchRow:NoDataFound");
+        }
         log.info("fetchRow:duration={}", System.currentTimeMillis() - startTime);
 
         return result;
@@ -55,7 +61,8 @@ public abstract class TemplateDb<T, K> implements Persistent<T, K> {
     @Override
     public List<T> selectAll() {
         long startTime = System.currentTimeMillis();
-        List<T> result  = jdbcTemplate.query(getSqlSelectAll(), new BeanPropertyRowMapper(getEntityClass()));
+        BeanPropertyRowMapper entityMapper = new BeanPropertyRowMapper(getEntityClass());
+        List<T> result  = jdbcTemplate.query(getSqlSelectAll(), entityMapper);
         log.info("selectAll:duration={}", System.currentTimeMillis() - startTime);
 
         return result;

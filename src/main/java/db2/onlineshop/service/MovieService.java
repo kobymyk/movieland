@@ -8,6 +8,8 @@ import java.util.Map;
 public interface MovieService {
     List<Movie> getMovies();
 
+    List<Movie> getRandomMovies(int maxCount);
+
     int updateMovie(Map<String, String> params);
 
     int addMovie(Map<String, String> params);
