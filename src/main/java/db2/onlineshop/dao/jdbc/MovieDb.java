@@ -1,5 +1,6 @@
 package db2.onlineshop.dao.jdbc;
 
+import db2.onlineshop.dao.Aggregate;
 import db2.onlineshop.dao.jdbc.mapper.MovieMapper;
 import db2.onlineshop.entity.Movie;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class MovieDb extends TemplateDb<Movie, Integer> {
+public class MovieDb extends TemplateDb<Movie, Integer> implements Aggregate<Integer> {
     private static final MovieMapper ROW_MAPPER = new MovieMapper();
 
     @Autowired
@@ -21,9 +22,14 @@ public class MovieDb extends TemplateDb<Movie, Integer> {
     String dmlInsertMovie;
     @Autowired
     String dmlDeleteMovie;
+    // aggregate
+    @Autowired
+    String sqlMaxId;
 
     @Override
     Class getEntityClass() { return Movie.class; }
+    @Override
+    Class getKeyClass() { return Integer.class; }
 
     @Override
     RowMapper getRowMapper() { return ROW_MAPPER; }
@@ -57,4 +63,9 @@ public class MovieDb extends TemplateDb<Movie, Integer> {
         return result;
     }
 
+    @Override
+    public Integer getMaxKey() {
+        int result = fetchKey(sqlMaxId);
+        return result;
+    }
 }

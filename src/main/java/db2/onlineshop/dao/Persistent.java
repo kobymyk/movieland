@@ -12,4 +12,6 @@ public interface Persistent<T, K> {
     int insertRow(T version);
 
     int deleteRow(K key);
+
+
 }

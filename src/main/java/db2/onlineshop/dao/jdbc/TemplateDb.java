@@ -24,7 +24,8 @@ public abstract class TemplateDb<T, K> implements Persistent<T, K> {
     @Autowired
     private NamedParameterJdbcTemplate namedJdbcTemplate;
 
-    abstract Class getEntityClass();
+    abstract Class<T> getEntityClass();
+    abstract Class<K> getKeyClass();
     abstract RowMapper getRowMapper();
 
     abstract String getSqlSelectAll();
@@ -81,6 +82,15 @@ public abstract class TemplateDb<T, K> implements Persistent<T, K> {
         log.info("deleteRow:key={}", key);
         int result = jdbcTemplate.update(getDmlDeleteRow(), key);
         log.info("deleteRow:result={}", result);
+
+        return result;
+    }
+
+    public final K fetchKey(String sql) {
+        log.info("fetchRow/start");
+        long startTime = System.currentTimeMillis();
+        K result = jdbcTemplate.queryForObject(sql, getKeyClass());
+        log.info("fetchRow:duration={}", System.currentTimeMillis() - startTime);
 
         return result;
     }

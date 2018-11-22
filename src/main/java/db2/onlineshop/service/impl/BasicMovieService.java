@@ -6,8 +6,10 @@ import db2.onlineshop.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 @Service
 public class BasicMovieService implements MovieService {
@@ -17,6 +19,21 @@ public class BasicMovieService implements MovieService {
     @Override
     public List<Movie> getMovies() {
         return movieDb.selectAll();
+    }
+
+    public List<Movie> getRandomMovies(int maxCount) {
+        List<Movie> result = new ArrayList<>();
+        int maxId = movieDb.getMaxKey();
+        int count = 0;
+        Movie movie = null;
+        while (count < maxCount) {
+            movie = movieDb.fetchRow(new Random().nextInt(maxId));
+            if (movie != null) {
+                count++;
+                result.add(movie);
+            }
+        }
+        return result;
     }
 
     @Override
