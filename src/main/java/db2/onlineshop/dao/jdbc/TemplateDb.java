@@ -79,7 +79,7 @@ public abstract class TemplateDb<T, K> implements Persistent<T, K> {
     @Override
     public int deleteRow(K key) {
         log.info("deleteRow:key={}", key);
-        int result = jdbcTemplate.update(getDmlDeleteRow(), new Object[]{key});
+        int result = jdbcTemplate.update(getDmlDeleteRow(), key);
         log.info("deleteRow:result={}", result);
 
         return result;

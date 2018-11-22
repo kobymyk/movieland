@@ -5,13 +5,15 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(value = { "picturePath", "description" })
 public class Movie {
     private int id;
+    private int yearOfRelease;
+
     private String name;
     private String nameNative;
     private String description;
-    private int yearOfRelease;
+    private String picturePath;
+
     private double rating;
     private double price;
-    private String picturePath;
 
     public int getId() {
         return id;

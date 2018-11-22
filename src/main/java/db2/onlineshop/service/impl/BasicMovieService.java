@@ -35,7 +35,7 @@ public class BasicMovieService implements MovieService {
 
     @Override
     public Movie getMovie(int id) {
-        return (Movie) movieDb.fetchRow(id);
+        return movieDb.fetchRow(id);
     }
 
     @Override
