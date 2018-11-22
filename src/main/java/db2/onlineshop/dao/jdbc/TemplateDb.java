@@ -10,13 +10,13 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.stereotype.Service;
-
-
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Locale;
 
-@Service
+@Repository
 public abstract class TemplateDb<T, K> implements Persistent<T, K> {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -79,7 +79,9 @@ public abstract class TemplateDb<T, K> implements Persistent<T, K> {
 
     @Override
     public int insertRow(T version) {
-        int result = namedJdbcTemplate.update(getDmlInsertRow(), prepareInsert(version));
+        final KeyHolder holder = new GeneratedKeyHolder();
+        MapSqlParameterSource params = prepareInsert(version);
+        int result = namedJdbcTemplate.update(getDmlInsertRow(), params, holder);
         log.info("insertRow/end");
 
         return result;
