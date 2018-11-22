@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -26,21 +27,21 @@ public class MovieJsonController {
     @Autowired
     private MovieService movieService;
 
-    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String getJsonMovies() throws JsonProcessingException {
+    public String getAllMovies() throws JsonProcessingException {
         log.info("getMoviesAsJson/start");
         long startTime = System.currentTimeMillis();
         List<Movie> items = movieService.getMovies();
         String result = JSON_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(items);
-        log.info("getMoviesAsJson/end:duration={}", System.currentTimeMillis() - startTime);
+        log.info("getMoviesAsJson:duration={}", System.currentTimeMillis() - startTime);
 
         return result;
     }
 
-    @RequestMapping(path = "/random", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @GetMapping(path = "/random", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseBody
-    public String getJsonRandomMovies() throws JsonProcessingException {
+    public String getRandomMovies() throws JsonProcessingException {
         log.info("getJsonRandomMovies/start");
         long startTime = System.currentTimeMillis();
         List<Movie> items = movieService.getRandomMovies(randomCount);

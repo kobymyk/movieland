@@ -61,6 +61,7 @@ public abstract class TemplateDb<T, K> implements Persistent<T, K> {
     @Override
     public List<T> selectAll() {
         long startTime = System.currentTimeMillis();
+        log.info("fetchRow/start");
         BeanPropertyRowMapper entityMapper = new BeanPropertyRowMapper(getEntityClass());
         List<T> result  = jdbcTemplate.query(getSqlSelectAll(), entityMapper);
         log.info("selectAll:duration={}", System.currentTimeMillis() - startTime);
@@ -71,7 +72,7 @@ public abstract class TemplateDb<T, K> implements Persistent<T, K> {
     @Override
     public int updateRow(T version) {
         int result = namedJdbcTemplate.update(getDmlUpdateRow(), prepareUpdate(version));
-        log.info("updateRow::end");
+        log.info("updateRow/end");
 
         return result;
     }
@@ -79,7 +80,7 @@ public abstract class TemplateDb<T, K> implements Persistent<T, K> {
     @Override
     public int insertRow(T version) {
         int result = namedJdbcTemplate.update(getDmlInsertRow(), prepareInsert(version));
-        log.info("insertRow::end");
+        log.info("insertRow/end");
 
         return result;
     }
