@@ -5,10 +5,10 @@ import db2.onlineshop.entity.Movie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
-@Service
-public class MovieDb extends TemplateDb {
+@Repository
+public class MovieDb extends TemplateDb<Movie, Integer> {
     private static final MovieMapper ROW_MAPPER = new MovieMapper();
 
     @Autowired
@@ -40,21 +40,19 @@ public class MovieDb extends TemplateDb {
     String getDmlDeleteRow() { return dmlDeleteMovie; }
 
     @Override
-    final MapSqlParameterSource prepareUpdate(Object version) {
-        Movie movie = (Movie) version;
+    final MapSqlParameterSource prepareUpdate(Movie version) {
         MapSqlParameterSource result = new MapSqlParameterSource();
-        result.addValue("id", movie.getId());
-        result.addValue("name", movie.getName());
+        result.addValue("id", version.getId());
+        result.addValue("name", version.getName());
 
         return result;
     }
 
     @Override
-    MapSqlParameterSource prepareInsert(Object version) {
-        Movie product = (Movie) version;
+    MapSqlParameterSource prepareInsert(Movie version) {
         MapSqlParameterSource result = new MapSqlParameterSource();
-        result.addValue("name", product.getName());
-        result.addValue("price", product.getPrice());
+        result.addValue("name", version.getName());
+        result.addValue("price", version.getPrice());
 
         return result;
     }

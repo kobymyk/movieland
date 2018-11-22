@@ -12,7 +12,7 @@ public interface MovieService {
 
     int addMovie(Map<String, String> params);
 
-    Movie getMovie(String key);
+    Movie getMovie(int id);
 
-    int removeMovie(String key);
+    int removeMovie(int id);
 }
