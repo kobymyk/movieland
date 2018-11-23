@@ -19,7 +19,7 @@
     <bean id="dmlDeleteMovie" class="java.lang.String">
         <constructor-arg value="DELETE movie t WHERE t.id = ?"/>
     </bean>
-    <bean id="sqlMaxId" class="java.lang.String">
-        <constructor-arg value="select max(id) max_id from movie t"/>
+    <bean id="sqlRandomMovies" class="java.lang.String">
+        <constructor-arg value="SELECT v.* FROM (SELECT t.* FROM all_movies t ORDER BY dbms_random.value) v WHERE rownum &lt;= ?"/>
     </bean>
 </beans>

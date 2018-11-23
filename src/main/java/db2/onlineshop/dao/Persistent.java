@@ -2,6 +2,7 @@ package db2.onlineshop.dao;
 
 import java.util.List;
 
+@Deprecated
 public interface Persistent<T, K> {
     List<T> selectAll();
 

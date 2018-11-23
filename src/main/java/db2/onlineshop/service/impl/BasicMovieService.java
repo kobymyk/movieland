@@ -5,71 +5,24 @@ import db2.onlineshop.entity.Movie;
 import db2.onlineshop.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
 
 @Service
 public class BasicMovieService implements MovieService {
-    @Autowired
     private MovieDb movieDb;
 
-    @Override
-    public List<Movie> getMovies() {
-        return movieDb.selectAll();
+    @Autowired
+    public void setMovieDb(MovieDb movieDb) {
+        this.movieDb = movieDb;
     }
 
     @Override
-    public List<Movie> getRandomMovies(int maxCount) {
-        List<Movie> result = new ArrayList<>();
-        Random random = new Random();
-        int maxId = movieDb.getMaxKey();
-        int count = 0;
-        int id;
-        Movie movie = null;
-        while (count < maxCount) {
-            id = random.nextInt(maxId);
-            movie = movieDb.fetchRow(id);
-            if (movie != null) {
-                count++;
-                result.add(movie);
-            }
-        }
-        return result;
+    public List<Movie> getAll() {
+        return movieDb.getAll();
     }
 
     @Override
-    public int updateMovie(Map params) {
-        Movie Movie = fromParams(params);
-
-        return movieDb.updateRow(Movie);
-    }
-
-    @Override
-    public int addMovie(Map params) {
-        Movie Movie = fromParams(params);
-
-        return movieDb.insertRow(Movie);
-    }
-
-    @Override
-    public Movie getMovie(int id) {
-        return movieDb.fetchRow(id);
-    }
-
-    @Override
-    public int removeMovie(int id) {
-        return movieDb.deleteRow(id);
-    }
-
-    private Movie fromParams(Map params) {
-        Movie result = new Movie();
-        result.setId(Integer.parseInt((String) params.get("id")));
-        result.setName((String) params.get("name"));
-        result.setPrice(Double.parseDouble((String) params.get("price")));
-
-        return result;
+    public List<Movie> getRandom(int size) {
+        return movieDb.getRandom(size);
     }
 }

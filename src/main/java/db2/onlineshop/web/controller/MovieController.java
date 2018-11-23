@@ -30,7 +30,7 @@ public class MovieController {
     public List<Movie> getJsonAllMovies() {
         log.info("getMoviesAsJson/start");
         long startTime = System.currentTimeMillis();
-        List<Movie> result = movieService.getMovies();
+        List<Movie> result = movieService.getAll();
         log.info("getMoviesAsJson:duration={}", System.currentTimeMillis() - startTime);
 
         return result;
@@ -40,7 +40,7 @@ public class MovieController {
     public List<Movie> getJsonRandomMovies() {
         log.info("getJsonRandomMovies/start");
         long startTime = System.currentTimeMillis();
-        List<Movie> result = movieService.getRandomMovies(randomCount);
+        List<Movie> result = movieService.getRandom(randomCount);
         log.info("getJsonRandomMovies:duration={}", System.currentTimeMillis() - startTime);
 
         return result;

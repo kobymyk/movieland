@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Locale;
 
 @Repository
+@Deprecated
 public abstract class TemplateDb<T, K> implements Persistent<T, K> {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
