@@ -5,7 +5,6 @@ import db2.onlineshop.service.MovieService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,8 +17,6 @@ import java.util.List;
 public class MovieController {
     private MovieService movieService;
     private final Logger log = LoggerFactory.getLogger(getClass());
-    @Value("${movie.randomCount:3}")
-    private int randomCount;
 
     @Autowired
     public void setMovieService(MovieService movieService) {
@@ -38,9 +35,9 @@ public class MovieController {
 
     @GetMapping(path = "/random", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public List<Movie> getJsonRandomMovies() {
-        log.info("getJsonRandomMovies/start");
+        log.info("getJsonRandomMovies:/start");
         long startTime = System.currentTimeMillis();
-        List<Movie> result = movieService.getRandom(randomCount);
+        List<Movie> result = movieService.getRandom();
         log.info("getJsonRandomMovies:duration={}", System.currentTimeMillis() - startTime);
 
         return result;

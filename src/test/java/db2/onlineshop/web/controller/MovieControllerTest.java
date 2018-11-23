@@ -5,9 +5,6 @@ import db2.onlineshop.service.impl.BasicMovieService;
 import org.junit.runner.RunWith;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -37,9 +34,9 @@ public class MovieControllerTest {
     }
 
     @Test
-    public void getAllMovies() throws Exception {
+    public void getJsonAllMovies() throws Exception {
         List<Movie> movies = mockMovies();
-        when(movieService.getMovies()).thenReturn(movies);
+        when(movieService.getAll()).thenReturn(movies);
 
         mockMvc.perform(get("/v1/movie"))
                 .andExpect(status().isOk())
@@ -60,15 +57,16 @@ public class MovieControllerTest {
                 .andExpect(jsonPath("$[1].rating", is(2.02)))
                 .andExpect(jsonPath("$[1].price", is(20.2)));
 
-        verify(movieService, times(1)).getMovies();
+        verify(movieService, times(1)).getAll();
         verifyNoMoreInteractions(movieService);
     }
 
     @Test
-    public void getRandomMovies() throws Exception {
+    public void getJsonRandomMovies() throws Exception {
         List<Movie> movies = mockMovies();
-        when(movieService.getRandomMovies(0)).thenReturn(movies);
-        mockMvc.perform(get("/movie/random"))
+        when(movieService.getRandom()).thenReturn(movies);
+
+        mockMvc.perform(get("/v1/movie/random"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$[0].id", is(1)))
@@ -76,9 +74,10 @@ public class MovieControllerTest {
                 .andExpect(jsonPath("$[0].nameNative", is("name 1")))
                 .andExpect(jsonPath("$[0].yearOfRelease", is(1001)))
                 .andExpect(jsonPath("$[0].rating", is(1.01)))
-                .andExpect(jsonPath("$[0].price", is(10.01)))
+                .andExpect(jsonPath("$[0].price", is(10.1)))
                 .andExpect(jsonPath("$[0].picturePath", is("path/1")));
-        verify(movieService, times(0)).getRandomMovies(2);
+
+        verify(movieService, times(1)).getRandom();
         verifyNoMoreInteractions(movieService);
     }
 

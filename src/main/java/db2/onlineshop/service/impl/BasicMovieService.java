@@ -3,13 +3,19 @@ package db2.onlineshop.service.impl;
 import db2.onlineshop.dao.jdbc.MovieDb;
 import db2.onlineshop.entity.Movie;
 import db2.onlineshop.service.MovieService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
 public class BasicMovieService implements MovieService {
+    private final Logger log = LoggerFactory.getLogger(getClass());
     private MovieDb movieDb;
+    @Value("${movie.randomCount:3}")
+    private int randomCount;
 
     @Autowired
     public void setMovieDb(MovieDb movieDb) {
@@ -22,7 +28,8 @@ public class BasicMovieService implements MovieService {
     }
 
     @Override
-    public List<Movie> getRandom(int size) {
-        return movieDb.getRandom(size);
+    public List<Movie> getRandom() {
+        log.info("getRandom:randomCount={}", randomCount);
+        return movieDb.getRandom(randomCount);
     }
 }

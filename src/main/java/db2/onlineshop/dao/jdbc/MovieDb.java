@@ -6,7 +6,6 @@ import db2.onlineshop.entity.Movie;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -17,7 +16,6 @@ import java.util.Locale;
 public class MovieDb implements MovieDao {
     private final Logger log = LoggerFactory.getLogger(getClass());
     private static final MovieMapper ROW_MAPPER = new MovieMapper();
-    private static final BeanPropertyRowMapper ENTITY_MAPPER = new BeanPropertyRowMapper(Movie.class);
 
     private JdbcTemplate jdbcTemplate;
 
@@ -46,7 +44,7 @@ public class MovieDb implements MovieDao {
     public List<Movie> getRandom(int size) {
         long startTime = System.currentTimeMillis();
         log.info("getRandom/start");
-        List<Movie> result = jdbcTemplate.query(sqlRandomMovies, ENTITY_MAPPER, size);
+        List<Movie> result = jdbcTemplate.query(sqlRandomMovies, ROW_MAPPER, size);
         log.info("getRandom:duration={}", System.currentTimeMillis() - startTime);
 
         return result;
