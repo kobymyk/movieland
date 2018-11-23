@@ -15,16 +15,19 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/v1/movie")
-public class MovieJsonController {
+public class MovieController {
+    private MovieService movieService;
     private final Logger log = LoggerFactory.getLogger(getClass());
     @Value("${movie.randomCount:3}")
     private int randomCount;
 
     @Autowired
-    private MovieService movieService;
+    public void setMovieService(MovieService movieService) {
+        this.movieService = movieService;
+    }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public List<Movie> getAllMovies() {
+    @GetMapping(produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    public List<Movie> getJsonAllMovies() {
         log.info("getMoviesAsJson/start");
         long startTime = System.currentTimeMillis();
         List<Movie> result = movieService.getMovies();
@@ -33,8 +36,8 @@ public class MovieJsonController {
         return result;
     }
 
-    @GetMapping(path = "/random", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public List<Movie> getRandomMovies() {
+    @GetMapping(path = "/random", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    public List<Movie> getJsonRandomMovies() {
         log.info("getJsonRandomMovies/start");
         long startTime = System.currentTimeMillis();
         List<Movie> result = movieService.getRandomMovies(randomCount);
