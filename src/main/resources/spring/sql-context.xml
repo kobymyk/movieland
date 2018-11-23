@@ -5,7 +5,7 @@
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="sqlSelectMovies" class="java.lang.String">
-        <constructor-arg value="SELECT t.* FROM movie t"/>
+        <constructor-arg value="SELECT t.* FROM all_movies t"/>
     </bean>
     <bean id="sqlFetchMovie" class="java.lang.String">
         <constructor-arg value="SELECT t.* FROM movie t WHERE t.id = ?"/>
