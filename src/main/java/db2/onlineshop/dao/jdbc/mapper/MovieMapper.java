@@ -12,7 +12,7 @@ public class MovieMapper implements RowMapper<Movie> {
             result.setId(resultSet.getInt("id"));
             result.setName(resultSet.getString("name"));
             result.setNameNative(resultSet.getString("name_native"));
-            result.setDescription(resultSet.getString("description"));
+            //result.setDescription(resultSet.getString("description"));
             result.setYearOfRelease(resultSet.getInt("release_year"));
             result.setRating(resultSet.getDouble("rating"));
             result.setPrice(resultSet.getDouble("price"));

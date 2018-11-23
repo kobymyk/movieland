@@ -1,7 +1,5 @@
 package db2.onlineshop.web.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import db2.onlineshop.entity.Movie;
 import db2.onlineshop.service.MovieService;
 import org.slf4j.Logger;
