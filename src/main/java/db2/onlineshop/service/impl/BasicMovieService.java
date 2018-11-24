@@ -17,11 +17,6 @@ public class BasicMovieService implements MovieService {
     @Value("${movie.randomCount:3}")
     private int randomCount;
 
-    @Autowired
-    public void setMovieDb(MovieDb movieDb) {
-        this.movieDb = movieDb;
-    }
-
     @Override
     public List<Movie> getAll() {
         return movieDb.getAll();
@@ -31,5 +26,10 @@ public class BasicMovieService implements MovieService {
     public List<Movie> getRandom() {
         log.info("getRandom:randomCount={}", randomCount);
         return movieDb.getRandom(randomCount);
+    }
+
+    @Autowired
+    public void setMovieDb(MovieDb movieDb) {
+        this.movieDb = movieDb;
     }
 }

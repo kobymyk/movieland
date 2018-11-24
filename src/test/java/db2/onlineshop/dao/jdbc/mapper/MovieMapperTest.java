@@ -14,8 +14,8 @@ import static org.mockito.Mockito.when;
 
 public class MovieMapperTest {
     @Test
-    public void testMapRowWithProperCity() throws SQLException {
-        MovieMapper movieMapper = new MovieMapper();
+    public void testMapRow() throws SQLException {
+        MovieMapper mapper = new MovieMapper();
         ResultSet resultSet = mock(ResultSet.class);
 
         when(resultSet.getInt(any())).thenReturn(1).thenReturn(1000);
@@ -23,7 +23,7 @@ public class MovieMapperTest {
         when(resultSet.getDouble("rating")).thenReturn(10.1);
         when(resultSet.getDouble("price")).thenReturn(100.01);
 
-        Movie actual = movieMapper.mapRow(resultSet, 0);
+        Movie actual = mapper.mapRow(resultSet, 0);
         assertEquals(actual.getId(), 1);
         assertEquals(actual.getYearOfRelease(), 1000);
         assertEquals(actual.getName(), "name");
