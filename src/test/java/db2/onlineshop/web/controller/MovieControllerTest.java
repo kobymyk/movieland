@@ -2,12 +2,12 @@ package db2.onlineshop.web.controller;
 
 import db2.onlineshop.entity.Movie;
 import db2.onlineshop.service.impl.BasicMovieService;
-import org.junit.runner.RunWith;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
@@ -19,22 +19,21 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
-@RunWith(SpringRunner.class)
-@SpringJUnitWebConfig(locations = "classpath:spring/test-context.xml")
 public class MovieControllerTest {
-    private MockMvc mockMvc;
+    @Mock
     private BasicMovieService movieService;
+    @InjectMocks
+    MovieController movieController;
+    private MockMvc mockMvc;
 
     @Before
     public void setupMock() {
-        movieService = mock(BasicMovieService.class);
-        MovieController movieController = new MovieController();
-        movieController.setMovieService(movieService);
+        MockitoAnnotations.initMocks(this);
         mockMvc = standaloneSetup(movieController).build();
     }
 
     @Test
-    public void getJsonAllMovies() throws Exception {
+    public void getAllTest() throws Exception {
         List<Movie> movies = mockMovies();
         when(movieService.getAll()).thenReturn(movies);
 
@@ -62,7 +61,7 @@ public class MovieControllerTest {
     }
 
     @Test
-    public void getJsonRandomMovies() throws Exception {
+    public void getRandomTest() throws Exception {
         List<Movie> movies = mockMovies();
         when(movieService.getRandom()).thenReturn(movies);
 

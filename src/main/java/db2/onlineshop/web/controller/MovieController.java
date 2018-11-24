@@ -24,7 +24,7 @@ public class MovieController {
     }
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public List<Movie> getJsonAllMovies() {
+    public List<Movie> getAll() {
         log.info("getMoviesAsJson/start");
         long startTime = System.currentTimeMillis();
         List<Movie> result = movieService.getAll();
@@ -34,8 +34,8 @@ public class MovieController {
     }
 
     @GetMapping(path = "/random", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public List<Movie> getJsonRandomMovies() {
-        log.info("getJsonRandomMovies:/start");
+    public List<Movie> getRandom() {
+        log.info("getJsonRandomMovies/start");
         long startTime = System.currentTimeMillis();
         List<Movie> result = movieService.getRandom();
         log.info("getJsonRandomMovies:duration={}", System.currentTimeMillis() - startTime);
