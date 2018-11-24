@@ -5,7 +5,7 @@
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="sqlSelectMovies" class="java.lang.String">
-        <constructor-arg value="SELECT t.* FROM movie t"/>
+        <constructor-arg value="SELECT t.* FROM all_movies t"/>
     </bean>
     <bean id="sqlFetchMovie" class="java.lang.String">
         <constructor-arg value="SELECT t.* FROM movie t WHERE t.id = ?"/>
@@ -18,5 +18,8 @@
     </bean>
     <bean id="dmlDeleteMovie" class="java.lang.String">
         <constructor-arg value="DELETE movie t WHERE t.id = ?"/>
+    </bean>
+    <bean id="sqlRandomMovies" class="java.lang.String">
+        <constructor-arg value="SELECT v.* FROM (SELECT t.* FROM all_movies t ORDER BY dbms_random.value) v WHERE rownum &lt;= ?"/>
     </bean>
 </beans>

@@ -1,60 +1,52 @@
 package db2.onlineshop.dao.jdbc;
 
+import db2.onlineshop.dao.MovieDao;
 import db2.onlineshop.dao.jdbc.mapper.MovieMapper;
 import db2.onlineshop.entity.Movie;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Locale;
+
 @Repository
-public class MovieDb extends TemplateDb<Movie, Integer> {
+public class MovieDb implements MovieDao {
+    private final Logger log = LoggerFactory.getLogger(getClass());
     private static final MovieMapper ROW_MAPPER = new MovieMapper();
 
+    private JdbcTemplate jdbcTemplate;
+
     @Autowired
-    String sqlSelectMovies;
+    private String sqlSelectMovies;
     @Autowired
-    String sqlFetchMovie;
+    private String sqlRandomMovies;
+
     @Autowired
-    String dmlUpdateMovie;
-    @Autowired
-    String dmlInsertMovie;
-    @Autowired
-    String dmlDeleteMovie;
+    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+        Locale.setDefault(Locale.ENGLISH);
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     @Override
-    Class getEntityClass() { return Movie.class; }
-
-    @Override
-    RowMapper getRowMapper() { return ROW_MAPPER; }
-
-    @Override
-    String getSqlSelectAll() { return sqlSelectMovies; }
-    @Override
-    String getSqlFetchRow() { return sqlFetchMovie; }
-    @Override
-    String getDmlUpdateRow() { return dmlUpdateMovie; }
-    @Override
-    String getDmlInsertRow() { return dmlInsertMovie; }
-    @Override
-    String getDmlDeleteRow() { return dmlDeleteMovie; }
-
-    @Override
-    final MapSqlParameterSource prepareUpdate(Movie version) {
-        MapSqlParameterSource result = new MapSqlParameterSource();
-        result.addValue("id", version.getId());
-        result.addValue("name", version.getName());
+    public List<Movie> getAll() {
+        long startTime = System.currentTimeMillis();
+        log.info("getAll/start");
+        List<Movie> result = jdbcTemplate.query(sqlSelectMovies, ROW_MAPPER);
+        log.info("getAll:duration={}", System.currentTimeMillis() - startTime);
 
         return result;
     }
 
     @Override
-    MapSqlParameterSource prepareInsert(Movie version) {
-        MapSqlParameterSource result = new MapSqlParameterSource();
-        result.addValue("name", version.getName());
-        result.addValue("price", version.getPrice());
+    public List<Movie> getRandom(int size) {
+        long startTime = System.currentTimeMillis();
+        log.info("getRandom/start");
+        List<Movie> result = jdbcTemplate.query(sqlRandomMovies, ROW_MAPPER, size);
+        log.info("getRandom:duration={}", System.currentTimeMillis() - startTime);
 
         return result;
     }
-
 }

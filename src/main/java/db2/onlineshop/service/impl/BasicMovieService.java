@@ -3,52 +3,33 @@ package db2.onlineshop.service.impl;
 import db2.onlineshop.dao.jdbc.MovieDb;
 import db2.onlineshop.entity.Movie;
 import db2.onlineshop.service.MovieService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class BasicMovieService implements MovieService {
-    @Autowired
+    private final Logger log = LoggerFactory.getLogger(getClass());
     private MovieDb movieDb;
+    @Value("${movie.randomCount:3}")
+    private int randomCount;
 
-    @Override
-    public List<Movie> getMovies() {
-        return movieDb.selectAll();
+    @Autowired
+    public void setMovieDb(MovieDb movieDb) {
+        this.movieDb = movieDb;
     }
 
     @Override
-    public int updateMovie(Map params) {
-        Movie Movie = fromParams(params);
-
-        return movieDb.updateRow(Movie);
+    public List<Movie> getAll() {
+        return movieDb.getAll();
     }
 
     @Override
-    public int addMovie(Map params) {
-        Movie Movie = fromParams(params);
-
-        return movieDb.insertRow(Movie);
-    }
-
-    @Override
-    public Movie getMovie(int id) {
-        return movieDb.fetchRow(id);
-    }
-
-    @Override
-    public int removeMovie(int id) {
-        return movieDb.deleteRow(id);
-    }
-
-    private Movie fromParams(Map params) {
-        Movie result = new Movie();
-        result.setId(Integer.parseInt((String) params.get("id")));
-        result.setName((String) params.get("name"));
-        result.setPrice(Double.parseDouble((String) params.get("price")));
-
-        return result;
+    public List<Movie> getRandom() {
+        log.info("getRandom:randomCount={}", randomCount);
+        return movieDb.getRandom(randomCount);
     }
 }
