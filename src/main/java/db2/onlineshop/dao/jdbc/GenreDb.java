@@ -1,7 +1,9 @@
 package db2.onlineshop.dao.jdbc;
 
+import db2.onlineshop.dao.GenreDao;
 import db2.onlineshop.dao.MovieDao;
-import db2.onlineshop.dao.jdbc.mapper.MovieMapper;
+import db2.onlineshop.dao.jdbc.mapper.GenreMapper;
+import db2.onlineshop.entity.Genre;
 import db2.onlineshop.entity.Movie;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,39 +14,28 @@ import java.util.List;
 
 
 @Repository
-public class MovieDb implements MovieDao {
+public class GenreDb implements GenreDao {
     private final Logger log = LoggerFactory.getLogger(getClass());
-    private static final MovieMapper ROW_MAPPER = new MovieMapper();
+    private static final GenreMapper ROW_MAPPER = new GenreMapper();
 
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
-    private String sqlSelectMovies;
+    private String sqlSelectGenres;
     @Autowired
     private String sqlRandomMovies;
 
     @Autowired
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-        //-Duser.country=EN -Duser.language=en
         this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
-    public List<Movie> getAll() {
+    public List<Genre> getAll() {
         long startTime = System.currentTimeMillis();
         log.debug("getAll:startTime={}", startTime);
-        List<Movie> result = jdbcTemplate.query(sqlSelectMovies, ROW_MAPPER);
+        List<Genre> result = jdbcTemplate.query(sqlSelectGenres, ROW_MAPPER);
         log.info("getAll:duration={}", System.currentTimeMillis() - startTime);
-
-        return result;
-    }
-
-    @Override
-    public List<Movie> getRandom(int size) {
-        long startTime = System.currentTimeMillis();
-        log.debug("getRandom:startTime={}", startTime);
-        List<Movie> result = jdbcTemplate.query(sqlRandomMovies, ROW_MAPPER, size);
-        log.info("getRandom:duration={}", System.currentTimeMillis() - startTime);
 
         return result;
     }
