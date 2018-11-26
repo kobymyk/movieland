@@ -1,4 +1,5 @@
 .idea
 .gitattributes
 target
+logs
 *.iml

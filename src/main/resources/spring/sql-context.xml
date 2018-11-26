@@ -7,8 +7,8 @@
     <bean id="sqlSelectMovies" class="java.lang.String">
         <constructor-arg value="SELECT t.* FROM all_movies t"/>
     </bean>
-    <bean id="sqlFetchMovie" class="java.lang.String">
-        <constructor-arg value="SELECT t.* FROM movie t WHERE t.id = ?"/>
+    <bean id="sqlGenreIdMovies" class="java.lang.String">
+        <constructor-arg value="SELECT m.* FROM all_movies m JOIN movie_genre mg ON mg.movie_id = m.id WHERE mg.genre_id = ?"/>
     </bean>
     <bean id="dmlUpdateMovie" class="java.lang.String">
         <constructor-arg value="UPDATE movie t SET t.name = :name WHERE t.id = :id"/>

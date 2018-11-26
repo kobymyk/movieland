@@ -14,21 +14,12 @@ import java.util.List;
 
 
 @Repository
-public class GenreDb implements GenreDao {
+public class JdbcGenreDao implements GenreDao {
     private final Logger log = LoggerFactory.getLogger(getClass());
     private static final GenreMapper ROW_MAPPER = new GenreMapper();
 
     private JdbcTemplate jdbcTemplate;
-
-    @Autowired
     private String sqlSelectGenres;
-    @Autowired
-    private String sqlRandomMovies;
-
-    @Autowired
-    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
 
     @Override
     public List<Genre> getAll() {
@@ -38,5 +29,15 @@ public class GenreDb implements GenreDao {
         log.info("getAll:duration={}", System.currentTimeMillis() - startTime);
 
         return result;
+    }
+
+    @Autowired
+    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    @Autowired
+    public void setSqlSelectGenres(String sqlSelectGenres) {
+        this.sqlSelectGenres = sqlSelectGenres;
     }
 }

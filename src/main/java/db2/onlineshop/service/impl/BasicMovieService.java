@@ -1,6 +1,6 @@
 package db2.onlineshop.service.impl;
 
-import db2.onlineshop.dao.jdbc.MovieDb;
+import db2.onlineshop.dao.MovieDao;
 import db2.onlineshop.entity.Movie;
 import db2.onlineshop.service.MovieService;
 import org.slf4j.Logger;
@@ -13,23 +13,26 @@ import java.util.List;
 @Service
 public class BasicMovieService implements MovieService {
     private final Logger log = LoggerFactory.getLogger(getClass());
-    private MovieDb movieDb;
+    private MovieDao movieDao;
     @Value("${movie.randomCount:3}")
     private int randomCount;
 
     @Override
     public List<Movie> getAll() {
-        return movieDb.getAll();
+        return movieDao.getAll();
     }
 
     @Override
     public List<Movie> getRandom() {
         log.info("getRandom:randomCount={}", randomCount);
-        return movieDb.getRandom(randomCount);
+        return movieDao.getRandom(randomCount);
     }
 
+    @Override
+    public List<Movie> getByGenre(int genreId) { return movieDao.getByGenreId(genreId); }
+
     @Autowired
-    public void setMovieDb(MovieDb movieDb) {
-        this.movieDb = movieDb;
+    public void setMovieDao(MovieDao movieDao) {
+        this.movieDao = movieDao;
     }
 }
