@@ -20,6 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
 public class MovieControllerTest {
+    final String URL = "/v1/movie";
     @Mock
     private BasicMovieService movieService;
     @InjectMocks
@@ -37,7 +38,7 @@ public class MovieControllerTest {
         List<Movie> movies = mockMovies();
         when(movieService.getAll()).thenReturn(movies);
 
-        mockMvc.perform(get("/v1/movie"))
+        mockMvc.perform(get(URL))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$[0].id", is(1)))
@@ -65,9 +66,10 @@ public class MovieControllerTest {
         List<Movie> movies = mockMovies();
         when(movieService.getRandom()).thenReturn(movies);
 
-        mockMvc.perform(get("/v1/movie/random"))
+        mockMvc.perform(get(URL + "/random"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                // todo: 2x
                 .andExpect(jsonPath("$[0].id", is(1)))
                 .andExpect(jsonPath("$[0].name", is("имя 1")))
                 .andExpect(jsonPath("$[0].nameNative", is("name 1")))
@@ -77,6 +79,28 @@ public class MovieControllerTest {
                 .andExpect(jsonPath("$[0].picturePath", is("path/1")));
 
         verify(movieService, times(1)).getRandom();
+        verifyNoMoreInteractions(movieService);
+    }
+
+    @Test
+    public void getByGenre() throws Exception {
+        final int genreId = 1;
+        List<Movie> movies = mockMovies();
+        when(movieService.getByGenre(genreId)).thenReturn(movies);
+
+        mockMvc.perform(get(URL + "/genre/" + genreId))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+                // todo: 3x
+                .andExpect(jsonPath("$[0].id", is(1)))
+                .andExpect(jsonPath("$[0].name", is("имя 1")))
+                .andExpect(jsonPath("$[0].nameNative", is("name 1")))
+                .andExpect(jsonPath("$[0].yearOfRelease", is(1001)))
+                .andExpect(jsonPath("$[0].rating", is(1.01)))
+                .andExpect(jsonPath("$[0].price", is(10.1)))
+                .andExpect(jsonPath("$[0].picturePath", is("path/1")));
+
+        verify(movieService, times(1)).getByGenre(genreId);
         verifyNoMoreInteractions(movieService);
     }
 
