@@ -33,7 +33,7 @@ public class MovieDb implements MovieDao {
     @Override
     public List<Movie> getAll() {
         long startTime = System.currentTimeMillis();
-        log.info("getAll/start");
+        log.debug("getAll:startTime={}", startTime);
         List<Movie> result = jdbcTemplate.query(sqlSelectMovies, ROW_MAPPER);
         log.info("getAll:duration={}", System.currentTimeMillis() - startTime);
 
@@ -43,7 +43,7 @@ public class MovieDb implements MovieDao {
     @Override
     public List<Movie> getRandom(int size) {
         long startTime = System.currentTimeMillis();
-        log.info("getRandom/start");
+        log.debug("getRandom:startTime={}", startTime);
         List<Movie> result = jdbcTemplate.query(sqlRandomMovies, ROW_MAPPER, size);
         log.info("getRandom:duration={}", System.currentTimeMillis() - startTime);
 
