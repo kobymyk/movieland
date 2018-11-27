@@ -1,10 +1,8 @@
 package db2.onlineshop.dao.jdbc;
 
 import db2.onlineshop.dao.GenreDao;
-import db2.onlineshop.dao.MovieDao;
 import db2.onlineshop.dao.jdbc.mapper.GenreMapper;
 import db2.onlineshop.entity.Genre;
-import db2.onlineshop.entity.Movie;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +22,6 @@ public class JdbcGenreDao implements GenreDao {
     @Override
     public List<Genre> getAll() {
         long startTime = System.currentTimeMillis();
-        log.debug("getAll:startTime={}", startTime);
         List<Genre> result = jdbcTemplate.query(sqlSelectGenres, ROW_MAPPER);
         log.info("getAll:duration={}", System.currentTimeMillis() - startTime);
 

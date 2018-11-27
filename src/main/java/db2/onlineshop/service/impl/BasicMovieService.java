@@ -13,26 +13,44 @@ import java.util.List;
 @Service
 public class BasicMovieService implements MovieService {
     private final Logger log = LoggerFactory.getLogger(getClass());
+
     private MovieDao movieDao;
-    @Value("${movie.randomCount:3}")
     private int randomCount;
 
     @Override
     public List<Movie> getAll() {
-        return movieDao.getAll();
+        List<Movie> result = movieDao.getAll();
+        log.trace("getAll:result={}", result);
+        log.info("getAll:result.size={}", result.size());
+
+        return result;
     }
 
     @Override
     public List<Movie> getRandom() {
         log.info("getRandom:randomCount={}", randomCount);
-        return movieDao.getRandom(randomCount);
+        List<Movie> result = movieDao.getRandom(randomCount);
+        log.trace("getRandom:result={}", result);
+
+        return result;
     }
 
     @Override
-    public List<Movie> getByGenre(int genreId) { return movieDao.getByGenreId(genreId); }
+    public List<Movie> getByGenre(int genreId) {
+        List<Movie> result = movieDao.getByGenre(genreId);
+        log.trace("getByGenre:result={}", result);
+        log.info("getByGenre:result.size={}", result.size());
+
+        return result;
+    }
 
     @Autowired
     public void setMovieDao(MovieDao movieDao) {
         this.movieDao = movieDao;
+    }
+
+    @Autowired
+    public void setRandomCount(@Value("${movie.randomCount:3}") int randomCount) {
+        this.randomCount = randomCount;
     }
 }
