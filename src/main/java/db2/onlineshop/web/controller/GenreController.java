@@ -21,7 +21,6 @@ public class GenreController {
     @GetMapping(produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public List<Genre> getAll() {
         long startTime = System.currentTimeMillis();
-        log.debug("getAll:startTime={}", startTime);
         List<Genre> result = genreService.getAll();
         log.info("getAll:duration={}", System.currentTimeMillis() - startTime);
 
