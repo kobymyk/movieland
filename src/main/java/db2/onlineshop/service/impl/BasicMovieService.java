@@ -2,6 +2,7 @@ package db2.onlineshop.service.impl;
 
 import db2.onlineshop.dao.MovieDao;
 import db2.onlineshop.entity.Movie;
+import db2.onlineshop.entity.SortParam;
 import db2.onlineshop.service.MovieService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,8 +19,8 @@ public class BasicMovieService implements MovieService {
     private int randomCount;
 
     @Override
-    public List<Movie> getAll() {
-        List<Movie> result = movieDao.getAll();
+    public List<Movie> getAll(SortParam param) {
+        List<Movie> result = movieDao.getAll(param);
         log.trace("getAll:result={}", result);
         log.info("getAll:result.size={}", result.size());
 

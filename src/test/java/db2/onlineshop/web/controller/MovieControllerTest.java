@@ -33,9 +33,9 @@ public class MovieControllerTest {
     }
 
     @Test
-    public void getAllTest() throws Exception {
+    public void getAll() throws Exception {
         List<Movie> movies = mockMovies();
-        when(movieService.getAll()).thenReturn(movies);
+        when(movieService.getAll(null)).thenReturn(movies);
 
         mockMvc.perform(get("/v1/movie"))
                 .andExpect(status().isOk())
@@ -56,12 +56,12 @@ public class MovieControllerTest {
                 .andExpect(jsonPath("$[1].rating", is(2.02)))
                 .andExpect(jsonPath("$[1].price", is(20.2)));
 
-        verify(movieService, times(1)).getAll();
+        verify(movieService, times(1)).getAll(null);
         verifyNoMoreInteractions(movieService);
     }
 
     @Test
-    public void getRandomTest() throws Exception {
+    public void getRandom() throws Exception {
         List<Movie> movies = mockMovies();
         when(movieService.getRandom()).thenReturn(movies);
 
