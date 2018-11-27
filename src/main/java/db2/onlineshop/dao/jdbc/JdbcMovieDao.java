@@ -12,22 +12,15 @@ import java.util.List;
 
 
 @Repository
-public class MovieDb implements MovieDao {
+public class JdbcMovieDao implements MovieDao {
     private final Logger log = LoggerFactory.getLogger(getClass());
     private static final MovieMapper ROW_MAPPER = new MovieMapper();
 
     private JdbcTemplate jdbcTemplate;
 
-    @Autowired
     private String sqlSelectMovies;
-    @Autowired
     private String sqlRandomMovies;
-
-    @Autowired
-    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-        //-Duser.country=EN -Duser.language=en
-        this.jdbcTemplate = jdbcTemplate;
-    }
+    private String sqlGenreIdMovies;
 
     @Override
     public List<Movie> getAll() {
@@ -47,5 +40,36 @@ public class MovieDb implements MovieDao {
         log.info("getRandom:duration={}", System.currentTimeMillis() - startTime);
 
         return result;
+    }
+
+    @Override
+    public List<Movie> getByGenreId(int genreId) {
+        long startTime = System.currentTimeMillis();
+        log.debug("getRandom:genreId={}", genreId);
+        List<Movie> result = jdbcTemplate.query(sqlGenreIdMovies, ROW_MAPPER, genreId);
+        log.info("getRandom:duration={}", System.currentTimeMillis() - startTime);
+
+        return result;
+    }
+
+    @Autowired
+    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+        //-Duser.country=EN -Duser.language=en
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    @Autowired
+    public void setSqlSelectMovies(String sqlSelectMovies) {
+        this.sqlSelectMovies = sqlSelectMovies;
+    }
+
+    @Autowired
+    public void setSqlRandomMovies(String sqlRandomMovies) {
+        this.sqlRandomMovies = sqlRandomMovies;
+    }
+
+    @Autowired
+    public void setSqlGenreIdMovies(String sqlGenreIdMovies) {
+        this.sqlGenreIdMovies = sqlGenreIdMovies;
     }
 }
