@@ -13,23 +13,24 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/v1/movie")
+@RequestMapping("/v1/movie")
 public class MovieController {
     private MovieService movieService;
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public List<Movie> getAll(@RequestParam(value = "rating", required = false) SortOrder ratingDirection,
-                              @RequestParam(value = "price", required = false) SortOrder priceDirection) {
+    public List<Movie> getAll(@RequestParam(value = "rating", required = false) String ratingDirection,
+                              @RequestParam(value = "price", required = false) String priceDirection) {
         long startTime = System.currentTimeMillis();
         SortParam param = null;
         if (ratingDirection != null) {
             log.info("getAll:ratingDirection={}", ratingDirection);
-            param = new SortParam("rating", ratingDirection);
+            param = new SortParam("rating", SortOrder.getValue(ratingDirection));
         } else if (priceDirection != null) {
             log.info("getAll:priceDirection={}", priceDirection);
-            param = new SortParam("price", priceDirection);
+            param = new SortParam("price", SortOrder.getValue(priceDirection));
         }
+
         List<Movie> result = movieService.getAll(param);
         log.info("getAll:duration={}", System.currentTimeMillis() - startTime);
 
