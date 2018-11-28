@@ -19,16 +19,16 @@ public class MovieController {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public List<Movie> getAll(@RequestParam(value = "rating", required = false) String ratingDirection,
-                              @RequestParam(value = "price", required = false) String priceDirection) {
+    public List<Movie> getAll(@RequestParam(value = "rating", required = false) String ratingOrder,
+                              @RequestParam(value = "price", required = false) String priceOrder) {
         long startTime = System.currentTimeMillis();
         SortParam param = null;
-        if (ratingDirection != null) {
-            log.info("getAll:ratingDirection={}", ratingDirection);
-            param = new SortParam("rating", SortOrder.getValue(ratingDirection));
-        } else if (priceDirection != null) {
-            log.info("getAll:priceDirection={}", priceDirection);
-            param = new SortParam("price", SortOrder.getValue(priceDirection));
+        if (ratingOrder != null) {
+            log.info("getAll:ratingOrder={}", ratingOrder);
+            param = new SortParam("rating", SortOrder.getValue(ratingOrder));
+        } else if (priceOrder != null) {
+            log.info("getAll:priceOrder={}", priceOrder);
+            param = new SortParam("price", SortOrder.getValue(priceOrder));
         }
 
         List<Movie> result = movieService.getAll(param);

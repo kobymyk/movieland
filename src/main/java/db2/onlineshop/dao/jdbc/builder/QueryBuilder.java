@@ -2,31 +2,48 @@ package db2.onlineshop.dao.jdbc.builder;
 
 import db2.onlineshop.entity.SortParam;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class QueryBuilder {
     private String sql;
+    private StringBuilder builder;
+    private List<SortParam> sortParams;
+    private boolean wrapped;
 
     public QueryBuilder(String sql) {
+        sortParams = new ArrayList<>();
+        builder = new StringBuilder();
+        wrapped = false;
+        // required
         this.sql = sql;
     }
 
     public QueryBuilder wrap() {
-        sql = new StringBuilder()
-                .append("SELECT * FROM ( ").append(sql).append(" )")
-                .toString();
+        wrapped = true;
 
         return this;
     }
 
     public QueryBuilder sort(SortParam param) {
-        sql = new StringBuilder()
-                .append(sql).append(" ORDER BY ").append(param.getField()).append(" ")
-                .append(param.getDirection())
-                .toString();
+        sortParams.add(param);
 
         return this;
     }
 
     public String build() {
-        return new String(sql);
+        if (wrapped) {
+            builder.append("SELECT * FROM ( ").append(sql).append(" )");
+        } else {
+            builder.append(sql);
+        }
+        if (sortParams.size() > 0) {
+            builder.append(" ORDER BY ");
+            for (SortParam param : sortParams) {
+                builder.append(param.getField()).append(" ")
+                        .append(param.getDirection());
+            }
+        }
+        return new String(builder.toString());
     }
 }

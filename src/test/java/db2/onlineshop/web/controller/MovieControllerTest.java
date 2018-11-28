@@ -1,6 +1,8 @@
 package db2.onlineshop.web.controller;
 
 import db2.onlineshop.entity.Movie;
+import db2.onlineshop.entity.SortOrder;
+import db2.onlineshop.entity.SortParam;
 import db2.onlineshop.service.impl.BasicMovieService;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,11 +22,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
 public class MovieControllerTest {
-    @Mock
-    private BasicMovieService movieService;
+    private MockMvc mockMvc;
+
     @InjectMocks
     MovieController movieController;
-    private MockMvc mockMvc;
+    @Mock
+    private BasicMovieService movieService; // will be injected into movieController
 
     @Before
     public void setupMock() {
@@ -101,6 +104,16 @@ public class MovieControllerTest {
 
         verify(movieService, times(1)).getByGenre(genreId);
         verifyNoMoreInteractions(movieService);
+    }
+
+    @Test
+    public void getAllSorted() throws Exception {
+        when(movieService.getAll(any())).thenReturn(mockMovies());
+
+        mockMvc.perform(get("/v1/movie?rating=asc")).andExpect(status().isOk());
+        mockMvc.perform(get("/v1/movie?rating=desc")).andExpect(status().isOk());
+        mockMvc.perform(get("/v1/movie?price=asc")).andExpect(status().isOk());
+        mockMvc.perform(get("/v1/movie?price=desc")).andExpect(status().isOk());
     }
 
     private List<Movie> mockMovies() {
