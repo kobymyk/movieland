@@ -2,7 +2,6 @@ package db2.onlineshop.entity;
 
 public class Genre {
     private int id;
-
     private String name;
 
     public int getId() {
@@ -11,14 +10,6 @@ public class Genre {
 
     public String getName() {
         return name;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public Genre() {

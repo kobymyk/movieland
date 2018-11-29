@@ -25,9 +25,8 @@ public class JdbcMovieDao implements MovieDao {
     @Override
     public List<Movie> getAll() {
         long startTime = System.currentTimeMillis();
-        log.debug("getAll:startTime={}", startTime);
         List<Movie> result = jdbcTemplate.query(sqlSelectMovies, ROW_MAPPER);
-        log.info("getAll:duration={}", System.currentTimeMillis() - startTime);
+        log.debug("getAll:duration={}", System.currentTimeMillis() - startTime);
 
         return result;
     }
@@ -35,19 +34,19 @@ public class JdbcMovieDao implements MovieDao {
     @Override
     public List<Movie> getRandom(int size) {
         long startTime = System.currentTimeMillis();
-        log.debug("getRandom:startTime={}", startTime);
+        log.debug("getRandom:size={}", size);
         List<Movie> result = jdbcTemplate.query(sqlRandomMovies, ROW_MAPPER, size);
-        log.info("getRandom:duration={}", System.currentTimeMillis() - startTime);
+        log.debug("getRandom:duration={}", System.currentTimeMillis() - startTime);
 
         return result;
     }
 
     @Override
-    public List<Movie> getByGenreId(int genreId) {
+    public List<Movie> getByGenre(int genreId) {
         long startTime = System.currentTimeMillis();
-        log.debug("getRandom:genreId={}", genreId);
+        log.debug("getByGenre:genreId={}", genreId);
         List<Movie> result = jdbcTemplate.query(sqlGenreIdMovies, ROW_MAPPER, genreId);
-        log.info("getRandom:duration={}", System.currentTimeMillis() - startTime);
+        log.debug("getByGenre:duration={}", System.currentTimeMillis() - startTime);
 
         return result;
     }

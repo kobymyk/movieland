@@ -20,7 +20,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
 public class MovieControllerTest {
-    final String URL = "/v1/movie";
     @Mock
     private BasicMovieService movieService;
     @InjectMocks
@@ -38,7 +37,7 @@ public class MovieControllerTest {
         List<Movie> movies = mockMovies();
         when(movieService.getAll()).thenReturn(movies);
 
-        mockMvc.perform(get(URL))
+        mockMvc.perform(get("/v1/movie"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 .andExpect(jsonPath("$[0].id", is(1)))
@@ -66,7 +65,7 @@ public class MovieControllerTest {
         List<Movie> movies = mockMovies();
         when(movieService.getRandom()).thenReturn(movies);
 
-        mockMvc.perform(get(URL + "/random"))
+        mockMvc.perform(get("/v1/movie/random"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 // todo: 2x
@@ -88,7 +87,7 @@ public class MovieControllerTest {
         List<Movie> movies = mockMovies();
         when(movieService.getByGenre(genreId)).thenReturn(movies);
 
-        mockMvc.perform(get(URL + "/genre/" + genreId))
+        mockMvc.perform(get("/v1/movie/genre/1"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
                 // todo: 3x

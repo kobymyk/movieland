@@ -8,19 +8,25 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 @Service
 public class BasicGenreService implements GenreService {
     private final Logger log = LoggerFactory.getLogger(getClass());
+
     private GenreDao genreDao;
 
     @Override
     public List<Genre> getAll() {
-        return genreDao.getAll();
+        List<Genre> result = genreDao.getAll();
+        log.info("getAll:result.size={}", result.size());
+        log.trace("getAll:result={}", result);
+
+        return result;
     }
 
-    @Autowired
+    @Resource(name = "cacheGenreDao")
     public void setGenreDao(GenreDao genreDao) {
         this.genreDao = genreDao;
     }
