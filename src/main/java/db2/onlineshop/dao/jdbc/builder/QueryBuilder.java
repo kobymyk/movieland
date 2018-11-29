@@ -14,7 +14,6 @@ public class QueryBuilder {
     public QueryBuilder(String sql) {
         sortParams = new ArrayList<>();
         builder = new StringBuilder();
-        wrapped = false;
         // required
         this.sql = sql;
     }
@@ -25,7 +24,7 @@ public class QueryBuilder {
         return this;
     }
 
-    public QueryBuilder sort(SortParam param) {
+    public QueryBuilder addSort(SortParam param) {
         sortParams.add(param);
 
         return this;
@@ -44,6 +43,7 @@ public class QueryBuilder {
                         .append(param.getDirection());
             }
         }
+
         return new String(builder.toString());
     }
 }

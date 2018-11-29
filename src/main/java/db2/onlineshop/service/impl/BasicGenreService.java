@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 @Service
@@ -26,7 +25,7 @@ public class BasicGenreService implements GenreService {
         return result;
     }
 
-    @Resource(name = "cacheGenreDao")
+    @Autowired
     public void setGenreDao(GenreDao genreDao) {
         this.genreDao = genreDao;
     }
