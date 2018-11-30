@@ -22,7 +22,7 @@ public class QueryBuilderTest {
         String expected = "SELECT * FROM dual ORDER BY dummy ASC";
 
         SortParam param = new SortParam("dummy", SortOrder.ASC);
-        String actual = new QueryBuilder(original).sort(param).build();
+        String actual = new QueryBuilder(original).addSort(param).build();
 
         assertEquals(expected, actual);
     }

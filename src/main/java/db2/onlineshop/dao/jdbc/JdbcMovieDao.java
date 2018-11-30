@@ -30,7 +30,7 @@ public class JdbcMovieDao implements MovieDao {
 
         String sql = sqlSelectMovies;
         if (param != null) {
-            sql = new QueryBuilder(sqlSelectMovies).sort(param).build();
+            sql = new QueryBuilder(sqlSelectMovies).addSort(param).build();
         }
         log.trace("getAll:sql={}", sql);
 

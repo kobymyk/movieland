@@ -50,8 +50,8 @@ public class BasicMovieService implements MovieService {
         this.movieDao = movieDao;
     }
 
-    @Autowired
-    public void setRandomCount(@Value("${movie.randomCount:3}") int randomCount) {
+    @Value("${dao.movie.randomCount:3}")
+    public void setRandomCount(int randomCount) {
         this.randomCount = randomCount;
     }
 }
