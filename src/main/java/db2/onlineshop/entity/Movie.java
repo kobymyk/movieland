@@ -1,8 +1,8 @@
 package db2.onlineshop.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.util.List;
 
-@JsonIgnoreProperties(value = {"description"})
+//@JsonIgnoreProperties(value = {"description"})
 public class Movie {
     private int id;
     private int yearOfRelease;
@@ -14,6 +14,9 @@ public class Movie {
 
     private double rating;
     private double price;
+
+    private List<Country> countries;
+    private List<Review> reviews;
 
     public int getId() {
         return id;
