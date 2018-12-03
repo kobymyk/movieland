@@ -17,13 +17,24 @@ public class JdbcGenreDao implements GenreDao {
     private static final GenreMapper ROW_MAPPER = new GenreMapper();
 
     private JdbcTemplate jdbcTemplate;
+    // todo: rename
     private String sqlSelectGenres;
+    private String selectGenresByMovie;
 
     @Override
     public List<Genre> getAll() {
         long startTime = System.currentTimeMillis();
         List<Genre> result = jdbcTemplate.query(sqlSelectGenres, ROW_MAPPER);
         log.info("getAll:duration={}", System.currentTimeMillis() - startTime);
+
+        return result;
+    }
+
+    @Override
+    public List<Genre> getByMovie(int movieId) {
+        long startTime = System.currentTimeMillis();
+        List<Genre> result = jdbcTemplate.query(selectGenresByMovie, ROW_MAPPER);
+        log.info("getByMovie:duration={}", System.currentTimeMillis() - startTime);
 
         return result;
     }
@@ -36,5 +47,10 @@ public class JdbcGenreDao implements GenreDao {
     @Autowired
     public void setSqlSelectGenres(String sqlSelectGenres) {
         this.sqlSelectGenres = sqlSelectGenres;
+    }
+
+    @Autowired
+    public void setSelectGenresByMovie(String selectGenresByMovie) {
+        this.selectGenresByMovie = selectGenresByMovie;
     }
 }

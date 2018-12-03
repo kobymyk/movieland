@@ -16,6 +16,7 @@ public class Movie {
     private double price;
 
     private List<Country> countries;
+    private List<Genre> genres;
     private List<Review> reviews;
 
     public int getId() {
@@ -46,6 +47,20 @@ public class Movie {
         return picturePath;
     }
 
+    public String getDescription() { return description; }
+
+    public List<Country> getCountries() {
+        return countries;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public List<Genre> getGenres() {
+        return genres;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -74,9 +89,19 @@ public class Movie {
         this.picturePath = picturePath;
     }
 
-    public String getDescription() { return description; }
-
     public void setDescription(String description) { this.description = description; }
+
+    public void setCountries(List<Country> countries) {
+        this.countries = countries;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
+    public void setGenres(List<Genre> genres) {
+        this.genres = genres;
+    }
 
     public Movie() {
     }
