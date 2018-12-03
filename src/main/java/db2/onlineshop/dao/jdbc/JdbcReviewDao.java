@@ -24,7 +24,7 @@ public class JdbcReviewDao implements ReviewDao {
     @Override
     public List<Review> getByMovie(int movieId) {
         long startTime = System.currentTimeMillis();
-        List<Review> result = jdbcTemplate.query(selectByMovie, ROW_MAPPER);
+        List<Review> result = jdbcTemplate.query(selectByMovie, ROW_MAPPER, movieId);
         log.info("getByMovie:duration={}", System.currentTimeMillis() - startTime);
 
         return result;

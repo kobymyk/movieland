@@ -10,7 +10,7 @@ import java.sql.SQLException;
 public class ReviewMapper implements RowMapper<Review> {
     @Override
     public Review mapRow(ResultSet resultSet, int i) throws SQLException {
-        int reviewId = resultSet.getInt("review_id");
+        int reviewId = resultSet.getInt("id");
         String reviewText = resultSet.getString("review_text");
         // todo: User mapper, but "user_id"
         int userId = resultSet.getInt("user_id");

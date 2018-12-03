@@ -24,7 +24,7 @@ public class JdbcCountryDao implements CountryDao {
     @Override
     public List<Country> getByMovie(int movieId) {
         long startTime = System.currentTimeMillis();
-        List<Country> result = jdbcTemplate.query(selectByMovie, ROW_MAPPER);
+        List<Country> result = jdbcTemplate.query(selectByMovie, ROW_MAPPER, movieId);
         log.info("getByMovie:duration={}", System.currentTimeMillis() - startTime);
 
         return result;

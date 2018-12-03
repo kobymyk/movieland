@@ -3,7 +3,6 @@ package db2.onlineshop.web.controller;
 import db2.onlineshop.entity.Movie;
 import db2.onlineshop.entity.SortOrder;
 import db2.onlineshop.entity.SortParam;
-import db2.onlineshop.service.GenreService;
 import db2.onlineshop.service.MovieChild;
 import db2.onlineshop.service.MovieService;
 import db2.onlineshop.web.utils.SortOrderSupport;
@@ -21,7 +20,10 @@ import java.util.List;
 @RequestMapping("/v1/movie")
 public class MovieController {
     private MovieService movieService;
+    // todo: enrich all
     private MovieChild genreService;
+    private MovieChild countryService;
+    private MovieChild reviewService;
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -69,6 +71,8 @@ public class MovieController {
         log.debug("getById:id={}", id);
         Movie result = movieService.getById(id);
         genreService.enrich(result);
+        countryService.enrich(result);
+        reviewService.enrich(result);
         log.info("getById:duration={}", System.currentTimeMillis() - startTime);
 
         return result;
@@ -83,6 +87,18 @@ public class MovieController {
     @Qualifier("basicGenreService")
     public void setGenreService(MovieChild genreService) {
         this.genreService = genreService;
+    }
+
+    @Autowired
+    @Qualifier("basicCountryService")
+    public void setCountryService(MovieChild countryService) {
+        this.countryService = countryService;
+    }
+
+    @Autowired
+    @Qualifier("basicReviewService")
+    public void setReviewService(MovieChild reviewService) {
+        this.reviewService = reviewService;
     }
 
     @InitBinder
