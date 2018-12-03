@@ -6,6 +6,7 @@ import db2.onlineshop.entity.Review;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -18,12 +19,12 @@ public class JdbcReviewDao implements ReviewDao {
     private static final ReviewMapper ROW_MAPPER = new ReviewMapper();
 
     private JdbcTemplate jdbcTemplate;
-    private String selectReviewsByMovie;
+    private String selectByMovie;
 
     @Override
     public List<Review> getByMovie(int movieId) {
         long startTime = System.currentTimeMillis();
-        List<Review> result = jdbcTemplate.query(selectReviewsByMovie, ROW_MAPPER);
+        List<Review> result = jdbcTemplate.query(selectByMovie, ROW_MAPPER);
         log.info("getByMovie:duration={}", System.currentTimeMillis() - startTime);
 
         return result;
@@ -35,7 +36,8 @@ public class JdbcReviewDao implements ReviewDao {
     }
 
     @Autowired
-    public void setSelectReviewsByMovie(String selectReviewsByMovie) {
-        this.selectReviewsByMovie = selectReviewsByMovie;
+    @Qualifier("selectByMovieReview")
+    public void setSelectByMovie(String selectByMovie) {
+        this.selectByMovie = selectByMovie;
     }
 }

@@ -80,7 +80,7 @@ public class MovieController {
     }
 
     @Autowired
-    @Qualifier("genreService")
+    @Qualifier("basicGenreService")
     public void setGenreService(MovieChild genreService) {
         this.genreService = genreService;
     }

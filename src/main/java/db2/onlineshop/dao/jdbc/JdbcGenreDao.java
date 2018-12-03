@@ -6,6 +6,7 @@ import db2.onlineshop.entity.Genre;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import java.util.List;
@@ -19,7 +20,7 @@ public class JdbcGenreDao implements GenreDao {
     private JdbcTemplate jdbcTemplate;
     // todo: rename
     private String sqlSelectGenres;
-    private String selectGenresByMovie;
+    private String selectByMovie;
 
     @Override
     public List<Genre> getAll() {
@@ -33,7 +34,7 @@ public class JdbcGenreDao implements GenreDao {
     @Override
     public List<Genre> getByMovie(int movieId) {
         long startTime = System.currentTimeMillis();
-        List<Genre> result = jdbcTemplate.query(selectGenresByMovie, ROW_MAPPER);
+        List<Genre> result = jdbcTemplate.query(selectByMovie, ROW_MAPPER, movieId);
         log.info("getByMovie:duration={}", System.currentTimeMillis() - startTime);
 
         return result;
@@ -50,7 +51,8 @@ public class JdbcGenreDao implements GenreDao {
     }
 
     @Autowired
-    public void setSelectGenresByMovie(String selectGenresByMovie) {
-        this.selectGenresByMovie = selectGenresByMovie;
+    @Qualifier("selectByMovieGenres")
+    public void setSelectByMovie(String selectByMovie) {
+        this.selectByMovie = selectByMovie;
     }
 }

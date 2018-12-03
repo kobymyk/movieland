@@ -6,6 +6,7 @@ import db2.onlineshop.entity.Country;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -18,12 +19,12 @@ public class JdbcCountryDao implements CountryDao {
     private static final CountryMapper ROW_MAPPER = new CountryMapper();
 
     private JdbcTemplate jdbcTemplate;
-    private String selectCountriesByMovie;
+    private String selectByMovie;
 
     @Override
     public List<Country> getByMovie(int movieId) {
         long startTime = System.currentTimeMillis();
-        List<Country> result = jdbcTemplate.query(selectCountriesByMovie, ROW_MAPPER);
+        List<Country> result = jdbcTemplate.query(selectByMovie, ROW_MAPPER);
         log.info("getByMovie:duration={}", System.currentTimeMillis() - startTime);
 
         return result;
@@ -35,7 +36,8 @@ public class JdbcCountryDao implements CountryDao {
     }
 
     @Autowired
-    public void setSelectCountriesByMovie(String selectCountriesByMovie) {
-        this.selectCountriesByMovie = selectCountriesByMovie;
+    @Qualifier("selectByMovieCountries")
+    public void setSelectByMovie(String selectByMovie) {
+        this.selectByMovie = selectByMovie;
     }
 }
