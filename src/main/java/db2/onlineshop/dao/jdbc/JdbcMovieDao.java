@@ -23,6 +23,7 @@ public class JdbcMovieDao implements MovieDao {
     private String sqlSelectMovies;
     private String sqlRandomMovies;
     private String sqlGenreIdMovies;
+    private String selectMovieById;
 
     @Override
     public List<Movie> getAll(SortParam param) {
@@ -60,6 +61,17 @@ public class JdbcMovieDao implements MovieDao {
         return result;
     }
 
+    @Override
+    public Movie getById(int id) {
+        long startTime = System.currentTimeMillis();
+        log.debug("getById:id={}", id);
+        // todo: custom row mapper | DTO
+        Movie result = jdbcTemplate.queryForObject(selectMovieById, ROW_MAPPER, id);
+        log.debug("getById:duration={}", System.currentTimeMillis() - startTime);
+
+        return result;
+    }
+
     @Autowired
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         //-Duser.country=EN -Duser.language=en
@@ -79,5 +91,10 @@ public class JdbcMovieDao implements MovieDao {
     @Autowired
     public void setSqlGenreIdMovies(String sqlGenreIdMovies) {
         this.sqlGenreIdMovies = sqlGenreIdMovies;
+    }
+
+    @Autowired
+    public void setSelectMovieById(String selectMovieById) {
+        this.selectMovieById = selectMovieById;
     }
 }

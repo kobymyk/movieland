@@ -102,17 +102,4 @@ public class Movie {
     public void setGenres(List<Genre> genres) {
         this.genres = genres;
     }
-
-    public Movie() {
-    }
-
-    public Movie(int id, String name, String nameNative, int yearOfRelease, Double rating, Double price, String picturePath) {
-        this.id = id;
-        this.nameNative = nameNative;
-        this.name = name;
-        this.yearOfRelease = yearOfRelease;
-        this.rating = rating;
-        this.price = price;
-        this.picturePath = picturePath;
-    }
 }

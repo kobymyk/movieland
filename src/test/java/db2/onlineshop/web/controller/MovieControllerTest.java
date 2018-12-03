@@ -1,8 +1,10 @@
 package db2.onlineshop.web.controller;
 
+import db2.onlineshop.entity.Genre;
 import db2.onlineshop.entity.Movie;
 import db2.onlineshop.entity.SortOrder;
 import db2.onlineshop.entity.SortParam;
+import db2.onlineshop.service.impl.BasicGenreService;
 import db2.onlineshop.service.impl.BasicMovieService;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,6 +14,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -28,6 +31,8 @@ public class MovieControllerTest {
     MovieController movieController;
     @Mock
     private BasicMovieService movieService; // will be injected into movieController
+    @Mock
+    private BasicGenreService genreService;
 
     @Before
     public void setupMock() {
@@ -107,6 +112,24 @@ public class MovieControllerTest {
     }
 
     @Test
+    public void getById() throws Exception {
+        final int id = 1;
+        when(movieService.getById(id)).thenReturn(mockMovies().get(0));
+        when(genreService.getByMovie(id)).thenReturn(mockGenres());
+
+        mockMvc.perform(get("/v1/movie/1"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+
+                .andExpect(jsonPath("$.id", is(1)))
+                .andExpect(jsonPath("$.genres[0].name", is("имя 1")))
+                .andExpect(jsonPath("$.nameNative", is("name 1")));
+
+        verify(movieService, times(1)).getById(id);
+        verifyNoMoreInteractions(movieService);
+    }
+
+    @Test
     public void getAllSorted() throws Exception {
         when(movieService.getAll(any())).thenReturn(mockMovies());
 
@@ -117,12 +140,47 @@ public class MovieControllerTest {
     }
 
     private List<Movie> mockMovies() {
-        List<Movie> result = Arrays.asList(
-                new Movie(1, "имя 1", "name 1", 1001, 1.01, 10.1, "path/1"),
-                new Movie(2, "имя 2", "name 2", 2002, 2.02, 20.2, "path/2"),
-                new Movie(3, "имя 3", "name 3", 3003, 3.03, 30.3, "path/3"));
+        Movie movie = null;
+        List<Movie> result = new ArrayList<>();
+
+        movie = new Movie();
+        movie.setId(1);
+        movie.setName("имя 1");
+        movie.setNameNative("name 1");
+        movie.setPicturePath("path/1");
+        movie.setYearOfRelease(1001);
+        movie.setRating(1.01);
+        movie.setPrice(10.1);
+        result.add(movie);
+
+        movie = new Movie();
+        movie.setId(2);
+        movie.setName("имя 2");
+        movie.setNameNative("name 2");
+        movie.setPicturePath("path/2");
+        movie.setYearOfRelease(2002);
+        movie.setRating(2.02);
+        movie.setPrice(20.2);
+        result.add(movie);
+
+        movie = new Movie();
+        movie.setId(3);
+        movie.setName("имя 3");
+        movie.setNameNative("name 3");
+        movie.setPicturePath("path/3");
+        movie.setYearOfRelease(3003);
+        movie.setRating(3.03);
+        movie.setPrice(30.3);
+        result.add(movie);
 
         return result;
     }
 
+    private List<Genre> mockGenres() {
+        List<Genre> result = Arrays.asList(
+                new Genre(1, "genre 1"),
+                new Genre(2, "genre 2"));
+
+        return result;
+    }
 }

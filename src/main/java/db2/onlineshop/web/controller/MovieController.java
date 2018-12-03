@@ -3,11 +3,14 @@ package db2.onlineshop.web.controller;
 import db2.onlineshop.entity.Movie;
 import db2.onlineshop.entity.SortOrder;
 import db2.onlineshop.entity.SortParam;
+import db2.onlineshop.service.GenreService;
+import db2.onlineshop.service.MovieChild;
 import db2.onlineshop.service.MovieService;
 import db2.onlineshop.web.utils.SortOrderSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +21,8 @@ import java.util.List;
 @RequestMapping("/v1/movie")
 public class MovieController {
     private MovieService movieService;
+    private MovieChild genreService;
+
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
@@ -58,9 +63,26 @@ public class MovieController {
         return result;
     }
 
+    @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    public Movie getById(@PathVariable int id) {
+        long startTime = System.currentTimeMillis();
+        log.debug("getById:id={}", id);
+        Movie result = movieService.getById(id);
+        genreService.enrich(result);
+        log.info("getById:duration={}", System.currentTimeMillis() - startTime);
+
+        return result;
+    }
+
     @Autowired
     public void setMovieService(MovieService movieService) {
         this.movieService = movieService;
+    }
+
+    @Autowired
+    @Qualifier("genreService")
+    public void setGenreService(MovieChild genreService) {
+        this.genreService = genreService;
     }
 
     @InitBinder
