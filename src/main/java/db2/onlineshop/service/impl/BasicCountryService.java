@@ -4,7 +4,7 @@ import db2.onlineshop.dao.CountryDao;
 import db2.onlineshop.entity.Country;
 import db2.onlineshop.entity.Movie;
 import db2.onlineshop.service.CountryService;
-import db2.onlineshop.service.MovieChild;
+import db2.onlineshop.service.MovieInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class BasicCountryService implements CountryService, MovieChild {
+public class BasicCountryService implements CountryService, MovieInfo {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private CountryDao countryDao;

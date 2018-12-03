@@ -3,7 +3,7 @@ package db2.onlineshop.web.controller;
 import db2.onlineshop.entity.Movie;
 import db2.onlineshop.entity.SortOrder;
 import db2.onlineshop.entity.SortParam;
-import db2.onlineshop.service.MovieChild;
+import db2.onlineshop.service.MovieInfo;
 import db2.onlineshop.service.MovieService;
 import db2.onlineshop.web.utils.SortOrderSupport;
 import org.slf4j.Logger;
@@ -21,9 +21,7 @@ import java.util.List;
 public class MovieController {
     private MovieService movieService;
     // todo: enrich all
-    private MovieChild genreService;
-    private MovieChild countryService;
-    private MovieChild reviewService;
+    private MovieInfo movieInfo;
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -68,11 +66,10 @@ public class MovieController {
     @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public Movie getById(@PathVariable int id) {
         long startTime = System.currentTimeMillis();
-        log.debug("getById:id={}", id);
+        log.info("getById:id={}", id);
         Movie result = movieService.getById(id);
-        genreService.enrich(result);
-        countryService.enrich(result);
-        reviewService.enrich(result);
+        // enrich info
+        movieInfo.enrich(result);
         log.info("getById:duration={}", System.currentTimeMillis() - startTime);
 
         return result;
@@ -84,21 +81,9 @@ public class MovieController {
     }
 
     @Autowired
-    @Qualifier("basicGenreService")
-    public void setGenreService(MovieChild genreService) {
-        this.genreService = genreService;
-    }
-
-    @Autowired
-    @Qualifier("basicCountryService")
-    public void setCountryService(MovieChild countryService) {
-        this.countryService = countryService;
-    }
-
-    @Autowired
-    @Qualifier("basicReviewService")
-    public void setReviewService(MovieChild reviewService) {
-        this.reviewService = reviewService;
+    @Qualifier("basicMovieInfo")
+    public void setMovieInfo(MovieInfo movieInfo) {
+        this.movieInfo = movieInfo;
     }
 
     @InitBinder
