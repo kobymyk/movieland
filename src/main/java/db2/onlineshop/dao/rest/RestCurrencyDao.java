@@ -15,7 +15,7 @@ public class RestCurrencyDao implements CurrencyDao {
     private HttpEntity<?> request;
 
     private RestTemplate restTemplate;
-
+    // todo: String url
     public RestCurrencyDao() {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Accept", MediaType.APPLICATION_JSON_VALUE);
@@ -34,7 +34,7 @@ public class RestCurrencyDao implements CurrencyDao {
                 request,
                 Currency.class
         );
-        // responseEntity.getStatusCode() == HttpStatus.OK
+        // todo: responseEntity.getStatusCode() == HttpStatus.OK
         return response.getBody();
     }
 

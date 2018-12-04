@@ -10,4 +10,20 @@ public class Currency {
     private double rate;
     @JsonProperty("cc")
     private String code;
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getRate() {
+        return rate;
+    }
+
+    public String getCode() {
+        return code;
+    }
 }
