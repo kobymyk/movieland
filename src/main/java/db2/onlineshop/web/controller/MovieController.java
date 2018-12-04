@@ -1,9 +1,11 @@
 package db2.onlineshop.web.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import db2.onlineshop.entity.Movie;
 import db2.onlineshop.entity.SortOrder;
 import db2.onlineshop.entity.SortParam;
 import db2.onlineshop.service.MovieService;
+import db2.onlineshop.web.data.View;
 import db2.onlineshop.web.utils.SortOrderSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +23,7 @@ public class MovieController {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
+    @JsonView(View.Simple.class)
     @GetMapping(produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public List<Movie> getAll(@RequestParam(value = "rating", required = false) SortOrder ratingOrder,
                               @RequestParam(value = "price", required = false) SortOrder priceOrder) {
@@ -40,6 +43,7 @@ public class MovieController {
         return result;
     }
 
+    @JsonView(View.Simple.class)
     @GetMapping(path = "/random", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public List<Movie> getRandom() {
         long startTime = System.currentTimeMillis();
@@ -49,6 +53,7 @@ public class MovieController {
         return result;
     }
 
+    @JsonView(View.Simple.class)
     @GetMapping(value = "/genre/{id}", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public List<Movie> getByGenre(@PathVariable int id) {
         long startTime = System.currentTimeMillis();
@@ -59,6 +64,7 @@ public class MovieController {
         return result;
     }
 
+    //@JsonView(View.Full.class)
     @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public Movie getById(@PathVariable int id) {
         long startTime = System.currentTimeMillis();

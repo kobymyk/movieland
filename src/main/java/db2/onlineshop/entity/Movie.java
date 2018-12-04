@@ -1,22 +1,27 @@
 package db2.onlineshop.entity;
 
+import com.fasterxml.jackson.annotation.JsonView;
+import db2.onlineshop.web.data.View;
+
 import java.util.List;
 
-//@JsonIgnoreProperties(value = {"description"})
 public class Movie {
     private int id;
     private int yearOfRelease;
 
     private String name;
     private String nameNative;
+    @JsonView(View.Full.class)
     private String description;
     private String picturePath;
 
     private double rating;
     private double price;
-
+    @JsonView(View.Full.class)
     private List<Country> countries;
+    @JsonView(View.Full.class)
     private List<Genre> genres;
+    @JsonView(View.Full.class)
     private List<Review> reviews;
 
     public int getId() {
