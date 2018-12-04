@@ -29,6 +29,11 @@ public class CacheGenreDao implements GenreDao {
         return result;
     }
 
+    @Override
+    public List<Genre> getByMovie(int movieId) {
+        return genreDao.getByMovie(movieId);
+    }
+
     @Autowired
     public void setGenreDao(GenreDao genreDao) { this.genreDao = genreDao; }
 

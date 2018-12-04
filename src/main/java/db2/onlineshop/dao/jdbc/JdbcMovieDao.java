@@ -8,6 +8,7 @@ import db2.onlineshop.entity.SortParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import java.util.List;
@@ -23,6 +24,7 @@ public class JdbcMovieDao implements MovieDao {
     private String sqlSelectMovies;
     private String sqlRandomMovies;
     private String sqlGenreIdMovies;
+    private String selectById;
 
     @Override
     public List<Movie> getAll(SortParam param) {
@@ -60,6 +62,17 @@ public class JdbcMovieDao implements MovieDao {
         return result;
     }
 
+    @Override
+    public Movie getById(int id) {
+        long startTime = System.currentTimeMillis();
+        log.debug("getById:id={}", id);
+        // todo: custom row mapper | DTO
+        Movie result = jdbcTemplate.queryForObject(selectById, ROW_MAPPER, id);
+        log.debug("getById:duration={}", System.currentTimeMillis() - startTime);
+
+        return result;
+    }
+
     @Autowired
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         //-Duser.country=EN -Duser.language=en
@@ -79,5 +92,11 @@ public class JdbcMovieDao implements MovieDao {
     @Autowired
     public void setSqlGenreIdMovies(String sqlGenreIdMovies) {
         this.sqlGenreIdMovies = sqlGenreIdMovies;
+    }
+
+    @Autowired
+    @Qualifier("selectByIdMovie")
+    public void setSelectById(String selectById) {
+        this.selectById = selectById;
     }
 }

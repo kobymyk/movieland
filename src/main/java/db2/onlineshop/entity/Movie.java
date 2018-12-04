@@ -1,8 +1,8 @@
 package db2.onlineshop.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.util.List;
 
-@JsonIgnoreProperties(value = {"description"})
+//@JsonIgnoreProperties(value = {"description"})
 public class Movie {
     private int id;
     private int yearOfRelease;
@@ -14,6 +14,10 @@ public class Movie {
 
     private double rating;
     private double price;
+
+    private List<Country> countries;
+    private List<Genre> genres;
+    private List<Review> reviews;
 
     public int getId() {
         return id;
@@ -41,6 +45,20 @@ public class Movie {
 
     public String getPicturePath() {
         return picturePath;
+    }
+
+    public String getDescription() { return description; }
+
+    public List<Country> getCountries() {
+        return countries;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public List<Genre> getGenres() {
+        return genres;
     }
 
     public void setId(int id) {
@@ -71,20 +89,17 @@ public class Movie {
         this.picturePath = picturePath;
     }
 
-    public String getDescription() { return description; }
-
     public void setDescription(String description) { this.description = description; }
 
-    public Movie() {
+    public void setCountries(List<Country> countries) {
+        this.countries = countries;
     }
 
-    public Movie(int id, String name, String nameNative, int yearOfRelease, Double rating, Double price, String picturePath) {
-        this.id = id;
-        this.nameNative = nameNative;
-        this.name = name;
-        this.yearOfRelease = yearOfRelease;
-        this.rating = rating;
-        this.price = price;
-        this.picturePath = picturePath;
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
+    public void setGenres(List<Genre> genres) {
+        this.genres = genres;
     }
 }

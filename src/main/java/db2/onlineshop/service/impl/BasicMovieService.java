@@ -45,6 +45,14 @@ public class BasicMovieService implements MovieService {
         return result;
     }
 
+    @Override
+    public Movie getById(int id) {
+        Movie result = movieDao.getById(id);
+        log.trace("getByGenre:result={}", result);
+        // will be enriched by controller
+        return result;
+    }
+
     @Autowired
     public void setMovieDao(MovieDao movieDao) {
         this.movieDao = movieDao;
