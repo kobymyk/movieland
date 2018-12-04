@@ -18,7 +18,7 @@ public class SortOrderSupport extends PropertyEditorSupport {
             SortOrder direction = SortOrder.getEnum(text);
             setValue(direction);
         } catch (IllegalArgumentException e) {
-            log.error("setAsText:e={}", e);
+            log.error("Invalid param", e);
             throw new InvalidParamException("Invalid sorting param", e);
         }
     }

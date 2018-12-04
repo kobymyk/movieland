@@ -3,13 +3,11 @@ package db2.onlineshop.web.controller;
 import db2.onlineshop.entity.Movie;
 import db2.onlineshop.entity.SortOrder;
 import db2.onlineshop.entity.SortParam;
-import db2.onlineshop.service.MovieInfo;
 import db2.onlineshop.service.MovieService;
 import db2.onlineshop.web.utils.SortOrderSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -20,8 +18,6 @@ import java.util.List;
 @RequestMapping("/v1/movie")
 public class MovieController {
     private MovieService movieService;
-    // todo: enrich all
-    private MovieInfo movieInfo;
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -68,8 +64,6 @@ public class MovieController {
         long startTime = System.currentTimeMillis();
         log.info("getById:id={}", id);
         Movie result = movieService.getById(id);
-        // enrich info
-        movieInfo.enrich(result);
         log.info("getById:duration={}", System.currentTimeMillis() - startTime);
 
         return result;
@@ -78,12 +72,6 @@ public class MovieController {
     @Autowired
     public void setMovieService(MovieService movieService) {
         this.movieService = movieService;
-    }
-
-    @Autowired
-    @Qualifier("basicMovieInfo")
-    public void setMovieInfo(MovieInfo movieInfo) {
-        this.movieInfo = movieInfo;
     }
 
     @InitBinder
