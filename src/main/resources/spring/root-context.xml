@@ -34,4 +34,6 @@
         <property name="defaultViewInclusion" value="true"/>
     </bean>
 
+    <bean id="restTemplate" class="org.springframework.web.client.RestTemplate"/>
+
 </beans>

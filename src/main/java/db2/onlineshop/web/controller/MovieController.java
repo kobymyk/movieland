@@ -66,10 +66,10 @@ public class MovieController {
 
     //@JsonView(View.Full.class)
     @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public Movie getById(@PathVariable int id) {
+    public Movie getById(@PathVariable int id, @RequestParam(name = "currency", required = false) String currency) {
         long startTime = System.currentTimeMillis();
-        log.info("getById:id={}", id);
-        Movie result = movieService.getById(id);
+        log.info("getById:id={},currency={}", id, currency);
+        Movie result = movieService.getById(id, currency);
         log.info("getById:duration={}", System.currentTimeMillis() - startTime);
 
         return result;

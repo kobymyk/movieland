@@ -13,5 +13,5 @@ public interface MovieService {
 
     List<Movie> getByGenre(int genreId);
 
-    Movie getById(int id);
+    Movie getById(int id, String currency);
 }

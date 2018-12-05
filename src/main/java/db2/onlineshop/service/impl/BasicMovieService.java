@@ -3,6 +3,7 @@ package db2.onlineshop.service.impl;
 import db2.onlineshop.dao.MovieDao;
 import db2.onlineshop.entity.Movie;
 import db2.onlineshop.entity.SortParam;
+import db2.onlineshop.service.CurrencyService;
 import db2.onlineshop.service.MovieEnricher;
 import db2.onlineshop.service.MovieService;
 import org.slf4j.Logger;
@@ -18,6 +19,7 @@ public class BasicMovieService implements MovieService {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private MovieEnricher movieEnricher;
+    private CurrencyService currencyService;
 
     private MovieDao movieDao;
     private int randomCount;
@@ -50,11 +52,16 @@ public class BasicMovieService implements MovieService {
     }
 
     @Override
-    public Movie getById(int id) {
+    public Movie getById(int id, String currency) {
         Movie result = movieDao.getById(id);
         log.trace("getByGenre:result={}", result);
         // enrich
         movieEnricher.enrich(result);
+        if (currency != null) {
+            double price = currencyService.exchange(result.getPrice(), currency);
+            log.debug("getById:price={}", price);
+            result.setPrice(price);
+        }
 
         return result;
     }
@@ -73,5 +80,10 @@ public class BasicMovieService implements MovieService {
     @Qualifier("basicMovieEnricher")
     public void setMovieEnricher(MovieEnricher movieEnricher) {
         this.movieEnricher = movieEnricher;
+    }
+
+    @Autowired
+    public void setCurrencyService(CurrencyService currencyService) {
+        this.currencyService = currencyService;
     }
 }
