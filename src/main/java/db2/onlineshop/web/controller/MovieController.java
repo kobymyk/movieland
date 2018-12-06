@@ -21,9 +21,9 @@ import java.util.stream.Collectors;
 @RequestMapping("/v1/movie")
 public class MovieController {
     private final Logger log = LoggerFactory.getLogger(getClass());
+    private final ModelMapper modelMapper = new ModelMapper();
 
     private MovieService movieService;
-    private ModelMapper modelMapper = new ModelMapper();
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public List<MovieSimpleDto> getAll(@RequestParam(value = "rating", required = false) SortOrder ratingOrder,
