@@ -1,4 +1,4 @@
-package db2.onlineshop.service;
+package db2.onlineshop.service.fx;
 
 import db2.onlineshop.entity.Country;
 

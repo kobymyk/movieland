@@ -1,7 +1,7 @@
-package db2.onlineshop.service.impl;
+package db2.onlineshop.service.fx.impl;
 
-import db2.onlineshop.dao.CurrencyDao;
-import db2.onlineshop.entity.Currency;
+import db2.onlineshop.service.fx.CurrencyDao;
+import db2.onlineshop.service.fx.entity.Currency;
 import db2.onlineshop.service.CurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package db2.onlineshop.entity;
+package db2.onlineshop.service.fx.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

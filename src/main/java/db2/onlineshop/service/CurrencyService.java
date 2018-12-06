@@ -1,6 +1,6 @@
 package db2.onlineshop.service;
 
-import db2.onlineshop.entity.Currency;
+import db2.onlineshop.service.fx.entity.Currency;
 
 import java.util.List;
 
