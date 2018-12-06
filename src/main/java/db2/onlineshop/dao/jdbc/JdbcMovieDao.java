@@ -2,6 +2,7 @@ package db2.onlineshop.dao.jdbc;
 
 import db2.onlineshop.dao.MovieDao;
 import db2.onlineshop.dao.jdbc.builder.QueryBuilder;
+import db2.onlineshop.dao.jdbc.mapper.MovieFullMapper;
 import db2.onlineshop.dao.jdbc.mapper.MovieMapper;
 import db2.onlineshop.entity.Movie;
 import db2.onlineshop.entity.SortParam;
@@ -13,11 +14,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 
-
 @Repository
 public class JdbcMovieDao implements MovieDao {
     private final Logger log = LoggerFactory.getLogger(getClass());
-    private static final MovieMapper ROW_MAPPER = new MovieMapper();
+    private static final MovieMapper SIMPLE_MAPPER = new MovieMapper();
+    private static final MovieFullMapper FULL_MAPPER = new MovieFullMapper();
 
     private JdbcTemplate jdbcTemplate;
 
@@ -36,7 +37,7 @@ public class JdbcMovieDao implements MovieDao {
         }
         log.trace("getAll:sql={}", sql);
 
-        List<Movie> result = jdbcTemplate.query(sql, ROW_MAPPER);
+        List<Movie> result = jdbcTemplate.query(sql, SIMPLE_MAPPER);
         log.debug("getAll:duration={}", System.currentTimeMillis() - startTime);
 
         return result;
@@ -46,7 +47,7 @@ public class JdbcMovieDao implements MovieDao {
     public List<Movie> getRandom(int size) {
         long startTime = System.currentTimeMillis();
         log.debug("getRandom:size={}", size);
-        List<Movie> result = jdbcTemplate.query(sqlRandomMovies, ROW_MAPPER, size);
+        List<Movie> result = jdbcTemplate.query(sqlRandomMovies, SIMPLE_MAPPER, size);
         log.debug("getRandom:duration={}", System.currentTimeMillis() - startTime);
 
         return result;
@@ -56,7 +57,7 @@ public class JdbcMovieDao implements MovieDao {
     public List<Movie> getByGenre(int genreId) {
         long startTime = System.currentTimeMillis();
         log.debug("getByGenre:genreId={}", genreId);
-        List<Movie> result = jdbcTemplate.query(sqlGenreIdMovies, ROW_MAPPER, genreId);
+        List<Movie> result = jdbcTemplate.query(sqlGenreIdMovies, SIMPLE_MAPPER, genreId);
         log.debug("getByGenre:duration={}", System.currentTimeMillis() - startTime);
 
         return result;
@@ -66,8 +67,7 @@ public class JdbcMovieDao implements MovieDao {
     public Movie getById(int id) {
         long startTime = System.currentTimeMillis();
         log.debug("getById:id={}", id);
-        // todo: custom row mapper | DTO
-        Movie result = jdbcTemplate.queryForObject(selectById, ROW_MAPPER, id);
+        Movie result = jdbcTemplate.queryForObject(selectById, FULL_MAPPER, id);
         log.debug("getById:duration={}", System.currentTimeMillis() - startTime);
 
         return result;

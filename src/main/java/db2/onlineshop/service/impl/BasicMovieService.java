@@ -3,10 +3,12 @@ package db2.onlineshop.service.impl;
 import db2.onlineshop.dao.MovieDao;
 import db2.onlineshop.entity.Movie;
 import db2.onlineshop.entity.SortParam;
+import db2.onlineshop.service.MovieEnricher;
 import db2.onlineshop.service.MovieService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -14,6 +16,8 @@ import java.util.List;
 @Service
 public class BasicMovieService implements MovieService {
     private final Logger log = LoggerFactory.getLogger(getClass());
+
+    private MovieEnricher movieEnricher;
 
     private MovieDao movieDao;
     private int randomCount;
@@ -49,7 +53,9 @@ public class BasicMovieService implements MovieService {
     public Movie getById(int id) {
         Movie result = movieDao.getById(id);
         log.trace("getByGenre:result={}", result);
-        // will be enriched by controller
+        // enrich
+        movieEnricher.enrich(result);
+
         return result;
     }
 
@@ -61,5 +67,11 @@ public class BasicMovieService implements MovieService {
     @Value("${dao.movie.randomCount:3}")
     public void setRandomCount(int randomCount) {
         this.randomCount = randomCount;
+    }
+
+    @Autowired
+    @Qualifier("basicMovieEnricher")
+    public void setMovieEnricher(MovieEnricher movieEnricher) {
+        this.movieEnricher = movieEnricher;
     }
 }
