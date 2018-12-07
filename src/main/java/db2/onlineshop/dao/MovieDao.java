@@ -1,13 +1,13 @@
 package db2.onlineshop.dao;
 
 import db2.onlineshop.entity.Movie;
-import db2.onlineshop.entity.SortParam;
+import db2.onlineshop.entity.RequestParams;
 
 import java.util.List;
 
 public interface MovieDao {
 
-    List<Movie> getAll(SortParam param);
+    List<Movie> getAll(RequestParams param);
 
     List<Movie> getRandom(int size);
 
