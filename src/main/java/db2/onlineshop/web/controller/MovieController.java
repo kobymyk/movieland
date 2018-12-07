@@ -10,7 +10,6 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +24,6 @@ public class MovieController {
     private final ModelMapper modelMapper = new ModelMapper();
 
     private MovieService movieService;
-
-    private String defaultCurrency;
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public List<MovieSimpleDto> getAll(@RequestParam(value = "rating", required = false) SortOrder ratingOrder,
@@ -76,9 +73,7 @@ public class MovieController {
         long startTime = System.currentTimeMillis();
         log.info("getById:id={},currency={}", id, currency);
         RequestParams param = new RequestParams();
-        if (currency != defaultCurrency) {
-            param.setCurrency(currency);
-        }
+        param.setCurrency(currency);
         Movie result = movieService.getById(id, param);
         log.info("getById:duration={}", System.currentTimeMillis() - startTime);
 
@@ -102,11 +97,6 @@ public class MovieController {
     @Autowired
     public void setMovieService(MovieService movieService) {
         this.movieService = movieService;
-    }
-
-    @Value("${currency.default}")
-    public void setDefaultCurrency(String defaultCurrency) {
-        this.defaultCurrency = defaultCurrency;
     }
 
     @InitBinder

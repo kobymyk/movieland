@@ -3,6 +3,7 @@ package db2.onlineshop.service.impl;
 import db2.onlineshop.dao.MovieDao;
 import db2.onlineshop.entity.Movie;
 import db2.onlineshop.entity.RequestParams;
+import db2.onlineshop.service.ServiceProvider;
 import db2.onlineshop.service.fx.CurrencyService;
 import db2.onlineshop.service.MovieEnricher;
 import db2.onlineshop.service.MovieService;
@@ -18,8 +19,9 @@ import java.util.List;
 public class BasicMovieService implements MovieService {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private MovieEnricher movieEnricher;
+    private CompoundMovieEnricher movieEnricher;
     private CurrencyService currencyService;
+    private ServiceProvider serviceProvider;
 
     private MovieDao movieDao;
     private int randomCount;
@@ -56,7 +58,7 @@ public class BasicMovieService implements MovieService {
         Movie result = movieDao.getById(id);
         log.trace("getByGenre:result={}", result);
         // enrich
-        movieEnricher.enrich(result);
+        enrich(result);
         String currency = param.getCurrency();
         if (currency != null) {
             double price = currencyService.exchange(result.getPrice(), currency);
@@ -65,6 +67,15 @@ public class BasicMovieService implements MovieService {
         }
 
         return result;
+    }
+
+    private void enrich(Movie result) {
+        List<Object> enrichers = serviceProvider.filter(MovieEnricher.class);
+        for (Object enricher : enrichers) {
+            movieEnricher.add((MovieEnricher) enricher);
+        }
+        movieEnricher.enrich(result);
+        log.trace("enrich:result={}", result);
     }
 
     @Autowired
@@ -78,13 +89,17 @@ public class BasicMovieService implements MovieService {
     }
 
     @Autowired
-    @Qualifier("basicMovieEnricher")
-    public void setMovieEnricher(MovieEnricher movieEnricher) {
+    public void setMovieEnricher(CompoundMovieEnricher movieEnricher) {
         this.movieEnricher = movieEnricher;
     }
 
     @Autowired
     public void setCurrencyService(CurrencyService currencyService) {
         this.currencyService = currencyService;
+    }
+
+    @Autowired
+    public void setServiceProvider(ServiceProvider serviceProvider) {
+        this.serviceProvider = serviceProvider;
     }
 }
