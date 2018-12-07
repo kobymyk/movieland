@@ -6,9 +6,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.annotation.PostConstruct;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,28 +24,33 @@ public class DefaultCurrencyDao implements CurrencyDao {
     private volatile Map<String, Double> cache;
 
     private String url;
+    private String pattern;
 
     private RestTemplate restTemplate;
 
     @Override
     public double get(String code) {
-        // todo: @Scheduled
-        refreshCache();
-
         double result = cache.get(code);
         log.trace("get:result={}", result);
 
         return result;
     }
 
+    @PostConstruct
+    @Scheduled(fixedDelayString = "${currency.schedule.fixedDelay}", initialDelayString = "${currency.schedule.initialDelay}")
     public void refreshCache() {
         Map<String, Double> result = getAll();
+        log.debug("refreshCache:result.size={}", result.size());
 
         cache = result;
     }
 
     public Map<String, Double> getAll() {
-        Currency[] response = restTemplate.getForObject(url, Currency[].class, getDateParam());
+        long startTime = System.currentTimeMillis();
+        String uri = getUri();
+        String dateParam = getDateParam();
+        Currency[] response = restTemplate.getForObject(uri, Currency[].class, dateParam);
+        log.debug("getAll:response={}", response);
 
         Map<String, Double> result = new HashMap<>();
         for (Currency currency : response) {
@@ -48,12 +58,23 @@ public class DefaultCurrencyDao implements CurrencyDao {
             result.put(code, currency.getRate());
         }
 
+        log.debug("getAll:duration={}", System.currentTimeMillis() - startTime);
+
+        return result;
+    }
+
+    private String getUri() {
+        String result = UriComponentsBuilder.fromHttpUrl(url)
+                .queryParam("json")
+                .toUriString();
+        log.debug("getUri:result={}", result);
+
         return result;
     }
 
     private String getDateParam() {
-        //LocalDateTime.now(), "yyyyMMdd"
-        String result = "20181204";
+        String result = LocalDateTime.now().format(DateTimeFormatter.ofPattern(pattern));
+        log.debug("getDateParam:result={}", result);
 
         return result;
     }
@@ -66,5 +87,10 @@ public class DefaultCurrencyDao implements CurrencyDao {
     @Value("${currency.url.default}")
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    @Value("${currency.pattern}")
+    public void setPattern(String pattern) {
+        this.pattern = pattern;
     }
 }
