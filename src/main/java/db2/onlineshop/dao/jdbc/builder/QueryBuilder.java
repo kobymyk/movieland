@@ -1,6 +1,6 @@
 package db2.onlineshop.dao.jdbc.builder;
 
-import db2.onlineshop.entity.SortParam;
+import db2.onlineshop.entity.RequestParams;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,11 +8,11 @@ import java.util.List;
 public class QueryBuilder {
     private String sql;
     private StringBuilder builder;
-    private List<SortParam> sortParams;
+    private List<RequestParams> params;
     private boolean wrapped;
 
     public QueryBuilder(String sql) {
-        sortParams = new ArrayList<>();
+        params = new ArrayList<>();
         builder = new StringBuilder();
         // required
         this.sql = sql;
@@ -24,8 +24,8 @@ public class QueryBuilder {
         return this;
     }
 
-    public QueryBuilder addSort(SortParam param) {
-        sortParams.add(param);
+    public QueryBuilder addSort(RequestParams param) {
+        params.add(param);
 
         return this;
     }
@@ -36,9 +36,9 @@ public class QueryBuilder {
         } else {
             builder.append(sql);
         }
-        if (sortParams.size() > 0) {
+        if (params.size() > 0) {
             builder.append(" ORDER BY ");
-            for (SortParam param : sortParams) {
+            for (RequestParams param : params) {
                 builder.append(param.getField()).append(" ")
                         .append(param.getDirection());
             }
