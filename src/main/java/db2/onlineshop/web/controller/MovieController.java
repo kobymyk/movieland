@@ -2,7 +2,7 @@ package db2.onlineshop.web.controller;
 
 import db2.onlineshop.entity.Movie;
 import db2.onlineshop.entity.SortOrder;
-import db2.onlineshop.entity.SortParam;
+import db2.onlineshop.entity.RequestParams;
 import db2.onlineshop.service.MovieService;
 import db2.onlineshop.web.data.MovieSimpleDto;
 import db2.onlineshop.web.utils.SortOrderSupport;
@@ -10,6 +10,7 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -25,17 +26,19 @@ public class MovieController {
 
     private MovieService movieService;
 
+    private String defaultCurrency;
+
     @GetMapping(produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public List<MovieSimpleDto> getAll(@RequestParam(value = "rating", required = false) SortOrder ratingOrder,
                                        @RequestParam(value = "price", required = false) SortOrder priceOrder) {
         long startTime = System.currentTimeMillis();
-        SortParam param = null;
+        RequestParams param = null;
         if (ratingOrder != null) {
             log.info("getAll:ratingOrder={}", ratingOrder);
-            param = new SortParam("rating", ratingOrder);
+            param = new RequestParams("rating", ratingOrder);
         } else if (priceOrder != null) {
             log.info("getAll:priceOrder={}", priceOrder);
-            param = new SortParam("price", priceOrder);
+            param = new RequestParams("price", priceOrder);
         }
 
         List<Movie> movies = movieService.getAll(param);
@@ -68,10 +71,15 @@ public class MovieController {
 
     //@JsonView(View.Full.class)
     @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public Movie getById(@PathVariable int id, @RequestParam(name = "currency", required = false) String currency) {
+    public Movie getById(@PathVariable int id,
+                         @RequestParam(name = "currency", required = false, defaultValue = "UAH") String currency) {
         long startTime = System.currentTimeMillis();
         log.info("getById:id={},currency={}", id, currency);
-        Movie result = movieService.getById(id, currency);
+        RequestParams param = new RequestParams();
+        if (currency != defaultCurrency) {
+            param.setCurrency(currency);
+        }
+        Movie result = movieService.getById(id, param);
         log.info("getById:duration={}", System.currentTimeMillis() - startTime);
 
         return result;
@@ -94,6 +102,11 @@ public class MovieController {
     @Autowired
     public void setMovieService(MovieService movieService) {
         this.movieService = movieService;
+    }
+
+    @Value("${currency.default}")
+    public void setDefaultCurrency(String defaultCurrency) {
+        this.defaultCurrency = defaultCurrency;
     }
 
     @InitBinder

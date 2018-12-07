@@ -5,7 +5,7 @@ import db2.onlineshop.dao.jdbc.builder.QueryBuilder;
 import db2.onlineshop.dao.jdbc.mapper.MovieFullMapper;
 import db2.onlineshop.dao.jdbc.mapper.MovieMapper;
 import db2.onlineshop.entity.Movie;
-import db2.onlineshop.entity.SortParam;
+import db2.onlineshop.entity.RequestParams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class JdbcMovieDao implements MovieDao {
     private String selectById;
 
     @Override
-    public List<Movie> getAll(SortParam param) {
+    public List<Movie> getAll(RequestParams param) {
         long startTime = System.currentTimeMillis();
 
         String sql = sqlSelectMovies;

@@ -2,8 +2,8 @@ package db2.onlineshop.service.impl;
 
 import db2.onlineshop.dao.MovieDao;
 import db2.onlineshop.entity.Movie;
-import db2.onlineshop.entity.SortParam;
-import db2.onlineshop.service.CurrencyService;
+import db2.onlineshop.entity.RequestParams;
+import db2.onlineshop.service.fx.CurrencyService;
 import db2.onlineshop.service.MovieEnricher;
 import db2.onlineshop.service.MovieService;
 import org.slf4j.Logger;
@@ -25,7 +25,7 @@ public class BasicMovieService implements MovieService {
     private int randomCount;
 
     @Override
-    public List<Movie> getAll(SortParam param) {
+    public List<Movie> getAll(RequestParams param) {
         List<Movie> result = movieDao.getAll(param);
         log.trace("getAll:result={}", result);
         log.info("getAll:result.size={}", result.size());
@@ -52,11 +52,12 @@ public class BasicMovieService implements MovieService {
     }
 
     @Override
-    public Movie getById(int id, String currency) {
+    public Movie getById(int id, RequestParams param) {
         Movie result = movieDao.getById(id);
         log.trace("getByGenre:result={}", result);
         // enrich
         movieEnricher.enrich(result);
+        String currency = param.getCurrency();
         if (currency != null) {
             double price = currencyService.exchange(result.getPrice(), currency);
             log.debug("getById:price={}", price);

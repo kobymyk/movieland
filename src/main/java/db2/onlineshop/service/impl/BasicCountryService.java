@@ -3,7 +3,7 @@ package db2.onlineshop.service.impl;
 import db2.onlineshop.dao.CountryDao;
 import db2.onlineshop.entity.Country;
 import db2.onlineshop.entity.Movie;
-import db2.onlineshop.service.fx.CountryService;
+import db2.onlineshop.service.CountryService;
 import db2.onlineshop.service.MovieEnricher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
