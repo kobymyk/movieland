@@ -6,7 +6,7 @@ import db2.onlineshop.service.security.entity.Session;
 import java.util.Optional;
 
 public interface SecurityService {
-    Session login(User user);
+    Session login(String email, String password);
 
     void logout(String token);
 
