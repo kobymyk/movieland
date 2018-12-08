@@ -20,7 +20,7 @@ public class DefaultSecurityService implements SecurityService {
 
     private UserService userService;
     private Long maxDuration;
-
+    // index by token
     private final Map<String, Session> sessions = new ConcurrentHashMap<>();
 
     @Override
@@ -41,7 +41,7 @@ public class DefaultSecurityService implements SecurityService {
         Session result = null;
         Optional<User> anyUser = userService.getByEmail(email);
         if (!anyUser.isPresent()) {
-            // todo: custom exception
+            // todo: custom exception, ?response
             throw new RuntimeException("Login failed");
         }
         User user = anyUser.get();
