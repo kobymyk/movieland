@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -15,6 +16,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Service
 public class DefaultSecurityService implements SecurityService {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -35,17 +37,25 @@ public class DefaultSecurityService implements SecurityService {
         return Optional.empty();
     }
 
-    @Override
-    // todo: ?complex
-    public Session login(String email, String password) {
-        Session result = null;
+    private User authenticate(String email, String password) {
         Optional<User> anyUser = userService.getByEmail(email);
         if (!anyUser.isPresent()) {
             // todo: custom exception, ?response
-            throw new RuntimeException("Login failed");
+            throw new RuntimeException("Invalid user");
         }
-        User user = anyUser.get();
-        log.trace("login:user={}", user);
+        User result = anyUser.get();
+        log.debug("getUser:id={}", result.getId());
+        if (!password.equals(result.getPassword())) {
+            throw new RuntimeException("Invalid password");
+        }
+
+        return result;
+    }
+
+    @Override
+    public Session login(String email, String password) {
+        Session result = null;
+        User user = authenticate(email, password);
 
         Optional<Session> anySession = find(user);
         if (anySession.isPresent()) {

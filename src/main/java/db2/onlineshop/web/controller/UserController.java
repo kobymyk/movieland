@@ -6,10 +6,12 @@ import db2.onlineshop.web.data.LoginRequest;
 import db2.onlineshop.web.data.LoginResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/v1")
 public class UserController {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -34,5 +36,10 @@ public class UserController {
     public void logout(@RequestHeader(value = "uuid") String token) {
         log.info("logout:token={}", token);
         securityService.logout(token);
+    }
+
+    @Autowired
+    public void setSecurityService(SecurityService securityService) {
+        this.securityService = securityService;
     }
 }
