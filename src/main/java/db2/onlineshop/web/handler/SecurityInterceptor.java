@@ -16,21 +16,26 @@ import java.util.Optional;
 public class SecurityInterceptor extends HandlerInterceptorAdapter {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @Autowired
     private SecurityService securityService;
 
     @Override
     public boolean preHandle(HttpServletRequest request,
                              HttpServletResponse response, Object handler) {
         String token = request.getHeader("uuid");
-        log.info("preHandle:token={}", token);
-        Optional<User> anyUser = securityService.getUser(token);
-        if (anyUser.isPresent()) {
-            User user = anyUser.get();
-            request.getSession().setAttribute("user", user);
-            log.info("preHandle:email={}", user.getEmail());
+        if (token != null) {
+            log.info("preHandle:token={}", token);
+            Optional<User> anyUser = securityService.getUser(token);
+            if (anyUser.isPresent()) {
+                User user = anyUser.get();
+                log.info("preHandle:email={}", user.getEmail());
+            }
         }
 
         return true;
+    }
+
+    @Autowired
+    public void setSecurityService(SecurityService securityService) {
+        this.securityService = securityService;
     }
 }

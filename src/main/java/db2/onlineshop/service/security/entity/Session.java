@@ -39,4 +39,13 @@ public class Session {
     public void setExpireDate(LocalDateTime expireDate) {
         this.expireDate = expireDate;
     }
+
+    @Override
+    public String toString() {
+        return "Session{" +
+                "user.id=" + user.getId() +
+                ", token='" + token + '\'' +
+                ", expireDate=" + expireDate +
+                '}';
+    }
 }

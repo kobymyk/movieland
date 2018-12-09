@@ -4,6 +4,7 @@ import db2.onlineshop.entity.User;
 import db2.onlineshop.service.UserService;
 import db2.onlineshop.service.security.SecurityService;
 import db2.onlineshop.service.security.entity.Session;
+import db2.onlineshop.service.security.exception.AuthenticationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,21 +38,6 @@ public class DefaultSecurityService implements SecurityService {
         return Optional.empty();
     }
 
-    private User authenticate(String email, String password) {
-        Optional<User> anyUser = userService.getByEmail(email);
-        if (!anyUser.isPresent()) {
-            // todo: custom exception, ?response
-            throw new RuntimeException("Invalid user");
-        }
-        User result = anyUser.get();
-        log.debug("getUser:id={}", result.getId());
-        if (!password.equals(result.getPassword())) {
-            throw new RuntimeException("Invalid password");
-        }
-
-        return result;
-    }
-
     @Override
     public Session login(String email, String password) {
         Session result = null;
@@ -64,7 +50,7 @@ public class DefaultSecurityService implements SecurityService {
         } else {
             result = create(user);
         }
-        log.trace("login:", result);
+        log.trace("login:result={}", result);
 
         return result;
     }
@@ -75,12 +61,26 @@ public class DefaultSecurityService implements SecurityService {
         sessions.remove(token);
     }
 
+    private User authenticate(String email, String password) {
+        Optional<User> anyUser = userService.getByEmail(email);
+        if (!anyUser.isPresent()) {
+            throw new AuthenticationException("Invalid user");
+        }
+        User result = anyUser.get();
+        log.debug("authenticate:user.id={}", result.getId());
+        if (!password.equals(result.getPassword())) {
+            throw new AuthenticationException("Invalid password");
+        }
+
+        return result;
+    }
+
     private Optional<Session> find(User user) {
-        for (Session session : sessions.values()) {
-            String email = session.getUser().getEmail();
+        for (Session result : sessions.values()) {
+            String email = result.getUser().getEmail();
             if (email.equals(user.getEmail()) ) {
                 log.debug("find:email={}", email);
-                return Optional.of(session);
+                return Optional.of(result);
             }
         }
         log.debug("find:empty");
@@ -99,6 +99,7 @@ public class DefaultSecurityService implements SecurityService {
         LocalDateTime expireDate = getExpireDate();
 
         Session result = new Session(user, token, expireDate);
+        sessions.put(token, result);
         log.trace("create:result={}", result);
 
         return result;
@@ -108,10 +109,12 @@ public class DefaultSecurityService implements SecurityService {
         if (sessions.containsKey(token)) {
             Session result = sessions.get(token);
 
-            if (result.getExpireDate().isBefore(LocalDateTime.now())) {
+            LocalDateTime expireDate = result.getExpireDate();
+            if (expireDate.isBefore(LocalDateTime.now())) {
+                log.debug("get:expireDate={}", expireDate);
                 sessions.remove(token);
             } else {
-                log.debug("get:result={}", result);
+                log.trace("get:result={}", result);
 
                 return Optional.of(result);
             }

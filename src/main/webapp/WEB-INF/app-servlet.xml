@@ -14,4 +14,8 @@
     <context:component-scan base-package="db2.onlineshop.web.controller"/>
     <mvc:annotation-driven/>
 
+    <mvc:interceptors>
+        <bean class="db2.onlineshop.web.handler.SecurityInterceptor" />
+    </mvc:interceptors>
+
 </beans>
