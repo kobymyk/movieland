@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -24,11 +25,17 @@ public class JdbcUserDao implements UserDao {
 
     @Override
     public Optional<User> getByEmail(String email) {
-        long startTime = System.currentTimeMillis();
-        User result = jdbcTemplate.queryForObject(selectByEmail, ROW_MAPPER, email);
-        log.debug("getAll:duration={}", System.currentTimeMillis() - startTime);
-        // todo: catch
-        return Optional.of(result);
+        log.debug("getByEmail:email={}", email);
+        try {
+            User result = jdbcTemplate.queryForObject(selectByEmail, ROW_MAPPER, email);
+            log.debug("getByEmail:result.id={}", result.getId());
+
+            return Optional.of(result);
+        } catch (EmptyResultDataAccessException e) {
+            log.warn("getByEmail:empty", e);
+
+            return Optional.empty();
+        }
     }
 
     @Autowired
