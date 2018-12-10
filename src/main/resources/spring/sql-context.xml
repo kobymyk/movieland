@@ -16,16 +16,23 @@
     <bean id="sqlRandomMovies" class="java.lang.String">
         <constructor-arg value="SELECT v.* FROM (SELECT t.* FROM all_movies t ORDER BY dbms_random.value) v WHERE rownum &lt;= ?"/>
     </bean>
+
     <bean id="sqlSelectGenres" class="java.lang.String">
         <constructor-arg value="SELECT t.* FROM genre t"/>
     </bean>
     <bean id="selectByMovieGenres" class="java.lang.String">
         <constructor-arg value="SELECT t.* FROM all_movie_genre t WHERE t.movie_id = ?"/>
     </bean>
+
     <bean id="selectByMovieCountries" class="java.lang.String">
         <constructor-arg value="SELECT t.* FROM all_movie_country t WHERE t.movie_id = ?"/>
     </bean>
+
     <bean id="selectByMovieReview" class="java.lang.String">
         <constructor-arg value="SELECT t.* FROM all_movie_review t WHERE t.movie_id = ?"/>
+    </bean>
+
+    <bean id="selectByEmailUser" class="java.lang.String">
+        <constructor-arg value="SELECT t.* FROM users t WHERE t.email = ?"/>
     </bean>
 </beans>
