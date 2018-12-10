@@ -4,8 +4,10 @@ import db2.onlineshop.entity.MovieReview;
 import db2.onlineshop.entity.Review;
 import db2.onlineshop.entity.User;
 import db2.onlineshop.service.ReviewService;
+import db2.onlineshop.service.security.entity.Role;
 import db2.onlineshop.service.security.holder.SecurityHolder;
 import db2.onlineshop.web.data.ReviewRequest;
+import db2.onlineshop.web.handler.Permission;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,7 @@ public class ReviewController {
     private ReviewService reviewService;
 
     @RequestMapping(method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @Permission(roles = {Role.ADMIN, Role.USER})
     public void add(@RequestBody ReviewRequest reviewRequest) {
         long startTime = System.currentTimeMillis();
         log.info("add:reviewRequest={}", reviewRequest);

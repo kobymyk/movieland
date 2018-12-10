@@ -1,10 +1,14 @@
 package db2.onlineshop.entity;
 
+import db2.onlineshop.service.security.entity.Role;
+
 public class User {
     private int id;
     private String nickname;
     private String email;
+
     private String password;
+    private Role role;
 
     public int getId() {
         return id;
@@ -36,6 +40,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     @Override
