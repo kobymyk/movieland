@@ -7,4 +7,6 @@ import java.util.List;
 public interface ReviewService {
 
     List<Review> getByMovie(int movieId);
+
+    void add(Review review);
 }

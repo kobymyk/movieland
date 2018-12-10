@@ -31,6 +31,9 @@
     <bean id="selectByMovieReview" class="java.lang.String">
         <constructor-arg value="SELECT t.* FROM all_movie_review t WHERE t.movie_id = ?"/>
     </bean>
+    <bean id="insertReview" class="java.lang.String">
+        <constructor-arg value="INSERT INTO review (id, movie_id, user_id, review_text) VALUES (review_seq.nextval, :movie_id, :user_id, :text)"/>
+    </bean>
 
     <bean id="selectByEmailUser" class="java.lang.String">
         <constructor-arg value="SELECT t.* FROM users t WHERE t.email = ?"/>
