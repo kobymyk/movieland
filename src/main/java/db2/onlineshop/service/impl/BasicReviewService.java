@@ -1,7 +1,9 @@
 package db2.onlineshop.service.impl;
 
+import db2.onlineshop.dao.MovieReviewDao;
 import db2.onlineshop.dao.ReviewDao;
 import db2.onlineshop.entity.Movie;
+import db2.onlineshop.entity.MovieReview;
 import db2.onlineshop.entity.Review;
 import db2.onlineshop.service.MovieEnricher;
 import db2.onlineshop.service.ReviewService;
@@ -17,19 +19,20 @@ public class BasicReviewService implements ReviewService, MovieEnricher {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private ReviewDao reviewDao;
+    private MovieReviewDao movieReviewDao;
 
     @Override
     public List<Review> getByMovie(int movieId) {
+        log.debug("getByMovie:movieId={}", movieId);
         List<Review> result = reviewDao.getByMovie(movieId);
-        log.info("getByMovie:result.size={}", result.size());
-        log.trace("getByMovie:result={}", result);
 
         return result;
     }
 
     @Override
-    public void add(Review review) {
-        reviewDao.add(review);
+    public void add(MovieReview movieReview) {
+        log.debug("add:movieReview={}", movieReview);
+        movieReviewDao.add(movieReview);
     }
 
     @Override
@@ -43,5 +46,10 @@ public class BasicReviewService implements ReviewService, MovieEnricher {
     @Autowired
     public void setReviewDao(ReviewDao reviewDao) {
         this.reviewDao = reviewDao;
+    }
+
+    @Autowired
+    public void setMovieReviewDao(MovieReviewDao movieReviewDao) {
+        this.movieReviewDao = movieReviewDao;
     }
 }

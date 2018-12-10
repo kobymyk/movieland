@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/v1")
-public class UserController {
+public class SecurityController {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private SecurityService securityService;

@@ -2,6 +2,7 @@ package db2.onlineshop.web.handler;
 
 import db2.onlineshop.entity.User;
 import db2.onlineshop.service.security.SecurityService;
+import db2.onlineshop.service.security.holder.SecurityHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
@@ -34,6 +35,8 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
             Optional<User> anyUser = securityService.getUser(token);
             if (anyUser.isPresent()) {
                 User user = anyUser.get();
+
+                SecurityHolder.set(user);
                 MDC.put("userId", Integer.toString(user.getId()));
             }
         }
@@ -45,6 +48,8 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
         MDC.remove("requestId");
         MDC.remove("userId");
+
+        SecurityHolder.clear();
     }
 
     @Autowired

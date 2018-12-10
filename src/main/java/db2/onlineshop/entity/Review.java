@@ -3,7 +3,6 @@ package db2.onlineshop.entity;
 
 public class Review {
     private int id;
-    private int movieId;
 
     private String text;
     private User user;
@@ -22,14 +21,6 @@ public class Review {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getMovieId() {
-        return movieId;
-    }
-
-    public void setMovieId(int movieId) {
-        this.movieId = movieId;
     }
 
     public void setText(String text) {
@@ -51,6 +42,10 @@ public class Review {
 
     @Override
     public String toString() {
-        return "Review{id=" + id + '}';
+        return "Review{" +
+                "id=" + id +
+                ", text='" + text + '\'' +
+                ", user=" + user +
+                '}';
     }
 }

@@ -8,5 +8,4 @@ public interface ReviewDao {
 
     List<Review> getByMovie(int movieId);
 
-    int add(Review review);
 }
