@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -19,13 +20,24 @@ public class JdbcCountryDao implements CountryDao {
     private static final CountryMapper ROW_MAPPER = new CountryMapper();
 
     private JdbcTemplate jdbcTemplate;
+
     private String selectByMovie;
+    private String selectAll;
 
     @Override
     public List<Country> getByMovie(int movieId) {
-        long startTime = System.currentTimeMillis();
+        log.trace("getByMovie");
         List<Country> result = jdbcTemplate.query(selectByMovie, ROW_MAPPER, movieId);
-        log.info("getByMovie:duration={}", System.currentTimeMillis() - startTime);
+        log.trace("getByMovie:result", result);
+
+        return result;
+    }
+
+    @Override
+    public List<Country> getAll() {
+        log.trace("getAll");
+        List<Country> result = jdbcTemplate.query(selectAll, ROW_MAPPER);
+        log.trace("getAll:result", result);
 
         return result;
     }
@@ -39,5 +51,11 @@ public class JdbcCountryDao implements CountryDao {
     @Qualifier("selectByMovieCountries")
     public void setSelectByMovie(String selectByMovie) {
         this.selectByMovie = selectByMovie;
+    }
+
+    @Autowired
+    @Qualifier("selectAllCountries")
+    public void setSelectAll(String selectAll) {
+        this.selectAll = selectAll;
     }
 }

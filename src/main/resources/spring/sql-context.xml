@@ -27,6 +27,9 @@
     <bean id="selectByMovieCountries" class="java.lang.String">
         <constructor-arg value="SELECT t.* FROM all_movie_country t WHERE t.movie_id = ?"/>
     </bean>
+    <bean id="selectAllCountries" class="java.lang.String">
+        <constructor-arg value="SELECT t.* FROM country t"/>
+    </bean>
 
     <bean id="selectByMovieReview" class="java.lang.String">
         <constructor-arg value="SELECT t.* FROM all_movie_review t WHERE t.movie_id = ?"/>

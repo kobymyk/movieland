@@ -7,4 +7,6 @@ import java.util.List;
 public interface CountryService {
 
     List<Country> getByMovie(int movieId);
+
+    List<Country> getAll();
 }
