@@ -1,0 +1,52 @@
+package db2.onlineshop.web.controller;
+
+import db2.onlineshop.entity.Review;
+import db2.onlineshop.entity.User;
+import db2.onlineshop.service.ReviewService;
+import db2.onlineshop.service.security.entity.Role;
+import db2.onlineshop.service.security.holder.SecurityHolder;
+import db2.onlineshop.web.data.ReviewRequest;
+import db2.onlineshop.web.handler.Permission;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping(value = "/v1/review")
+public class ReviewController {
+    private final Logger log = LoggerFactory.getLogger(getClass());
+
+    private ReviewService reviewService;
+
+    @RequestMapping(method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @Permission(roles = {Role.ADMIN, Role.USER})
+    public void add(@RequestBody ReviewRequest reviewRequest) {
+        long startTime = System.currentTimeMillis();
+        log.info("add:reviewRequest={}", reviewRequest);
+
+        Review review = new Review();
+        review.setUser(getUser());
+        review.setText(reviewRequest.getText());
+
+        reviewService.add(reviewRequest.getMovieId(), review);
+        log.info("add:duration={}", System.currentTimeMillis() - startTime);
+    }
+
+    private User getUser() {
+        User result = SecurityHolder.get();
+        log.info("getUser:result={}", result);
+
+        return  result;
+    }
+
+    @Autowired
+    public void setReviewService(ReviewService reviewService) {
+        this.reviewService = reviewService;
+    }
+
+}

@@ -20,16 +20,22 @@ public class BasicReviewService implements ReviewService, MovieEnricher {
 
     @Override
     public List<Review> getByMovie(int movieId) {
+        log.debug("getByMovie:movieId={}", movieId);
         List<Review> result = reviewDao.getByMovie(movieId);
-        log.info("getByMovie:result.size={}", result.size());
-        log.trace("getByMovie:result={}", result);
 
         return result;
     }
 
     @Override
+    public void add(int movieId, Review review) {
+        log.debug("add:movieId={}", movieId);
+        reviewDao.add(movieId, review);
+    }
+
+    @Override
     public void enrich(Movie movie) {
         int movieId = movie.getId();
+        log.debug("enrich:movieId={}", movieId);
         List<Review> reviews = getByMovie(movieId);
 
         movie.setReviews(reviews);
