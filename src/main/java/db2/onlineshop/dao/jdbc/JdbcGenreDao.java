@@ -3,11 +3,14 @@ package db2.onlineshop.dao.jdbc;
 import db2.onlineshop.dao.GenreDao;
 import db2.onlineshop.dao.jdbc.mapper.GenreMapper;
 import db2.onlineshop.entity.Genre;
+import db2.onlineshop.entity.Movie;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 
@@ -18,14 +21,16 @@ public class JdbcGenreDao implements GenreDao {
     private static final GenreMapper ROW_MAPPER = new GenreMapper();
 
     private JdbcTemplate jdbcTemplate;
-    // todo: rename
-    private String sqlSelectGenres;
+    private NamedParameterJdbcTemplate namedJdbcTemplate;
+
+    private String selectAll;
     private String selectByMovie;
+    private String insertReference;
 
     @Override
     public List<Genre> getAll() {
         long startTime = System.currentTimeMillis();
-        List<Genre> result = jdbcTemplate.query(sqlSelectGenres, ROW_MAPPER);
+        List<Genre> result = jdbcTemplate.query(selectAll, ROW_MAPPER);
         log.info("getAll:duration={}", System.currentTimeMillis() - startTime);
 
         return result;
@@ -40,19 +45,47 @@ public class JdbcGenreDao implements GenreDao {
         return result;
     }
 
+    @Override
+    public void addReference(Movie movie) {
+        List<Genre> genres = movie.getGenres();
+        int size = genres.size();
+        log.trace("addReference:size={}", size);
+
+        MapSqlParameterSource[] params = new MapSqlParameterSource[size];
+        for (int i = 0; i < size; i++) {
+            params[i] = new MapSqlParameterSource()
+                    .addValue("movieId", movie.getId())
+                    .addValue("genreId", genres.get(i).getId());
+        }
+        log.trace("addReference:params={}", params);
+
+        namedJdbcTemplate.batchUpdate(insertReference, params);
+    }
+
     @Autowired
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
+    @Autowired
+    public void setNamedJdbcTemplate(NamedParameterJdbcTemplate namedJdbcTemplate) {
+        this.namedJdbcTemplate = namedJdbcTemplate;
+    }
 
     @Autowired
-    public void setSqlSelectGenres(String sqlSelectGenres) {
-        this.sqlSelectGenres = sqlSelectGenres;
+    @Qualifier("selectAllGenres")
+    public void setSelectAll(String selectAll) {
+        this.selectAll = selectAll;
     }
 
     @Autowired
     @Qualifier("selectByMovieGenres")
     public void setSelectByMovie(String selectByMovie) {
         this.selectByMovie = selectByMovie;
+    }
+
+    @Autowired
+    @Qualifier("insertMovieGenres")
+    public void setInsertReference(String insertReference) {
+        this.insertReference = insertReference;
     }
 }

@@ -38,10 +38,17 @@ public class BasicGenreService implements GenreService, MovieEnricher {
 
     @Override
     public void enrich(Movie movie) {
+        log.debug("enrich");
         int movieId = movie.getId();
         List<Genre> genres = getByMovie(movieId);
 
         movie.setGenres(genres);
+    }
+
+    @Override
+    public void addReference(Movie movie) {
+        log.debug("addReference");
+        genreDao.addReference(movie);
     }
 
     @Autowired

@@ -30,6 +30,9 @@ public class MovieAddRequest {
         result.setYearOfRelease(yearOfRelease);
         result.setPrice(price);
 
+        result.setCountries(getCountries());
+        result.setGenres(getGenres());
+
         return result;
     }
 
@@ -51,5 +54,19 @@ public class MovieAddRequest {
         }
 
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "MovieAddRequest{" +
+                "name='" + name + '\'' +
+                ", nameNative='" + nameNative + '\'' +
+                ", description='" + description + '\'' +
+                ", picturePath='" + picturePath + '\'' +
+                ", yearOfRelease=" + yearOfRelease +
+                ", price=" + price +
+                ", countries=" + countries +
+                ", genres=" + genres +
+                '}';
     }
 }

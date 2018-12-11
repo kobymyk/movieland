@@ -3,6 +3,7 @@ package db2.onlineshop.dao.jdbc;
 import db2.onlineshop.dao.CountryDao;
 import db2.onlineshop.dao.jdbc.mapper.CountryMapper;
 import db2.onlineshop.entity.Country;
+import db2.onlineshop.entity.Movie;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,15 +48,16 @@ public class JdbcCountryDao implements CountryDao {
     }
 
     @Override
-    public void addReference(int movieId, List<Integer> countryIds) {
-        int countrySize = countryIds.size();
-        log.trace("addReference:countrySize={}", countrySize);
+    public void addReference(Movie movie) {
+        List<Country> countries = movie.getCountries();
+        int size = countries.size();
+        log.trace("addReference:size={}", size);
 
-        MapSqlParameterSource[] params = new MapSqlParameterSource[countrySize];
-        for (int i = 0; i < countrySize; i++) {
+        MapSqlParameterSource[] params = new MapSqlParameterSource[size];
+        for (int i = 0; i < size; i++) {
             params[i] = new MapSqlParameterSource()
-                    .addValue("movieId", movieId)
-                    .addValue("genreId", countryIds.get(i));
+                    .addValue("movieId", movie.getId())
+                    .addValue("countryId", countries.get(i).getId());
         }
         log.trace("addReference:params={}", params);
 
