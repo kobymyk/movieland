@@ -18,16 +18,17 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Override
+    // todo: move to SecurityInterceptor
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         User user = SecurityHolder.get();
         HandlerMethod method = (HandlerMethod) handler;
         Permission annotation = method.getMethodAnnotation(Permission.class);
         if (annotation == null) {
-            log.debug("preHandle:annotation=null", method);
+            log.debug("preHandle:annotation=null");
             return true;
         }
         if (user != null && Arrays.stream(annotation.roles()).anyMatch(r -> r == user.getRole())) {
-            log.debug("preHandle:result=true", method);
+            log.debug("preHandle:result=true");
             return true;
         }
 

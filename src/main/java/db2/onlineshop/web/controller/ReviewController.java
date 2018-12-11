@@ -1,6 +1,5 @@
 package db2.onlineshop.web.controller;
 
-import db2.onlineshop.entity.MovieReview;
 import db2.onlineshop.entity.Review;
 import db2.onlineshop.entity.User;
 import db2.onlineshop.service.ReviewService;
@@ -34,11 +33,7 @@ public class ReviewController {
         review.setUser(getUser());
         review.setText(reviewRequest.getText());
 
-        MovieReview movieReview = new MovieReview();
-        movieReview.setMovieId(reviewRequest.getMovieId());
-        movieReview.setReview(review);
-
-        reviewService.add(movieReview);
+        reviewService.add(reviewRequest.getMovieId(), review);
         log.info("add:duration={}", System.currentTimeMillis() - startTime);
     }
 

@@ -23,8 +23,7 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
     private SecurityService securityService;
 
     @Override
-    public boolean preHandle(HttpServletRequest request,
-                             HttpServletResponse response, Object handler) {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         String token = request.getHeader("uuid");
 
         String requestId = UUID.randomUUID().toString();
