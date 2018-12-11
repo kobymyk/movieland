@@ -14,4 +14,6 @@ public interface MovieDao {
     List<Movie> getByGenre(int genreId);
 
     Movie getById(int id);
+
+    int add(Movie movie);
 }

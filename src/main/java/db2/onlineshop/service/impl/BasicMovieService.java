@@ -69,6 +69,15 @@ public class BasicMovieService implements MovieService {
         return result;
     }
 
+    @Override
+    public int add(Movie movie) {
+        log.trace("add:movie={}", movie);
+        int result = movieDao.add(movie);
+        // todo: add children
+
+        return result;
+    }
+
     private void enrich(Movie result) {
         List<Object> enrichers = serviceProvider.filter(MovieEnricher.class);
         for (Object enricher : enrichers) {

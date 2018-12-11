@@ -14,4 +14,6 @@ public interface MovieService {
     List<Movie> getByGenre(int genreId);
 
     Movie getById(int id, RequestParams param);
+
+    int add(Movie movie);
 }

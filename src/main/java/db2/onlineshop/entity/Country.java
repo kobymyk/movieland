@@ -1,6 +1,5 @@
 package db2.onlineshop.entity;
 
-// Lookup template
 public class Country {
     private int id;
     private String name;

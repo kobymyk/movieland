@@ -101,4 +101,21 @@ public class Movie {
     public void setGenres(List<Genre> genres) {
         this.genres = genres;
     }
+
+    @Override
+    public String toString() {
+        return "Movie{" +
+                "id=" + id +
+                ", yearOfRelease=" + yearOfRelease +
+                ", name='" + name + '\'' +
+                ", nameNative='" + nameNative + '\'' +
+                ", description='" + description + '\'' +
+                ", picturePath='" + picturePath + '\'' +
+                ", rating=" + rating +
+                ", price=" + price +
+                ", countries=" + countries +
+                ", genres=" + genres +
+                ", reviews=" + reviews +
+                '}';
+    }
 }
