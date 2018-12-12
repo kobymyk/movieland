@@ -32,6 +32,7 @@ public class JdbcMovieDao implements MovieDao {
     private String selectByGenre;
     private String selectById;
     private String insertRow;
+    private String updateRow;
 
     @Override
     public List<Movie> getAll(RequestParams param) {
@@ -100,6 +101,18 @@ public class JdbcMovieDao implements MovieDao {
         return result;
     }
 
+    @Override
+    public void edit(Movie movie) {
+        log.debug("edit");
+        MapSqlParameterSource params = new MapSqlParameterSource()
+                .addValue("id", movie.getId())
+                .addValue("name", movie.getName())
+                .addValue("nameNative", movie.getNameNative())
+                .addValue("picturePath", movie.getPicturePath());
+
+        namedJdbcTemplate.update(updateRow, params);
+    }
+
     @Autowired
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         //-Duser.country=EN -Duser.language=en
@@ -133,4 +146,9 @@ public class JdbcMovieDao implements MovieDao {
     @Autowired
     @Qualifier("insertMovie")
     public void setInsertRow(String insertRow) { this.insertRow = insertRow; }
+    @Autowired
+    @Qualifier("updateMovie")
+    public void setUpdateRow(String updateRow) {
+        this.updateRow = updateRow;
+    }
 }

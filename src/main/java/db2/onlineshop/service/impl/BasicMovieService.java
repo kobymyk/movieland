@@ -78,6 +78,12 @@ public class BasicMovieService implements MovieService {
         return result;
     }
 
+    @Override
+    public void edit(Movie movie) {
+        log.trace("edit:movie={}", movie);
+        movieDao.edit(movie);
+    }
+
     private void enrich(Movie result) {
         CompoundMovieEnricher enricher = getEnricher();
         enricher.enrich(result);

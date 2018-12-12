@@ -6,6 +6,7 @@ import db2.onlineshop.entity.RequestParams;
 import db2.onlineshop.service.MovieService;
 import db2.onlineshop.service.security.entity.Role;
 import db2.onlineshop.web.data.MovieAddRequest;
+import db2.onlineshop.web.data.MovieEditRequest;
 import db2.onlineshop.web.data.MovieSimpleDto;
 import db2.onlineshop.web.handler.Permission;
 import db2.onlineshop.web.utils.SortOrderSupport;
@@ -92,7 +93,20 @@ public class MovieController {
         log.info("add:movie={}", movie);
 
         movieService.add(movie);
-        log.info("getById:duration={}", System.currentTimeMillis() - startTime);
+        log.info("add:duration={}", System.currentTimeMillis() - startTime);
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @Permission(roles = Role.ADMIN)
+    public void edit(@RequestBody MovieEditRequest request, @PathVariable int id) {
+        long startTime = System.currentTimeMillis();
+        log.info("edit:id={}", id);
+        Movie movie = request.getMovie();
+        movie.setId(id);
+        log.debug("edit:movie={}", movie);
+
+        movieService.edit(movie);
+        log.info("edit:duration={}", System.currentTimeMillis() - startTime);
     }
 
     private MovieSimpleDto convertToDto(Movie movie) {

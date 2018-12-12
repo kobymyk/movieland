@@ -16,4 +16,6 @@ public interface MovieService {
     Movie getById(int id, RequestParams param);
 
     int add(Movie movie);
+
+    void edit(Movie movie);
 }

@@ -19,6 +19,9 @@
     <bean id="insertMovie" class="java.lang.String">
         <constructor-arg value="INSERT INTO movie (id, name, name_native, release_year, description, price, picture_path) VALUES (movie_seq.nextval, :name, :nameNative, :yearOfRelease, :description, :price, :picturePath)"/>
     </bean>
+    <bean id="updateMovie" class="java.lang.String">
+        <constructor-arg value="UPDATE movie SET name = :name, name_native = :nameNative, picture_path = :picturePath WHERE id = :id"/>
+    </bean>
 
     <bean id="selectAllGenres" class="java.lang.String">
         <constructor-arg value="SELECT t.* FROM genre t"/>

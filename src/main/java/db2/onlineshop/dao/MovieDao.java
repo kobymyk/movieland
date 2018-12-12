@@ -16,4 +16,6 @@ public interface MovieDao {
     Movie getById(int id);
 
     int add(Movie movie);
+
+    void edit(Movie movie);
 }
