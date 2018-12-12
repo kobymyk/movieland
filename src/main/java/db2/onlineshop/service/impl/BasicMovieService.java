@@ -82,6 +82,7 @@ public class BasicMovieService implements MovieService {
     public void edit(Movie movie) {
         log.trace("edit:movie={}", movie);
         movieDao.edit(movie);
+        editReference(movie);
     }
 
     private void enrich(Movie result) {
@@ -94,6 +95,12 @@ public class BasicMovieService implements MovieService {
         log.trace("addReference");
         CompoundMovieEnricher enricher = getEnricher();
         enricher.addReference(result);
+    }
+
+    private void editReference(Movie result) {
+        log.trace("editReference");
+        CompoundMovieEnricher enricher = getEnricher();
+        enricher.editReference(result);
     }
 
     private CompoundMovieEnricher getEnricher() {

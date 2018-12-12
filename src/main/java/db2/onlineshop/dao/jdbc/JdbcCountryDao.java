@@ -11,9 +11,13 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.core.simple.SimpleJdbcCall;
+import org.springframework.jdbc.object.StoredProcedure;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
+import org.apache.commons.dbcp2.BasicDataSource;
+
 import java.util.List;
 
 
@@ -24,10 +28,15 @@ public class JdbcCountryDao implements CountryDao {
 
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedJdbcTemplate;
+    private StoredProcedure p ;
+
+    private BasicDataSource dataSource;
 
     private String selectByMovie;
     private String selectAll;
     private String insertReference;
+
+    private String updateReference;
 
     @Override
     public List<Country> getByMovie(int movieId) {
@@ -53,7 +62,7 @@ public class JdbcCountryDao implements CountryDao {
         int size = countries.size();
         log.trace("addReference:size={}", size);
 
-        MapSqlParameterSource[] params = new MapSqlParameterSource[size];
+        SqlParameterSource[] params = new MapSqlParameterSource[size];
         for (int i = 0; i < size; i++) {
             params[i] = new MapSqlParameterSource()
                     .addValue("movieId", movie.getId())
@@ -64,13 +73,28 @@ public class JdbcCountryDao implements CountryDao {
         namedJdbcTemplate.batchUpdate(insertReference, params);
     }
 
-    @Autowired
-    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    @Override
+    public void updateReference(Movie movie) {
+        StringBuilder builder = new StringBuilder();
+        for (Country country : movie.getCountries()) {
+            builder.append(country.getId()).append(",");
+        }
+
+        SqlParameterSource params = new MapSqlParameterSource()
+                .addValue("p_movie_id", movie.getId())
+                .addValue("p_country_ids", builder.toString());
+
+        SimpleJdbcCall procedure = new SimpleJdbcCall(dataSource).withProcedureName("update_movie_country");
+        procedure.execute(params);
     }
+
     @Autowired
-    public void setNamedJdbcTemplate(NamedParameterJdbcTemplate namedJdbcTemplate) {
-        this.namedJdbcTemplate = namedJdbcTemplate;
+    public void setDataSource(BasicDataSource dataSource) {
+        this.dataSource = dataSource;
+        this.dataSource.setAccessToUnderlyingConnectionAllowed(true);
+
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
+        this.namedJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
     @Autowired
@@ -89,5 +113,10 @@ public class JdbcCountryDao implements CountryDao {
     @Qualifier("insertMovieCountry")
     public void setInsertReference(String insertReference) {
         this.insertReference = insertReference;
+    }
+    @Autowired
+    @Qualifier("insertMovieCountry")
+    public void setUpdateReference(String updateReference) {
+        this.updateReference = updateReference;
     }
 }

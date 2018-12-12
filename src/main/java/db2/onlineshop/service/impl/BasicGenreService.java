@@ -51,6 +51,11 @@ public class BasicGenreService implements GenreService, MovieEnricher {
         genreDao.addReference(movie);
     }
 
+    @Override
+    public void editReference(Movie movie) {
+
+    }
+
     @Autowired
     public void setGenreDao(GenreDao genreDao) {
         this.genreDao = genreDao;

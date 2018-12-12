@@ -7,4 +7,6 @@ public interface MovieEnricher {
     void enrich(Movie movie);
 
     void addReference(Movie movie);
+
+    void editReference(Movie movie);
 }

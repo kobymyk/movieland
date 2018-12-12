@@ -12,4 +12,6 @@ public interface CountryDao {
     List<Country> getAll();
 
     void addReference(Movie movie);
+
+    void updateReference(Movie movie);
 }

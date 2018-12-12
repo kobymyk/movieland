@@ -55,4 +55,9 @@ public class BasicCountryService implements CountryService, MovieEnricher {
     public void setCountryDao(CountryDao countryDao) {
         this.countryDao = countryDao;
     }
+
+    @Override
+    public void editReference(Movie movie) {
+        countryDao.updateReference(movie);
+    }
 }
