@@ -2,6 +2,7 @@ package db2.onlineshop.dao.cache;
 
 import db2.onlineshop.dao.GenreDao;
 import db2.onlineshop.entity.Genre;
+import db2.onlineshop.entity.Movie;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,11 @@ public class CacheGenreDao implements GenreDao {
     @Override
     public List<Genre> getByMovie(int movieId) {
         return genreDao.getByMovie(movieId);
+    }
+
+    @Override
+    public void addReference(Movie movie) {
+        genreDao.addReference(movie);
     }
 
     @Autowired

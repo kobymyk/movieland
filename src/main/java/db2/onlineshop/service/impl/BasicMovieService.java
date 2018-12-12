@@ -19,7 +19,6 @@ import java.util.List;
 public class BasicMovieService implements MovieService {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private CompoundMovieEnricher movieEnricher;
     private CurrencyService currencyService;
     private ServiceProvider serviceProvider;
 
@@ -73,18 +72,32 @@ public class BasicMovieService implements MovieService {
     public int add(Movie movie) {
         log.trace("add:movie={}", movie);
         int result = movieDao.add(movie);
-        // todo: add children
+        movie.setId(result);
+        addReference(movie);
 
         return result;
     }
 
     private void enrich(Movie result) {
+        CompoundMovieEnricher enricher = getEnricher();
+        enricher.enrich(result);
+        log.trace("enrich:result={}", result);
+    }
+
+    private void addReference(Movie result) {
+        log.trace("addReference");
+        CompoundMovieEnricher enricher = getEnricher();
+        enricher.addReference(result);
+    }
+
+    private CompoundMovieEnricher getEnricher() {
+        CompoundMovieEnricher result = new CompoundMovieEnricher();
         List<Object> enrichers = serviceProvider.filter(MovieEnricher.class);
         for (Object enricher : enrichers) {
-            movieEnricher.add((MovieEnricher) enricher);
+            result.add((MovieEnricher) enricher);
         }
-        movieEnricher.enrich(result);
-        log.trace("enrich:result={}", result);
+
+        return result;
     }
 
     @Autowired
@@ -92,14 +105,9 @@ public class BasicMovieService implements MovieService {
         this.movieDao = movieDao;
     }
 
-    @Value("${dao.movie.randomCount:3}")
+    @Value("${movie.randomCount:3}")
     public void setRandomCount(int randomCount) {
         this.randomCount = randomCount;
-    }
-
-    @Autowired
-    public void setMovieEnricher(CompoundMovieEnricher movieEnricher) {
-        this.movieEnricher = movieEnricher;
     }
 
     @Autowired

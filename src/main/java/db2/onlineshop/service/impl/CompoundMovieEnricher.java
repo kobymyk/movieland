@@ -4,12 +4,11 @@ import db2.onlineshop.entity.Movie;
 import db2.onlineshop.service.MovieEnricher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
+
 public class CompoundMovieEnricher implements MovieEnricher {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -29,4 +28,11 @@ public class CompoundMovieEnricher implements MovieEnricher {
         //returns result
     }
 
+    @Override
+    public void addReference(Movie movie) {
+        log.debug("addReference");
+        for (MovieEnricher enricher : enrichers) {
+            enricher.addReference(movie);
+        }
+    }
 }

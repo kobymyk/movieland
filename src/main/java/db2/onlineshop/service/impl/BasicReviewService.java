@@ -41,6 +41,11 @@ public class BasicReviewService implements ReviewService, MovieEnricher {
         movie.setReviews(reviews);
     }
 
+    @Override
+    public void addReference(Movie movie) {
+        //reviewDao
+    }
+
     @Autowired
     public void setReviewDao(ReviewDao reviewDao) {
         this.reviewDao = reviewDao;
