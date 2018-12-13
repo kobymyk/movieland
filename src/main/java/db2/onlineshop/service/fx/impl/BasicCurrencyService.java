@@ -1,5 +1,7 @@
 package db2.onlineshop.service.fx.impl;
 
+import db2.onlineshop.entity.Movie;
+import db2.onlineshop.service.MovieEnricher;
 import db2.onlineshop.service.fx.CurrencyService;
 import db2.onlineshop.service.fx.entity.Currency;
 import org.slf4j.Logger;
@@ -18,7 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class BasicCurrencyService implements CurrencyService {
+public class BasicCurrencyService implements CurrencyService, MovieEnricher {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private String defaultCurrency;
@@ -89,6 +91,11 @@ public class BasicCurrencyService implements CurrencyService {
         return result;
     }
 
+    @Override
+    public void enrich(Movie movie) {
+
+    }
+
     @Value("${currency.default}")
     public void setDefaultCurrency(String defaultCurrency) {
         this.defaultCurrency = defaultCurrency;
@@ -108,4 +115,5 @@ public class BasicCurrencyService implements CurrencyService {
     public void setPattern(String pattern) {
         this.pattern = pattern;
     }
+
 }

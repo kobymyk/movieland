@@ -13,7 +13,6 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
-import org.springframework.jdbc.object.StoredProcedure;
 import org.springframework.stereotype.Repository;
 
 import org.apache.commons.dbcp2.BasicDataSource;
@@ -28,7 +27,7 @@ public class JdbcCountryDao implements CountryDao {
 
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedJdbcTemplate;
-    private StoredProcedure p ;
+    private SimpleJdbcCall jdbcCall;
 
     private BasicDataSource dataSource;
 
@@ -58,15 +57,15 @@ public class JdbcCountryDao implements CountryDao {
 
     @Override
     public void addReference(Movie movie) {
+        log.trace("addReference");
         List<Country> countries = movie.getCountries();
-        int size = countries.size();
-        log.trace("addReference:size={}", size);
 
-        SqlParameterSource[] params = new MapSqlParameterSource[size];
-        for (int i = 0; i < size; i++) {
-            params[i] = new MapSqlParameterSource()
+        SqlParameterSource[] params = new MapSqlParameterSource[countries.size()];
+        int i = 0;
+        for (Country country : countries) {
+            params[i++] = new MapSqlParameterSource()
                     .addValue("movieId", movie.getId())
-                    .addValue("countryId", countries.get(i).getId());
+                    .addValue("countryId", country.getId());
         }
         log.trace("addReference:params={}", params);
 
@@ -84,17 +83,18 @@ public class JdbcCountryDao implements CountryDao {
                 .addValue("p_movie_id", movie.getId())
                 .addValue("p_country_ids", builder.toString());
 
-        SimpleJdbcCall procedure = new SimpleJdbcCall(dataSource).withProcedureName("update_movie_country");
-        procedure.execute(params);
+        jdbcCall.withProcedureName("update_movie_country")
+            .execute(params);
     }
 
     @Autowired
     public void setDataSource(BasicDataSource dataSource) {
         this.dataSource = dataSource;
-        this.dataSource.setAccessToUnderlyingConnectionAllowed(true);
+        //this.dataSource.setAccessToUnderlyingConnectionAllowed(true);
 
         this.jdbcTemplate = new JdbcTemplate(dataSource);
         this.namedJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+        this.jdbcCall = new SimpleJdbcCall(dataSource);
     }
 
     @Autowired

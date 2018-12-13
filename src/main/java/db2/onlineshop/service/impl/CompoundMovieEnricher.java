@@ -25,22 +25,5 @@ public class CompoundMovieEnricher implements MovieEnricher {
         for (MovieEnricher enricher : enrichers) {
             enricher.enrich(result);
         }
-        //returns result
-    }
-
-    @Override
-    public void addReference(Movie movie) {
-        log.debug("addReference");
-        for (MovieEnricher enricher : enrichers) {
-            enricher.addReference(movie);
-        }
-    }
-
-    @Override
-    public void editReference(Movie movie) {
-        log.debug("addReference");
-        for (MovieEnricher enricher : enrichers) {
-            enricher.editReference(movie);
-        }
     }
 }
