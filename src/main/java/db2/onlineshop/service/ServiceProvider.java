@@ -1,5 +1,7 @@
 package db2.onlineshop.service;
 
+import db2.onlineshop.service.fx.CurrencyService;
+import db2.onlineshop.service.impl.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,28 @@ public class ServiceProvider {
     private GenreService genreService;
     private CountryService countryService;
     private ReviewService reviewService;
+    private CurrencyService currencyService;
+
+    public CompoundMovieEnricher getCompoundMovieEnricher() {
+        CompoundMovieEnricher result = new CompoundMovieEnricher();
+
+        result.add((MovieEnricher) genreService);
+        result.add((MovieEnricher) countryService);
+        result.add((MovieEnricher) reviewService);
+        result.add((MovieEnricher) currencyService);
+
+        return result;
+    }
+
+    public CompoundMovieChild getCompoundMovieChild() {
+        CompoundMovieChild result = new CompoundMovieChild();
+
+        result.add((MovieChild) genreService);
+        result.add((MovieChild) countryService);
+        //result.add((MovieChild) reviewService);
+
+        return result;
+    }
 
     public List<Object> getAll() {
         List<Object> result = new ArrayList<>();
@@ -20,7 +44,6 @@ public class ServiceProvider {
         result.add(genreService);
         result.add(countryService);
         result.add(reviewService);
-        //services.add();
 
         return result;
     }
@@ -56,4 +79,7 @@ public class ServiceProvider {
     public void setReviewService(ReviewService reviewService) {
         this.reviewService = reviewService;
     }
+
+    @Autowired
+    public void setCurrencyService(CurrencyService currencyService) { this.currencyService = currencyService; }
 }

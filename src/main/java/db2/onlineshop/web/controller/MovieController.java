@@ -4,7 +4,11 @@ import db2.onlineshop.entity.Movie;
 import db2.onlineshop.entity.SortOrder;
 import db2.onlineshop.entity.RequestParams;
 import db2.onlineshop.service.MovieService;
+import db2.onlineshop.service.security.entity.Role;
+import db2.onlineshop.web.data.MovieAddRequest;
+import db2.onlineshop.web.data.MovieEditRequest;
 import db2.onlineshop.web.data.MovieSimpleDto;
+import db2.onlineshop.web.handler.Permission;
 import db2.onlineshop.web.utils.SortOrderSupport;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -78,6 +82,31 @@ public class MovieController {
         log.info("getById:duration={}", System.currentTimeMillis() - startTime);
 
         return result;
+    }
+
+    @PostMapping(consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @Permission(roles = Role.ADMIN)
+    public void add(@RequestBody MovieAddRequest request) {
+        long startTime = System.currentTimeMillis();
+        log.info("add:request={}", request);
+        Movie movie = request.getMovie();
+        log.info("add:movie={}", movie);
+
+        movieService.add(movie);
+        log.info("add:duration={}", System.currentTimeMillis() - startTime);
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @Permission(roles = Role.ADMIN)
+    public void edit(@RequestBody MovieEditRequest request, @PathVariable int id) {
+        long startTime = System.currentTimeMillis();
+        log.info("edit:id={}", id);
+        Movie movie = request.getMovie();
+        movie.setId(id);
+        log.debug("edit:movie={}", movie);
+
+        movieService.edit(movie);
+        log.info("edit:duration={}", System.currentTimeMillis() - startTime);
     }
 
     private MovieSimpleDto convertToDto(Movie movie) {

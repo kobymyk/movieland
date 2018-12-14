@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -37,13 +39,15 @@ public class JdbcReviewDao implements ReviewDao {
     @Override
     public int add(int movieId, Review review) {
         log.trace("add:movieId={}", movieId);
+        KeyHolder keyHolder = new GeneratedKeyHolder();
 
-        MapSqlParameterSource params = new MapSqlParameterSource();
-        params.addValue("movie_id", movieId);
-        params.addValue("user_id", review.getUser().getId());
-        params.addValue("text", review.getText());
+        MapSqlParameterSource params = new MapSqlParameterSource()
+            .addValue("movie_id", movieId)
+            .addValue("user_id", review.getUser().getId())
+            .addValue("text", review.getText());
 
-        int result = namedJdbcTemplate.update(insertRow, params);
+        namedJdbcTemplate.update(insertRow, params, keyHolder, new String[]{"id"});
+        int result = keyHolder.getKey().intValue();
         log.trace("add:result={}", result);
 
         return result;
