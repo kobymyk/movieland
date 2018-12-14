@@ -15,13 +15,13 @@ public class CompoundMovieEnricher implements MovieEnricher {
     List<MovieEnricher> enrichers = new ArrayList<>();
 
     public void add(MovieEnricher enricher) {
+        log.debug("add");
         enrichers.add(enricher);
     }
 
     @Override
     public void enrich(Movie result) {
-        int movieId = result.getId();
-        log.debug("enrich:movieId={}", movieId);
+        log.debug("enrich");
         for (MovieEnricher enricher : enrichers) {
             enricher.enrich(result);
         }

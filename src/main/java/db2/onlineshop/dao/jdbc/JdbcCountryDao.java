@@ -18,6 +18,7 @@ import org.springframework.stereotype.Repository;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Repository
@@ -74,14 +75,13 @@ public class JdbcCountryDao implements CountryDao {
 
     @Override
     public void updateReference(Movie movie) {
-        StringBuilder builder = new StringBuilder();
-        for (Country country : movie.getCountries()) {
-            builder.append(country.getId()).append(",");
-        }
+        String countryIds = movie.getCountries().stream()
+                .map(p -> String.valueOf(p.getId()))
+                .collect(Collectors.joining(",", "{\"result:\" [", "] }"));
 
         SqlParameterSource params = new MapSqlParameterSource()
                 .addValue("p_movie_id", movie.getId())
-                .addValue("p_country_ids", builder.toString());
+                .addValue("p_country_ids", countryIds);
 
         jdbcCall.withProcedureName("update_movie_country")
             .execute(params);

@@ -32,7 +32,7 @@ public class ServiceProvider {
 
         result.add((MovieChild) genreService);
         result.add((MovieChild) countryService);
-        result.add((MovieChild) reviewService);
+        //result.add((MovieChild) reviewService);
 
         return result;
     }
@@ -44,7 +44,6 @@ public class ServiceProvider {
         result.add(genreService);
         result.add(countryService);
         result.add(reviewService);
-        //services.add();
 
         return result;
     }
