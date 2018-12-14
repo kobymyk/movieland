@@ -5,12 +5,10 @@ import db2.onlineshop.entity.Movie;
 import db2.onlineshop.entity.RequestParams;
 import db2.onlineshop.service.ServiceProvider;
 import db2.onlineshop.service.fx.CurrencyService;
-import db2.onlineshop.service.MovieEnricher;
 import db2.onlineshop.service.MovieService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -19,9 +17,9 @@ import java.util.List;
 public class BasicMovieService implements MovieService {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private CompoundMovieEnricher movieEnricher;
-    private CurrencyService currencyService;
     private ServiceProvider serviceProvider;
+    // todo: enrich
+    private CurrencyService currencyService;
 
     private MovieDao movieDao;
     private int randomCount;
@@ -56,9 +54,12 @@ public class BasicMovieService implements MovieService {
     @Override
     public Movie getById(int id, RequestParams param) {
         Movie result = movieDao.getById(id);
-        log.trace("getByGenre:result={}", result);
-        // enrich
-        enrich(result);
+        log.trace("getById:result={}", result);
+
+        CompoundMovieEnricher enricher = serviceProvider.getCompoundMovieEnricher();
+        enricher.enrich(result);
+        log.trace("getById:result={}", result);
+
         String currency = param.getCurrency();
         if (currency != null) {
             double price = currencyService.exchange(result.getPrice(), currency);
@@ -69,13 +70,25 @@ public class BasicMovieService implements MovieService {
         return result;
     }
 
-    private void enrich(Movie result) {
-        List<Object> enrichers = serviceProvider.filter(MovieEnricher.class);
-        for (Object enricher : enrichers) {
-            movieEnricher.add((MovieEnricher) enricher);
-        }
-        movieEnricher.enrich(result);
-        log.trace("enrich:result={}", result);
+    @Override
+    public int add(Movie movie) {
+        log.trace("add:movie={}", movie);
+        int result = movieDao.add(movie);
+        movie.setId(result);
+
+        CompoundMovieChild children = serviceProvider.getCompoundMovieChild();
+        children.addReference(movie);
+
+        return result;
+    }
+
+    @Override
+    public void edit(Movie movie) {
+        log.trace("edit:movie={}", movie);
+        movieDao.edit(movie);
+
+        CompoundMovieChild children = serviceProvider.getCompoundMovieChild();
+        children.editReference(movie);
     }
 
     @Autowired
@@ -83,14 +96,9 @@ public class BasicMovieService implements MovieService {
         this.movieDao = movieDao;
     }
 
-    @Value("${dao.movie.randomCount:3}")
+    @Value("${movie.randomCount:3}")
     public void setRandomCount(int randomCount) {
         this.randomCount = randomCount;
-    }
-
-    @Autowired
-    public void setMovieEnricher(CompoundMovieEnricher movieEnricher) {
-        this.movieEnricher = movieEnricher;
     }
 
     @Autowired

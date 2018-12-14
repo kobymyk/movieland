@@ -4,28 +4,43 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="sqlSelectMovies" class="java.lang.String">
+    <bean id="selectAllMovies" class="java.lang.String">
         <constructor-arg value="SELECT t.* FROM all_movies t"/>
     </bean>
     <bean id="selectByIdMovie" class="java.lang.String">
         <constructor-arg value="SELECT t.* FROM movie t WHERE t.id = ?"/>
     </bean>
-    <bean id="sqlGenreIdMovies" class="java.lang.String">
+    <bean id="selectByGenreMovies" class="java.lang.String">
         <constructor-arg value="SELECT m.* FROM all_movies m JOIN movie_genre mg ON mg.movie_id = m.id WHERE mg.genre_id = ?"/>
     </bean>
-    <bean id="sqlRandomMovies" class="java.lang.String">
+    <bean id="selectRandomMovies" class="java.lang.String">
         <constructor-arg value="SELECT v.* FROM (SELECT t.* FROM all_movies t ORDER BY dbms_random.value) v WHERE rownum &lt;= ?"/>
     </bean>
+    <bean id="insertMovie" class="java.lang.String">
+        <constructor-arg value="INSERT INTO movie (id, name, name_native, release_year, description, price, picture_path) VALUES (movie_seq.nextval, :name, :nameNative, :yearOfRelease, :description, :price, :picturePath)"/>
+    </bean>
+    <bean id="updateMovie" class="java.lang.String">
+        <constructor-arg value="UPDATE movie SET name = :name, name_native = :nameNative, picture_path = :picturePath WHERE id = :id"/>
+    </bean>
 
-    <bean id="sqlSelectGenres" class="java.lang.String">
+    <bean id="selectAllGenres" class="java.lang.String">
         <constructor-arg value="SELECT t.* FROM genre t"/>
     </bean>
     <bean id="selectByMovieGenres" class="java.lang.String">
         <constructor-arg value="SELECT t.* FROM all_movie_genre t WHERE t.movie_id = ?"/>
     </bean>
+    <bean id="insertMovieGenres" class="java.lang.String">
+        <constructor-arg value="INSERT INTO movie_genre (movie_id, genre_id) VALUES (:movieId, :genreId)"/>
+    </bean>
 
     <bean id="selectByMovieCountries" class="java.lang.String">
         <constructor-arg value="SELECT t.* FROM all_movie_country t WHERE t.movie_id = ?"/>
+    </bean>
+    <bean id="selectAllCountries" class="java.lang.String">
+        <constructor-arg value="SELECT t.* FROM country t"/>
+    </bean>
+    <bean id="insertMovieCountry" class="java.lang.String">
+        <constructor-arg value="INSERT INTO movie_country (movie_id, country_id) VALUES (:movieId, :countryId)"/>
     </bean>
 
     <bean id="selectByMovieReview" class="java.lang.String">
