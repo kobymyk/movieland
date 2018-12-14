@@ -2,6 +2,7 @@ package db2.onlineshop.dao.jdbc;
 
 import db2.onlineshop.dao.GenreDao;
 import db2.onlineshop.dao.jdbc.mapper.GenreMapper;
+import db2.onlineshop.entity.Country;
 import db2.onlineshop.entity.Genre;
 import db2.onlineshop.entity.Movie;
 import org.slf4j.Logger;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 
@@ -47,19 +49,24 @@ public class JdbcGenreDao implements GenreDao {
 
     @Override
     public void addReference(Movie movie) {
+        log.trace("addReference");
         List<Genre> genres = movie.getGenres();
-        int size = genres.size();
-        log.trace("addReference:size={}", size);
-
-        MapSqlParameterSource[] params = new MapSqlParameterSource[size];
-        for (int i = 0; i < size; i++) {
-            params[i] = new MapSqlParameterSource()
+        // todo: getParams
+        SqlParameterSource[] params = new MapSqlParameterSource[genres.size()];
+        int i = 0;
+        for (Genre genre : genres) {
+            params[i++] = new MapSqlParameterSource()
                     .addValue("movieId", movie.getId())
-                    .addValue("genreId", genres.get(i).getId());
+                    .addValue("countryId", genre.getId());
         }
         log.trace("addReference:params={}", params);
 
         namedJdbcTemplate.batchUpdate(insertReference, params);
+    }
+
+    @Override
+    public void editReference(Movie movie) {
+        // todo:
     }
 
     @Autowired

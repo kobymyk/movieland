@@ -12,4 +12,6 @@ public interface GenreDao {
     List<Genre> getByMovie(int movieId);
 
     void addReference(Movie movie);
+
+    void editReference(Movie movie);
 }

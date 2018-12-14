@@ -60,7 +60,7 @@ public class JdbcCountryDao implements CountryDao {
     public void addReference(Movie movie) {
         log.trace("addReference");
         List<Country> countries = movie.getCountries();
-
+        // todo: getParams
         SqlParameterSource[] params = new MapSqlParameterSource[countries.size()];
         int i = 0;
         for (Country country : countries) {
