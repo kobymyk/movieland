@@ -4,7 +4,7 @@ import db2.onlineshop.entity.Review;
 
 import java.util.List;
 
-public interface ReviewService {
+public interface ReviewService extends MovieEnricher {
 
     List<Review> getByMovie(int movieId);
 

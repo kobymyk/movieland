@@ -16,6 +16,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Repository;
 
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -57,6 +58,7 @@ public class JdbcCountryDao implements CountryDao {
     }
 
     @Override
+    @Transactional
     public void addReference(Movie movie) {
         log.trace("addReference");
         List<Country> countries = movie.getCountries();
@@ -74,6 +76,7 @@ public class JdbcCountryDao implements CountryDao {
     }
 
     @Override
+    @Transactional
     public void updateReference(Movie movie) {
         String countryIds = movie.getCountries().stream()
                 .map(p -> String.valueOf(p.getId()))

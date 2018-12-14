@@ -19,10 +19,10 @@ public class ServiceProvider {
     public CompoundMovieEnricher getCompoundMovieEnricher() {
         CompoundMovieEnricher result = new CompoundMovieEnricher();
 
-        result.add((MovieEnricher) genreService);
-        result.add((MovieEnricher) countryService);
-        result.add((MovieEnricher) reviewService);
-        result.add((MovieEnricher) currencyService);
+        result.add(genreService);
+        result.add(countryService);
+        result.add(reviewService);
+        //result.add((MovieEnricher) currencyService);
 
         return result;
     }
