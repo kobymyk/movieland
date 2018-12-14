@@ -14,6 +14,8 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 
@@ -48,6 +50,7 @@ public class JdbcGenreDao implements GenreDao {
     }
 
     @Override
+    @Transactional
     public void addReference(Movie movie) {
         log.trace("addReference");
         List<Genre> genres = movie.getGenres();
@@ -65,6 +68,7 @@ public class JdbcGenreDao implements GenreDao {
     }
 
     @Override
+    @Transactional
     public void editReference(Movie movie) {
         // todo:
     }
