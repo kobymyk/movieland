@@ -1,7 +1,11 @@
 package db2.onlineshop.service.impl;
 
 import db2.onlineshop.entity.Movie;
+import db2.onlineshop.service.CountryService;
+import db2.onlineshop.service.GenreService;
 import db2.onlineshop.service.MovieEnricher;
+import db2.onlineshop.service.ReviewService;
+import db2.onlineshop.service.task.MovieEnrichParam;
 import db2.onlineshop.service.task.MovieEnrichTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,35 +26,40 @@ public class CompoundMovieEnricher implements MovieEnricher {
     }
 
     @Override
-    public void enrich(Movie result) {
+    public void enrich(Movie movie) {
         log.debug("enrich");
         ExecutorService executor = Executors.newSingleThreadExecutor();
 
-        List<Callable<Movie>> tasks = new ArrayList<>();
+        List<Callable<MovieEnrichParam>> tasks = new ArrayList<>();
         for (MovieEnricher enricher : enrichers) {
-            Callable<Movie> task = new MovieEnrichTask();
-            ((MovieEnrichTask) task).setEnricher(enricher);
-            ((MovieEnrichTask) task).setMovie(result);
+            Callable<MovieEnrichParam> task = new MovieEnrichTask();
+
+            MovieEnrichParam param = new MovieEnrichParam(enricher);
+            param.setMovie(movie);
+
+            ((MovieEnrichTask) task).setParam(param);
 
             tasks.add(task);
             //enricher.enrich(result);
         }
         try {
-            List<Future<Movie>> futures = executor.invokeAll(tasks, 5, TimeUnit.SECONDS);
+            List<Future<MovieEnrichParam>> futures = executor.invokeAll(tasks, 5, TimeUnit.SECONDS);
             if (futures.stream().noneMatch(Future::isCancelled)) {
                 log.info("enrich:results.size={}", futures.size());
             }
-            for (Future<Movie> future : futures) {
-                Movie movie = future.get();
-                // todo: return List<Object>
-                if (movie.getCountries() != null) {
-                    result.setCountries(movie.getCountries());
+            for (Future<MovieEnrichParam> future : futures) {
+                MovieEnrichParam futureParam = future.get();
+                MovieEnricher enricher = futureParam.getEnricher();
+                Movie futureMovie = futureParam.getMovie();
+
+                if (enricher instanceof CountryService) {
+                    movie.setCountries(futureMovie.getCountries());
                 }
-                if (movie.getGenres() != null) {
-                    result.setGenres(movie.getGenres());
+                if (enricher instanceof GenreService) {
+                    movie.setGenres(futureMovie.getGenres());
                 }
-                if (movie.getReviews() != null) {
-                    result.setReviews(movie.getReviews());
+                if (enricher instanceof ReviewService) {
+                    movie.setReviews(futureMovie.getReviews());
                 }
             }
         } catch (InterruptedException | ExecutionException e) {

@@ -1,30 +1,23 @@
 package db2.onlineshop.service.task;
 
 import db2.onlineshop.entity.Movie;
-import db2.onlineshop.service.CountryService;
 import db2.onlineshop.service.MovieEnricher;
 
 import java.util.concurrent.Callable;
 
-public class MovieEnrichTask implements Callable<Movie> {
-    private MovieEnricher enricher;
-    private Movie movie;
+public class MovieEnrichTask implements Callable<MovieEnrichParam> {
+    private MovieEnrichParam param;
 
     @Override
-    public Movie call() throws Exception {
+    public MovieEnrichParam call() throws Exception {
+        MovieEnricher enricher = param.getEnricher();
+        Movie movie = param.getMovie();
         enricher.enrich(movie);
-        // todo: if (enricher instanceof CountryService) return movie.getCountries()
-        return movie;
+
+        return param;
     }
 
-    public void setEnricher(MovieEnricher enricher) {
-        this.enricher = enricher;
-    }
-
-    public void setMovie(Movie movie) {
-        // todo: movie.copy
-        this.movie = new Movie();
-        this.movie.setId(movie.getId());
-        this.movie.setCountries(movie.getCountries());
+    public void setParam(MovieEnrichParam param) {
+        this.param = param;
     }
 }
