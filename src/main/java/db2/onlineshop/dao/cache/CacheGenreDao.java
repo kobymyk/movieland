@@ -40,6 +40,11 @@ public class CacheGenreDao implements GenreDao {
         genreDao.addReference(movie);
     }
 
+    @Override
+    public void editReference(Movie movie) {
+        genreDao.editReference(movie);
+    }
+
     @Autowired
     public void setGenreDao(GenreDao genreDao) { this.genreDao = genreDao; }
 
