@@ -6,12 +6,14 @@ import db2.onlineshop.entity.Movie;
 import db2.onlineshop.service.GenreService;
 import db2.onlineshop.service.MovieChild;
 import db2.onlineshop.service.MovieEnricher;
+import db2.onlineshop.service.task.MovieEnrichTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.Callable;
 
 @Service
 public class BasicGenreService implements GenreService, MovieChild {
