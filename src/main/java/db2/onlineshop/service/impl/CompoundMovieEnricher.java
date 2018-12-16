@@ -28,30 +28,36 @@ public class CompoundMovieEnricher implements MovieEnricher {
     @Override
     public void enrich(Movie movie) {
         log.debug("enrich");
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-
-        List<Callable<MovieEnrichParam>> tasks = new ArrayList<>();
+        ExecutorService executor = Executors.newFixedThreadPool(3);
+        List<Callable<MovieEnrichParam>> tasks = new ArrayList<>(enrichers.size());
+        // fill tasks
         for (MovieEnricher enricher : enrichers) {
             Callable<MovieEnrichParam> task = new MovieEnrichTask();
 
-            MovieEnrichParam param = new MovieEnrichParam(enricher);
-            param.setMovie(movie);
-
+            MovieEnrichParam param = new MovieEnrichParam(enricher, movie);
             ((MovieEnrichTask) task).setParam(param);
 
             tasks.add(task);
-            //enricher.enrich(result);
         }
-        try {
-            List<Future<MovieEnrichParam>> futures = executor.invokeAll(tasks, 5, TimeUnit.SECONDS);
-            if (futures.stream().noneMatch(Future::isCancelled)) {
-                log.info("enrich:results.size={}", futures.size());
-            }
-            for (Future<MovieEnrichParam> future : futures) {
-                MovieEnrichParam futureParam = future.get();
-                MovieEnricher enricher = futureParam.getEnricher();
-                Movie futureMovie = futureParam.getMovie();
+        log.info("enrich:tasks.size={}", tasks.size());
 
+        try {
+            List<Future<MovieEnrichParam>> futures = executor.invokeAll(tasks);
+            for (Future<MovieEnrichParam> future : futures) {
+                if (!future.isDone()) {
+                    log.debug("enrich::running");
+                }
+                MovieEnrichParam result = null;
+                try {
+                    // get actual result
+                    result = future.get(5, TimeUnit.SECONDS);
+                } catch (TimeoutException e) {
+                    log.error("enrich::timeout", e);
+                    future.cancel(true);
+                }
+                MovieEnricher enricher = result.getEnricher();
+                Movie futureMovie = result.getMovie();
+                // merge
                 if (enricher instanceof CountryService) {
                     movie.setCountries(futureMovie.getCountries());
                 }
@@ -63,8 +69,17 @@ public class CompoundMovieEnricher implements MovieEnricher {
                 }
             }
         } catch (InterruptedException | ExecutionException e) {
-            log.error("enrich", e);
+            log.error("enrich::interrupt", e);
             throw new RuntimeException(e);
+        } finally {
+            executor.shutdown();
+            try {
+                if (!executor.awaitTermination(800, TimeUnit.MILLISECONDS)) {
+                    executor.shutdownNow();
+                }
+            } catch (InterruptedException e) {
+                executor.shutdownNow();
+            }
         }
     }
 }

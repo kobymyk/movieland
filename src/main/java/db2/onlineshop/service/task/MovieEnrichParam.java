@@ -13,23 +13,16 @@ public class MovieEnrichParam {
     private MovieEnricher enricher;
     private Movie movie;
 
-    public MovieEnrichParam(MovieEnricher enricher) {
+    public MovieEnrichParam(MovieEnricher enricher, Movie movie) {
         this.enricher = enricher;
+        this.movie = copyMovie(movie);
     }
 
-    public void setMovie(Movie movie) {
-        // todo: movie.copy
-        this.movie = new Movie();
-        this.movie.setId(movie.getId());
-        List<Country> countries = new ArrayList<>();
-        countries = movie.getCountries();
-        this.movie.setCountries(countries);
-        List<Genre> genres = new ArrayList<>();
-        genres = movie.getGenres();
-        this.movie.setGenres(genres);
-        List<Review> reviews = new ArrayList<>();
-        reviews = movie.getReviews();
-        this.movie.setReviews(reviews);
+    private Movie copyMovie(Movie movie) {
+        Movie result = new Movie();
+        result.setId(movie.getId());
+
+        return result;
     }
 
     public MovieEnricher getEnricher() {
