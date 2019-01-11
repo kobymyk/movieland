@@ -30,7 +30,7 @@ public class CountryController {
     }
 
     @Autowired
-    public void setGenreService(CountryService countryService) {
+    public void setCountryService(CountryService countryService) {
         this.countryService = countryService;
     }
 }
