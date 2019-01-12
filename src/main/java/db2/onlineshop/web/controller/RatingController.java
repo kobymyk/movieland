@@ -22,7 +22,7 @@ public class RatingController {
     @PostMapping(value = "/rate", consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     @Permission(roles = {Role.ADMIN, Role.USER})
     public void add(@PathVariable int movieId, @RequestBody RatingRequest ratingRequest) {
-        log.info("rate:movieId={};ratingRequest={}", movieId, ratingRequest);
+        log.info("add:movieId={};ratingRequest={}", movieId, ratingRequest);
         long startTime = System.currentTimeMillis();
 
         Rating rating = new Rating();
@@ -32,7 +32,19 @@ public class RatingController {
 
         ratingService.add(rating);
 
-        log.info("rate:duration={}", System.currentTimeMillis() - startTime);
+        log.info("add:duration={}", System.currentTimeMillis() - startTime);
+    }
+
+    @GetMapping(value = "/rating", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @Permission(roles = {Role.USER})
+    public Rating getByMovie(@PathVariable int movieId) {
+        long startTime = System.currentTimeMillis();
+        log.info("getByMovie:movieId={}", movieId);
+
+        Rating result = ratingService.getByMovie(movieId);
+        log.info("getByMovie:duration={}", System.currentTimeMillis() - startTime);
+
+        return result;
     }
 
     @Autowired
