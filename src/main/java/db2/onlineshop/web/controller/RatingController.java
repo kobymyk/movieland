@@ -5,6 +5,8 @@ import db2.onlineshop.service.RatingService;
 import db2.onlineshop.service.security.entity.Role;
 import db2.onlineshop.service.security.holder.SecurityHolder;
 import db2.onlineshop.web.data.RatingRequest;
+import db2.onlineshop.web.data.RatingResponse;
+import db2.onlineshop.web.data.mapper.RatingMapper;
 import db2.onlineshop.web.handler.Permission;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/v1/movie/{movieId}")
 public class RatingController {
     private final Logger log = LoggerFactory.getLogger(getClass());
+    private final RatingMapper RATING_MAPPER = new RatingMapper();
 
     private RatingService ratingService;
 
@@ -37,11 +40,13 @@ public class RatingController {
 
     @GetMapping(value = "/rating", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     @Permission(roles = {Role.USER})
-    public Rating getByMovie(@PathVariable int movieId) {
+    public RatingResponse getByMovie(@PathVariable int movieId) {
         long startTime = System.currentTimeMillis();
         log.info("getByMovie:movieId={}", movieId);
 
-        Rating result = ratingService.getByMovie(movieId);
+        Rating rating = ratingService.getByMovie(movieId);
+        RatingResponse result = RATING_MAPPER.mapObject(rating);
+        log.info("getByMovie:result={}", result);
         log.info("getByMovie:duration={}", System.currentTimeMillis() - startTime);
 
         return result;

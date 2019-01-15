@@ -1,14 +1,11 @@
 package db2.onlineshop.web.data;
 
-public class MovieSimpleDto {
+public class MovieResponse {
     private int id;
     private int yearOfRelease;
-
     private String name;
     private String nameNative;
-    // without String description
     private String picturePath;
-
     private double rating;
     private double price;
 
@@ -66,5 +63,18 @@ public class MovieSimpleDto {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    @Override
+    public String toString() {
+        return "MovieResponse{" +
+                "id=" + id +
+                ", yearOfRelease=" + yearOfRelease +
+                ", name='" + name + '\'' +
+                ", nameNative='" + nameNative + '\'' +
+                ", picturePath='" + picturePath + '\'' +
+                ", rating=" + rating +
+                ", price=" + price +
+                '}';
     }
 }

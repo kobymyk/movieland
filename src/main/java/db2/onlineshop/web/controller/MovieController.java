@@ -7,10 +7,10 @@ import db2.onlineshop.service.MovieService;
 import db2.onlineshop.service.security.entity.Role;
 import db2.onlineshop.web.data.MovieAddRequest;
 import db2.onlineshop.web.data.MovieEditRequest;
-import db2.onlineshop.web.data.MovieSimpleDto;
+import db2.onlineshop.web.data.MovieResponse;
+import db2.onlineshop.web.data.mapper.MovieMapper;
 import db2.onlineshop.web.handler.Permission;
 import db2.onlineshop.web.utils.SortOrderSupport;
-import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,19 +19,18 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/v1/movie")
 public class MovieController {
     private final Logger log = LoggerFactory.getLogger(getClass());
-    private final ModelMapper modelMapper = new ModelMapper();
+    private final MovieMapper MOVIE_MAPPER = new MovieMapper();
 
     private MovieService movieService;
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public List<MovieSimpleDto> getAll(@RequestParam(value = "rating", required = false) SortOrder ratingOrder,
-                                       @RequestParam(value = "price", required = false) SortOrder priceOrder) {
+    public List<MovieResponse> getAll(@RequestParam(value = "rating", required = false) SortOrder ratingOrder,
+                                      @RequestParam(value = "price", required = false) SortOrder priceOrder) {
         long startTime = System.currentTimeMillis();
         RequestParams param = null;
         if (ratingOrder != null) {
@@ -43,28 +42,28 @@ public class MovieController {
         }
 
         List<Movie> movies = movieService.getAll(param);
-        List<MovieSimpleDto> result = convertToDto(movies);
+        List<MovieResponse> result = MOVIE_MAPPER.mapList(movies);
         log.info("getAll:duration={}", System.currentTimeMillis() - startTime);
 
         return result;
     }
 
     @GetMapping(path = "/random", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public List<MovieSimpleDto> getRandom() {
+    public List<MovieResponse> getRandom() {
         long startTime = System.currentTimeMillis();
         List<Movie> movies = movieService.getRandom();
-        List<MovieSimpleDto> result = convertToDto(movies);
+        List<MovieResponse> result = MOVIE_MAPPER.mapList(movies);
         log.info("getRandom:duration={}", System.currentTimeMillis() - startTime);
 
         return result;
     }
 
     @GetMapping(value = "/genre/{id}", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public List<MovieSimpleDto> getByGenre(@PathVariable int id) {
+    public List<MovieResponse> getByGenre(@PathVariable int id) {
         long startTime = System.currentTimeMillis();
         log.debug("getByGenre:id={}", id);
         List<Movie> movies = movieService.getByGenre(id);
-        List<MovieSimpleDto> result = convertToDto(movies);
+        List<MovieResponse> result = MOVIE_MAPPER.mapList(movies);
         log.info("getByGenre:duration={}", System.currentTimeMillis() - startTime);
 
         return result;
@@ -107,20 +106,6 @@ public class MovieController {
 
         movieService.edit(movie);
         log.info("edit:duration={}", System.currentTimeMillis() - startTime);
-    }
-
-    private MovieSimpleDto convertToDto(Movie movie) {
-        MovieSimpleDto result = modelMapper.map(movie, MovieSimpleDto.class);
-
-        return result;
-    }
-
-    private List<MovieSimpleDto> convertToDto(List<Movie> movies) {
-        List<MovieSimpleDto> result = movies.stream()
-                .map(movie -> convertToDto(movie))
-                .collect(Collectors.toList());
-
-        return result;
     }
 
     @Autowired

@@ -2,9 +2,7 @@ package db2.onlineshop.entity;
 
 public class Rating {
     private int movieId;
-    //todo: userId
     private User user;
-
     private double rating;
 
     public int getMovieId() {

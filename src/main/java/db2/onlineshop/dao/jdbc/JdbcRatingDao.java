@@ -7,6 +7,7 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
@@ -62,4 +63,9 @@ public class JdbcRatingDao implements RatingDao {
         namedJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
+    @Autowired
+    @Qualifier("selectByMovieRating")
+    public void setSelectByMovie(String selectByMovie) {
+        this.selectByMovie = selectByMovie;
+    }
 }
