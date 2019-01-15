@@ -4,6 +4,7 @@ import db2.onlineshop.dao.RatingDao;
 import db2.onlineshop.dao.jdbc.mapper.RatingMapper;
 import db2.onlineshop.entity.Rating;
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
@@ -14,11 +15,13 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 
 
 @Repository
+//@Transactional
 public class JdbcRatingDao implements RatingDao {
     private final Logger log = LoggerFactory.getLogger(getClass());
     private static final RatingMapper ROW_MAPPER = new RatingMapper();
@@ -37,7 +40,7 @@ public class JdbcRatingDao implements RatingDao {
 
         MapSqlParameterSource params = new MapSqlParameterSource()
             .addValue("p_movie_id", movieId)
-            .addValue("p_user_id", rating.getUser().getId())
+            .addValue("p_user_id", rating.getUserId())
             .addValue("p_rating", rating.getRating());
         log.trace("add:params={}", params);
 
@@ -50,14 +53,23 @@ public class JdbcRatingDao implements RatingDao {
     @Override
     public Rating getByMovie(int movieId, int userId) {
         log.trace("getByMovie:movieId={};userId={}", movieId, userId);
-        Rating result =  (Rating) getCurrentSession().get(Rating.class, movieId);
+        Rating result =  (Rating) getCurrentSession().byNaturalId(Rating.class)
+                //.using("movie_id", movieId)
+                .using("userId", userId)
+                .load();
         log.trace("getByMovie:result={}", result);
 
         return result;
     }
 
     private Session getCurrentSession() {
-        return sessionFactory.getCurrentSession();
+        Session result;
+        try {
+            result = sessionFactory.getCurrentSession();
+        } catch (HibernateException e) {
+            result = sessionFactory.openSession();
+        }
+        return result;
     }
 
     @Autowired

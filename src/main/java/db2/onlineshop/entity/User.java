@@ -2,13 +2,11 @@ package db2.onlineshop.entity;
 
 import db2.onlineshop.service.security.entity.Role;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Embeddable
+@Table(name = "user")
 public class User {
-    @Id
     @Column(name = "id")
     private int id;
 

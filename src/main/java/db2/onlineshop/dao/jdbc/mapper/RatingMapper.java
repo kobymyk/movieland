@@ -13,10 +13,7 @@ public class RatingMapper implements RowMapper<Rating> {
         Rating result = new Rating();
         result.setMovieId(resultSet.getInt("movie_id"));
         result.setRating(resultSet.getDouble("rating"));
-
-        User user = new User();
-        user.setId(resultSet.getInt("user_id"));
-        result.setUser(user);
+        result.setUserId(resultSet.getInt("user_id"));
 
         return result;
     }

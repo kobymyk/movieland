@@ -1,16 +1,19 @@
 package db2.onlineshop.entity;
 
+import org.hibernate.annotations.NaturalId;
+
 import javax.persistence.*;
 
 @Entity
-@Table(name = "MOVIE_RATING")
+@Table(name = "movie_rating")
 public class Rating {
     @Id
+    @NaturalId
     @Column(name = "movie_id")
     private int movieId;
-    @Embedded
-    @AttributeOverrides({ @AttributeOverride(name = "id", column = @Column(name = "user_id")) })
-    private User user;
+    @NaturalId
+    @Column(name = "user_id")
+    private int userId;
     @Column(nullable = false)
     private double rating;
 
@@ -22,12 +25,12 @@ public class Rating {
         this.movieId = movieId;
     }
 
-    public User getUser() {
-        return user;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public double getRating() {
@@ -42,7 +45,7 @@ public class Rating {
     public String toString() {
         return "Rating{" +
                 "movieId=" + movieId +
-                ", user=" + user +
+                ", userId=" + userId +
                 ", rating=" + rating +
                 '}';
     }
