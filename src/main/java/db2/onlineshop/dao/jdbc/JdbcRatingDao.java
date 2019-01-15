@@ -4,6 +4,8 @@ import db2.onlineshop.dao.RatingDao;
 import db2.onlineshop.dao.jdbc.mapper.RatingMapper;
 import db2.onlineshop.entity.Rating;
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,8 @@ import java.util.Map;
 public class JdbcRatingDao implements RatingDao {
     private final Logger log = LoggerFactory.getLogger(getClass());
     private static final RatingMapper ROW_MAPPER = new RatingMapper();
+
+    SessionFactory sessionFactory;
 
     private BasicDataSource dataSource;
     private NamedParameterJdbcTemplate namedJdbcTemplate;
@@ -46,14 +50,14 @@ public class JdbcRatingDao implements RatingDao {
     @Override
     public Rating getByMovie(int movieId, int userId) {
         log.trace("getByMovie:movieId={};userId={}", movieId, userId);
-        MapSqlParameterSource params = new MapSqlParameterSource()
-                .addValue("movie_id", movieId)
-                .addValue("user_id", userId);
-
-        Rating result = namedJdbcTemplate.queryForObject(selectByMovie, params, ROW_MAPPER);
+        Rating result =  (Rating) getCurrentSession().get(Rating.class, movieId);
         log.trace("getByMovie:result={}", result);
 
         return result;
+    }
+
+    private Session getCurrentSession() {
+        return sessionFactory.getCurrentSession();
     }
 
     @Autowired
@@ -67,5 +71,10 @@ public class JdbcRatingDao implements RatingDao {
     @Qualifier("selectByMovieRating")
     public void setSelectByMovie(String selectByMovie) {
         this.selectByMovie = selectByMovie;
+    }
+
+    @Autowired
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 }

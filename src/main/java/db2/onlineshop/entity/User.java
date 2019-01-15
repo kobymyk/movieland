@@ -2,8 +2,16 @@ package db2.onlineshop.entity;
 
 import db2.onlineshop.service.security.entity.Role;
 
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Id;
+
+@Embeddable
 public class User {
+    @Id
+    @Column(name = "id")
     private int id;
+
     private String nickname;
     private String email;
 

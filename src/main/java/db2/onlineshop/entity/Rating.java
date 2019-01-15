@@ -1,8 +1,17 @@
 package db2.onlineshop.entity;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "MOVIE_RATING")
 public class Rating {
+    @Id
+    @Column(name = "movie_id")
     private int movieId;
+    @Embedded
+    @AttributeOverrides({ @AttributeOverride(name = "id", column = @Column(name = "user_id")) })
     private User user;
+    @Column(nullable = false)
     private double rating;
 
     public int getMovieId() {

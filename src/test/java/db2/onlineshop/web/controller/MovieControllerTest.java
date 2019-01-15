@@ -112,7 +112,7 @@ public class MovieControllerTest {
     @Test
     public void getById() throws Exception {
         final int id = 1;
-        when(movieService.getById(id)).thenReturn(mockMovies().get(0));
+        when(movieService.getById(id, null)).thenReturn(mockMovies().get(0));
         when(genreService.getByMovie(id)).thenReturn(mockGenres());
 
         mockMvc.perform(get("/v1/movie/1"))
@@ -123,7 +123,7 @@ public class MovieControllerTest {
                 .andExpect(jsonPath("$.genres[0].name", is("имя 1")))
                 .andExpect(jsonPath("$.nameNative", is("name 1")));
 
-        verify(movieService, times(1)).getById(id);
+        verify(movieService, times(1)).getById(id, null);
         verifyNoMoreInteractions(movieService);
     }
 
