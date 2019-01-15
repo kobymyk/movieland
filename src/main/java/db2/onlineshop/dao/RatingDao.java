@@ -6,4 +6,6 @@ public interface RatingDao {
 
     void add(Rating rating);
 
+    Rating getByMovie(int movieId, int userId);
+
 }

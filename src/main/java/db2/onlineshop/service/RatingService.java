@@ -5,4 +5,6 @@ import db2.onlineshop.entity.Rating;
 public interface RatingService {
 
     void add(Rating rating);
+
+    Rating getByMovie(int movieId);
 }

@@ -1,6 +1,7 @@
 package db2.onlineshop.web.handler;
 
 import db2.onlineshop.entity.User;
+import db2.onlineshop.service.security.entity.Role;
 import db2.onlineshop.service.security.exception.AuthenticationException;
 import db2.onlineshop.service.security.holder.SecurityHolder;
 import org.slf4j.Logger;
@@ -24,12 +25,15 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
         HandlerMethod method = (HandlerMethod) handler;
         Permission annotation = method.getMethodAnnotation(Permission.class);
         if (annotation == null) {
-            log.debug("preHandle:annotation=null");
+            log.debug("preHandle:annotation is null");
             return true;
         }
-        if (user != null && Arrays.stream(annotation.roles()).anyMatch(r -> r == user.getRole())) {
-            log.debug("preHandle:result=true");
-            return true;
+        if (user != null) {
+            Role role = user.getRole();
+            if (Arrays.stream(annotation.roles()).anyMatch(role::equals)) {
+                log.debug("preHandle:return true");
+                return true;
+            }
         }
 
         throw new AuthenticationException("Invalid role");
