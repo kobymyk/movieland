@@ -10,6 +10,8 @@ import java.util.List;
 
 @Service
 public class ServiceProvider {
+    private List<Object> services;
+
     private MovieService movieService;
     private GenreService genreService;
     private CountryService countryService;
@@ -38,26 +40,16 @@ public class ServiceProvider {
     }
 
     public List<Object> getAll() {
-        List<Object> result = new ArrayList<>();
+        if (services == null) {
+            services = new ArrayList<>();
 
-        result.add(movieService);
-        result.add(genreService);
-        result.add(countryService);
-        result.add(reviewService);
-
-        return result;
-    }
-
-    public List<Object> filter(Class<?> anyInterface) {
-        List<Object> result = new ArrayList<>();
-        List<Object> services = getAll();
-        for (Object service : services) {
-            if (anyInterface.isAssignableFrom(service.getClass())) {
-                result.add(service);
-            }
+            services.add(movieService);
+            services.add(genreService);
+            services.add(countryService);
+            services.add(reviewService);
         }
 
-        return result;
+        return services;
     }
 
     @Autowired

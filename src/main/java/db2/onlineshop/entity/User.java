@@ -1,19 +1,22 @@
 package db2.onlineshop.entity;
 
 import db2.onlineshop.service.security.entity.Role;
+import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 
+@Entity
 @Embeddable
-@Table(name = "user")
+@Table(name = "users")
 public class User {
-    @Column(name = "id")
+    @Id
     private int id;
-
+    @Column(name = "name")
     private String nickname;
+    @NaturalId
     private String email;
-
     private String password;
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     public int getId() {

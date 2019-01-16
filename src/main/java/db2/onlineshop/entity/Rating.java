@@ -4,10 +4,17 @@ import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 
+@org.hibernate.annotations.NamedNativeQuery(
+        name = "addRating",
+        query = "CALL pkg_movie.set_movie_rating(:p_movie_id, :p_user_id, :p_rating)",
+        resultClass = Rating.class
+)
+
 @Entity
 @Table(name = "movie_rating")
 public class Rating {
     @Id
+    private int id;
     @NaturalId
     @Column(name = "movie_id")
     private int movieId;

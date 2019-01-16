@@ -6,4 +6,11 @@ public class RatingRequest {
     public double getRating() {
         return rating;
     }
+
+    @Override
+    public String toString() {
+        return "RatingRequest{" +
+                "rating=" + rating +
+                '}';
+    }
 }
