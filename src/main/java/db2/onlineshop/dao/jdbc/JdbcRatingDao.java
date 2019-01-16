@@ -1,7 +1,7 @@
 package db2.onlineshop.dao.jdbc;
 
 import db2.onlineshop.dao.RatingDao;
-import db2.onlineshop.entity.Rating;
+import db2.onlineshop.entity.MovieRating;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -20,19 +20,19 @@ public class JdbcRatingDao implements RatingDao {
     private Session session;
 
     @Override
-    public void add(Rating rating) {
-        log.trace("add:rating={}", rating);
+    public void add(MovieRating movieRating) {
+        log.trace("add:rating={}", movieRating);
         Query procedure = session.getNamedQuery("addRating")
-                .setParameter("p_movie_id", rating.getMovieId())
-                .setParameter("p_user_id", rating.getUserId())
-                .setParameter("p_rating", rating.getRating());
+                .setParameter("p_movie_id", movieRating.getMovieId())
+                .setParameter("p_user_id", movieRating.getUserId())
+                .setParameter("p_rating", movieRating.getRating());
         procedure.executeUpdate();
     }
 
     @Override
-    public Rating getByMovie(int movieId, int userId) {
+    public MovieRating getByMovie(int movieId, int userId) {
         log.trace("getByMovie:movieId={};userId={}", movieId, userId);
-        Rating result =  (Rating) session.byNaturalId(Rating.class)
+        MovieRating result =  (MovieRating) session.byNaturalId(MovieRating.class)
                 .using("movieId", movieId)
                 .using("userId", userId)
                 .load();

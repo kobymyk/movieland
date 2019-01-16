@@ -4,6 +4,8 @@ import db2.onlineshop.dao.CountryDao;
 import db2.onlineshop.dao.jdbc.mapper.CountryMapper;
 import db2.onlineshop.entity.Country;
 import db2.onlineshop.entity.Movie;
+import db2.onlineshop.entity.compound.CountryItem;
+import db2.onlineshop.entity.compound.MovieItems;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,9 +42,9 @@ public class JdbcCountryDao implements CountryDao {
     private String updateReference;
 
     @Override
-    public List<Country> getByMovie(int movieId) {
+    public List<CountryItem> getByMovie(int movieId) {
         log.trace("getByMovie");
-        List<Country> result = jdbcTemplate.query(selectByMovie, ROW_MAPPER, movieId);
+        List<CountryItem> result = jdbcTemplate.query(selectByMovie, ROW_MAPPER, movieId);
         log.trace("getByMovie:result", result);
 
         return result;
@@ -51,21 +53,21 @@ public class JdbcCountryDao implements CountryDao {
     @Override
     public List<Country> getAll() {
         log.trace("getAll");
-        List<Country> result = jdbcTemplate.query(selectAll, ROW_MAPPER);
-        log.trace("getAll:result", result);
+        //List<Country> result = jdbcTemplate.query(selectAll, ROW_MAPPER);
+        //log.trace("getAll:result", result);
 
-        return result;
+        return null;
     }
 
     @Override
     @Transactional
-    public void addReference(Movie movie) {
+    public void addReference(MovieItems movie) {
         log.trace("addReference");
-        List<Country> countries = movie.getCountries();
+        List<CountryItem> countries = movie.getCountries();
         // todo: getParams
         SqlParameterSource[] params = new MapSqlParameterSource[countries.size()];
         int i = 0;
-        for (Country country : countries) {
+        for (CountryItem country : countries) {
             params[i++] = new MapSqlParameterSource()
                     .addValue("movieId", movie.getId())
                     .addValue("countryId", country.getId());
@@ -77,7 +79,7 @@ public class JdbcCountryDao implements CountryDao {
 
     @Override
     @Transactional
-    public void updateReference(Movie movie) {
+    public void updateReference(MovieItems movie) {
         String countryIds = movie.getCountries().stream()
                 .map(p -> String.valueOf(p.getId()))
                 .collect(Collectors.joining(",", "{\"result:\" [", "] }"));

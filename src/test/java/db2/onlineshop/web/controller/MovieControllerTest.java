@@ -2,6 +2,8 @@ package db2.onlineshop.web.controller;
 
 import db2.onlineshop.entity.Genre;
 import db2.onlineshop.entity.Movie;
+import db2.onlineshop.entity.compound.GenreItem;
+import db2.onlineshop.entity.compound.MovieItems;
 import db2.onlineshop.service.impl.BasicGenreService;
 import db2.onlineshop.service.impl.BasicMovieService;
 import org.junit.Before;
@@ -138,10 +140,10 @@ public class MovieControllerTest {
     }
 
     private List<Movie> mockMovies() {
-        Movie movie = null;
-        List<Movie> result = new ArrayList<>();
+        MovieItems movie = null;
+        List<MovieItems> result = new ArrayList<>();
 
-        movie = new Movie();
+        movie = new MovieItems();
         movie.setId(1);
         movie.setName("имя 1");
         movie.setNameNative("name 1");
@@ -151,7 +153,7 @@ public class MovieControllerTest {
         movie.setPrice(10.1);
         result.add(movie);
 
-        movie = new Movie();
+        movie = new MovieItems();
         movie.setId(2);
         movie.setName("имя 2");
         movie.setNameNative("name 2");
@@ -161,7 +163,7 @@ public class MovieControllerTest {
         movie.setPrice(20.2);
         result.add(movie);
 
-        movie = new Movie();
+        movie = new MovieItems();
         movie.setId(3);
         movie.setName("имя 3");
         movie.setNameNative("name 3");
@@ -174,10 +176,10 @@ public class MovieControllerTest {
         return result;
     }
 
-    private List<Genre> mockGenres() {
-        List<Genre> result = Arrays.asList(
-                new Genre(1, "genre 1"),
-                new Genre(2, "genre 2"));
+    private List<GenreItem> mockGenres() {
+        List<GenreItem> result = Arrays.asList(
+                new GenreItem(1, "genre 1"),
+                new GenreItem(2, "genre 2"));
 
         return result;
     }

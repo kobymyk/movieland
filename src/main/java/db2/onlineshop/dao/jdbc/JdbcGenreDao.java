@@ -5,6 +5,8 @@ import db2.onlineshop.dao.jdbc.mapper.GenreMapper;
 import db2.onlineshop.entity.Country;
 import db2.onlineshop.entity.Genre;
 import db2.onlineshop.entity.Movie;
+import db2.onlineshop.entity.compound.GenreItem;
+import db2.onlineshop.entity.compound.MovieItems;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,33 +36,33 @@ public class JdbcGenreDao implements GenreDao {
     @Override
     public List<Genre> getAll() {
         long startTime = System.currentTimeMillis();
-        List<Genre> result = jdbcTemplate.query(selectAll, ROW_MAPPER);
+        //List<Genre> result = jdbcTemplate.query(selectAll, ROW_MAPPER);
         log.info("getAll:duration={}", System.currentTimeMillis() - startTime);
 
-        return result;
+        return null;
     }
 
     @Override
-    public List<Genre> getByMovie(int movieId) {
+    public List<GenreItem> getByMovie(int movieId) {
         long startTime = System.currentTimeMillis();
-        List<Genre> result = jdbcTemplate.query(selectByMovie, ROW_MAPPER, movieId);
+        //List<GenreItem> result = jdbcTemplate.query(selectByMovie, ROW_MAPPER, movieId);
         log.info("getByMovie:duration={}", System.currentTimeMillis() - startTime);
 
-        return result;
+        return null;
     }
 
     @Override
     @Transactional
-    public void addReference(Movie movie) {
+    public void addReference(MovieItems movie) {
         log.trace("addReference");
-        List<Genre> genres = movie.getGenres();
+        List<GenreItem> genres = movie.getGenres();
         // todo: getParams
         SqlParameterSource[] params = new MapSqlParameterSource[genres.size()];
         int i = 0;
-        for (Genre genre : genres) {
+        for (GenreItem item : genres) {
             params[i++] = new MapSqlParameterSource()
                     .addValue("movieId", movie.getId())
-                    .addValue("countryId", genre.getId());
+                    .addValue("countryId", item.getId());
         }
         log.trace("addReference:params={}", params);
 
@@ -69,7 +71,7 @@ public class JdbcGenreDao implements GenreDao {
 
     @Override
     @Transactional
-    public void editReference(Movie movie) {
+    public void editReference(MovieItems movie) {
         // todo:
     }
 

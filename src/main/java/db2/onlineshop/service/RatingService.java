@@ -1,10 +1,10 @@
 package db2.onlineshop.service;
 
-import db2.onlineshop.entity.Rating;
+import db2.onlineshop.entity.MovieRating;
 
 public interface RatingService {
 
-    void add(Rating rating);
+    void add(MovieRating movieRating);
 
-    Rating getByMovie(int movieId);
+    MovieRating getByMovie(int movieId);
 }

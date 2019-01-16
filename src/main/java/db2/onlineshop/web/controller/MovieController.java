@@ -3,12 +3,13 @@ package db2.onlineshop.web.controller;
 import db2.onlineshop.entity.Movie;
 import db2.onlineshop.entity.SortOrder;
 import db2.onlineshop.entity.RequestParams;
+import db2.onlineshop.entity.compound.MovieItems;
 import db2.onlineshop.service.MovieService;
 import db2.onlineshop.service.security.entity.Role;
 import db2.onlineshop.web.data.MovieAddRequest;
 import db2.onlineshop.web.data.MovieEditRequest;
 import db2.onlineshop.web.data.MovieResponse;
-import db2.onlineshop.web.data.mapper.MovieMapper;
+import db2.onlineshop.web.data.ResponseMapper;
 import db2.onlineshop.web.handler.Permission;
 import db2.onlineshop.web.utils.SortOrderSupport;
 import org.slf4j.Logger;
@@ -24,7 +25,7 @@ import java.util.List;
 @RequestMapping("/v1/movie")
 public class MovieController {
     private final Logger log = LoggerFactory.getLogger(getClass());
-    private final MovieMapper MOVIE_MAPPER = new MovieMapper();
+    private final ResponseMapper<Movie, MovieResponse> MOVIE_MAPPER = new ResponseMapper(MovieResponse.class);
 
     private MovieService movieService;
 
@@ -88,7 +89,7 @@ public class MovieController {
     public void add(@RequestBody MovieAddRequest request) {
         long startTime = System.currentTimeMillis();
         log.info("add:request={}", request);
-        Movie movie = request.getMovie();
+        MovieItems movie = request.getMovie();
         log.info("add:movie={}", movie);
 
         movieService.add(movie);
@@ -100,7 +101,7 @@ public class MovieController {
     public void edit(@RequestBody MovieEditRequest request, @PathVariable int id) {
         long startTime = System.currentTimeMillis();
         log.info("edit:id={}", id);
-        Movie movie = request.getMovie();
+        MovieItems movie = request.getMovie();
         movie.setId(id);
         log.debug("edit:movie={}", movie);
 

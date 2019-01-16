@@ -1,12 +1,12 @@
 package db2.onlineshop.web.controller;
 
-import db2.onlineshop.entity.Rating;
+import db2.onlineshop.entity.MovieRating;
 import db2.onlineshop.service.RatingService;
 import db2.onlineshop.service.security.entity.Role;
 import db2.onlineshop.service.security.holder.SecurityHolder;
 import db2.onlineshop.web.data.RatingRequest;
 import db2.onlineshop.web.data.RatingResponse;
-import db2.onlineshop.web.data.mapper.ResponseMapper;
+import db2.onlineshop.web.data.ResponseMapper;
 import db2.onlineshop.web.handler.Permission;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/v1/movie/{movieId}")
 public class RatingController {
     private final Logger log = LoggerFactory.getLogger(getClass());
-    private final ResponseMapper<Rating, RatingResponse> RATING_MAPPER = new ResponseMapper(RatingResponse.class);
+    private final ResponseMapper<MovieRating, RatingResponse> RATING_MAPPER = new ResponseMapper(RatingResponse.class);
 
     private RatingService ratingService;
 
@@ -28,12 +28,12 @@ public class RatingController {
         log.info("add:movieId={};ratingRequest={}", movieId, ratingRequest);
         long startTime = System.currentTimeMillis();
 
-        Rating rating = new Rating();
-        rating.setMovieId(movieId);
-        rating.setUserId(SecurityHolder.get().getId());
-        rating.setRating(ratingRequest.getRating());
+        MovieRating movieRating = new MovieRating();
+        movieRating.setMovieId(movieId);
+        movieRating.setUserId(SecurityHolder.get().getId());
+        movieRating.setRating(ratingRequest.getRating());
 
-        ratingService.add(rating);
+        ratingService.add(movieRating);
 
         log.info("add:duration={}", System.currentTimeMillis() - startTime);
     }
@@ -44,8 +44,8 @@ public class RatingController {
         long startTime = System.currentTimeMillis();
         log.info("getByMovie:movieId={}", movieId);
 
-        Rating rating = ratingService.getByMovie(movieId);
-        RatingResponse result = RATING_MAPPER.mapObject(rating);
+        MovieRating movieRating = ratingService.getByMovie(movieId);
+        RatingResponse result = RATING_MAPPER.mapObject(movieRating);
         log.info("getByMovie:duration={}", System.currentTimeMillis() - startTime);
 
         return result;

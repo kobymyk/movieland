@@ -1,8 +1,7 @@
-package db2.onlineshop.entity;
+package db2.onlineshop.entity.compound;
 
-public class Country {
+public class GenreItem {
     private int id;
-    private int movieId;
     private String name;
 
     public int getId() {
@@ -13,24 +12,18 @@ public class Country {
         return name;
     }
 
-    public int getMovieId() {
-        return movieId;
+    public GenreItem() {
     }
 
-    public Country() {
-    }
-
-    public Country(int id, int movieId, String name) {
+    public GenreItem(int id, String name) {
         this.id = id;
-        this.movieId = movieId;
         this.name = name;
     }
 
     @Override
     public String toString() {
-        return "Country{" +
+        return "GenreItem{" +
                 "id=" + id +
-                ", movieId=" + movieId +
                 ", name='" + name + '\'' +
                 '}';
     }

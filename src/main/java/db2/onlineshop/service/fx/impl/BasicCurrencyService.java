@@ -1,6 +1,7 @@
 package db2.onlineshop.service.fx.impl;
 
 import db2.onlineshop.entity.Movie;
+import db2.onlineshop.entity.compound.MovieItems;
 import db2.onlineshop.service.MovieEnricher;
 import db2.onlineshop.service.fx.CurrencyService;
 import db2.onlineshop.service.fx.entity.Currency;
@@ -92,7 +93,7 @@ public class BasicCurrencyService implements CurrencyService, MovieEnricher {
     }
 
     @Override
-    public void enrich(Movie movie) {
+    public void enrich(MovieItems movie) {
 
     }
 

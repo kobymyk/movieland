@@ -3,6 +3,8 @@ package db2.onlineshop.service.impl;
 import db2.onlineshop.dao.CountryDao;
 import db2.onlineshop.entity.Country;
 import db2.onlineshop.entity.Movie;
+import db2.onlineshop.entity.compound.CountryItem;
+import db2.onlineshop.entity.compound.MovieItems;
 import db2.onlineshop.service.CountryService;
 import db2.onlineshop.service.MovieChild;
 import org.slf4j.Logger;
@@ -19,9 +21,9 @@ public class BasicCountryService implements CountryService, MovieChild {
     private CountryDao countryDao;
 
     @Override
-    public List<Country> getByMovie(int movieId) {
+    public List<CountryItem> getByMovie(int movieId) {
         log.debug("getByMovie:movieId={}", movieId);
-        List<Country> result = countryDao.getByMovie(movieId);
+        List<CountryItem> result = countryDao.getByMovie(movieId);
         log.debug("getByMovie:result.size={}", result.size());
 
         return result;
@@ -37,27 +39,27 @@ public class BasicCountryService implements CountryService, MovieChild {
     }
 
     @Override
-    public void enrich(Movie movie) {
+    public void enrich(MovieItems movie) {
         int movieId = movie.getId();
         log.debug("enrich:movieId={}", movieId);
-        List<Country> countries = getByMovie(movieId);
+        List<CountryItem> countries = getByMovie(movieId);
 
         movie.setCountries(countries);
     }
 
     @Override
-    public void addReference(Movie movie) {
+    public void addReference(MovieItems movie) {
         log.debug("addReference");
         countryDao.addReference(movie);
+    }
+
+    @Override
+    public void editReference(MovieItems movie) {
+        countryDao.updateReference(movie);
     }
 
     @Autowired
     public void setCountryDao(CountryDao countryDao) {
         this.countryDao = countryDao;
-    }
-
-    @Override
-    public void editReference(Movie movie) {
-        countryDao.updateReference(movie);
     }
 }

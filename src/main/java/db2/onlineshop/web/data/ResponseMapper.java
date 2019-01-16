@@ -1,4 +1,4 @@
-package db2.onlineshop.web.data.mapper;
+package db2.onlineshop.web.data;
 
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;

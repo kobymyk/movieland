@@ -3,6 +3,7 @@ package db2.onlineshop.dao.jdbc;
 import db2.onlineshop.dao.ReviewDao;
 import db2.onlineshop.dao.jdbc.mapper.ReviewMapper;
 import db2.onlineshop.entity.Review;
+import db2.onlineshop.entity.compound.ReviewItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +30,8 @@ public class JdbcReviewDao implements ReviewDao {
     private String insertRow;
 
     @Override
-    public List<Review> getByMovie(int movieId) {
-        List<Review> result = jdbcTemplate.query(selectByMovie, ROW_MAPPER, movieId);
+    public List<ReviewItem> getByMovie(int movieId) {
+        List<ReviewItem> result = jdbcTemplate.query(selectByMovie, ROW_MAPPER, movieId);
         log.trace("getByMovie:result={}", result);
 
         return result;

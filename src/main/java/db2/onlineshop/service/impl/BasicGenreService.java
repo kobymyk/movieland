@@ -3,6 +3,8 @@ package db2.onlineshop.service.impl;
 import db2.onlineshop.dao.GenreDao;
 import db2.onlineshop.entity.Genre;
 import db2.onlineshop.entity.Movie;
+import db2.onlineshop.entity.compound.GenreItem;
+import db2.onlineshop.entity.compound.MovieItems;
 import db2.onlineshop.service.GenreService;
 import db2.onlineshop.service.MovieChild;
 import db2.onlineshop.service.MovieEnricher;
@@ -30,30 +32,30 @@ public class BasicGenreService implements GenreService, MovieChild {
     }
 
     @Override
-    public List<Genre> getByMovie(int movieId) {
-        List<Genre> result = genreDao.getByMovie(movieId);
+    public List<GenreItem> getByMovie(int movieId) {
+        List<GenreItem> result = genreDao.getByMovie(movieId);
         log.info("getByMovie:result.size={}", result.size());
 
         return result;
     }
 
     @Override
-    public void enrich(Movie movie) {
+    public void enrich(MovieItems movie) {
         log.debug("enrich");
         int movieId = movie.getId();
-        List<Genre> genres = getByMovie(movieId);
+        List<GenreItem> genres = getByMovie(movieId);
 
         movie.setGenres(genres);
     }
 
     @Override
-    public void addReference(Movie movie) {
+    public void addReference(MovieItems movie) {
         log.debug("addReference");
         genreDao.addReference(movie);
     }
 
     @Override
-    public void editReference(Movie movie) {
+    public void editReference(MovieItems movie) {
 
     }
 

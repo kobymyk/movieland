@@ -1,8 +1,8 @@
 package db2.onlineshop.web.data;
 
-import db2.onlineshop.entity.Country;
-import db2.onlineshop.entity.Genre;
-import db2.onlineshop.entity.Movie;
+import db2.onlineshop.entity.compound.CountryItem;
+import db2.onlineshop.entity.compound.GenreItem;
+import db2.onlineshop.entity.compound.MovieItems;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +18,8 @@ public class MovieAddRequest {
     private List<Integer> countries;
     private List<Integer> genres;
 
-    public Movie getMovie() {
-        Movie result = new Movie();
+    public MovieItems getMovie() {
+        MovieItems result = new MovieItems();
         result.setName(nameRussian);
         result.setNameNative(nameNative);
         result.setPicturePath(picturePath);
@@ -34,21 +34,21 @@ public class MovieAddRequest {
         return result;
     }
 
-    public List<Country> getCountries(){
-        List<Country> result = new ArrayList<>();
+    public List<CountryItem> getCountries(){
+        List<CountryItem> result = new ArrayList<>();
         for (Integer countryId : countries) {
-            Country country = new Country(countryId, null);
-            result.add(country);
+            CountryItem item = new CountryItem(countryId, null);
+            result.add(item);
         }
 
         return result;
     }
 
-    public List<Genre> getGenres(){
-        List<Genre> result = new ArrayList<>();
+    public List<GenreItem> getGenres(){
+        List<GenreItem> result = new ArrayList<>();
         for (Integer genreId : genres) {
-            Genre genre = new Genre(genreId, null);
-            result.add(genre);
+            GenreItem item = new GenreItem(genreId, null);
+            result.add(item);
         }
 
         return result;

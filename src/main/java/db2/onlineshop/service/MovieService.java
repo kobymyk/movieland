@@ -2,6 +2,7 @@ package db2.onlineshop.service;
 
 import db2.onlineshop.entity.Movie;
 import db2.onlineshop.entity.RequestParams;
+import db2.onlineshop.entity.compound.MovieItems;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ public interface MovieService {
 
     Movie getById(int id, RequestParams param);
 
-    int add(Movie movie);
+    int add(MovieItems movie);
 
-    void edit(Movie movie);
+    void edit(MovieItems movie);
 }

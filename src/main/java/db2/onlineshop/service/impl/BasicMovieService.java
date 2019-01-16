@@ -3,6 +3,7 @@ package db2.onlineshop.service.impl;
 import db2.onlineshop.dao.MovieDao;
 import db2.onlineshop.entity.Movie;
 import db2.onlineshop.entity.RequestParams;
+import db2.onlineshop.entity.compound.MovieItems;
 import db2.onlineshop.service.ServiceProvider;
 import db2.onlineshop.service.fx.CurrencyService;
 import db2.onlineshop.service.MovieService;
@@ -52,11 +53,12 @@ public class BasicMovieService implements MovieService {
     }
 
     @Override
-    public Movie getById(int id, RequestParams param) {
-        Movie result = movieDao.getById(id);
-        log.trace("getById:result={}", result);
+    public MovieItems getById(int id, RequestParams param) {
+        Movie movie = movieDao.getById(id);
+        log.trace("getById:movie={}", movie);
 
         CompoundMovieEnricher enricher = serviceProvider.getCompoundMovieEnricher();
+        MovieItems result = new MovieItems(movie);
         enricher.enrich(result);
         log.trace("getById:result={}", result);
 
@@ -71,9 +73,9 @@ public class BasicMovieService implements MovieService {
     }
 
     @Override
-    public int add(Movie movie) {
+    public int add(MovieItems movie) {
         log.trace("add:movie={}", movie);
-        int result = movieDao.add(movie);
+        int result = movieDao.add((Movie) movie);
         movie.setId(result);
 
         CompoundMovieChild children = serviceProvider.getCompoundMovieChild();
@@ -83,9 +85,9 @@ public class BasicMovieService implements MovieService {
     }
 
     @Override
-    public void edit(Movie movie) {
+    public void edit(MovieItems movie) {
         log.trace("edit:movie={}", movie);
-        movieDao.edit(movie);
+        movieDao.edit((Movie) movie);
 
         CompoundMovieChild children = serviceProvider.getCompoundMovieChild();
         children.editReference(movie);

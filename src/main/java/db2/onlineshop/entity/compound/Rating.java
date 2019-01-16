@@ -1,36 +1,18 @@
-package db2.onlineshop.entity;
+package db2.onlineshop.entity.compound;
 
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 
-@org.hibernate.annotations.NamedNativeQuery(
-        name = "addRating",
-        query = "CALL pkg_movie.set_movie_rating(:p_movie_id, :p_user_id, :p_rating)",
-        resultClass = Rating.class
-)
-
-@Entity
-@Table(name = "movie_rating")
+@MappedSuperclass
 public class Rating {
     @Id
     private int id;
-    @NaturalId
-    @Column(name = "movie_id")
-    private int movieId;
     @NaturalId
     @Column(name = "user_id")
     private int userId;
     @Column(nullable = false)
     private double rating;
-
-    public int getMovieId() {
-        return movieId;
-    }
-
-    public void setMovieId(int movieId) {
-        this.movieId = movieId;
-    }
 
     public int getUserId() {
         return userId;
@@ -51,7 +33,6 @@ public class Rating {
     @Override
     public String toString() {
         return "Rating{" +
-                "movieId=" + movieId +
                 ", userId=" + userId +
                 ", rating=" + rating +
                 '}';

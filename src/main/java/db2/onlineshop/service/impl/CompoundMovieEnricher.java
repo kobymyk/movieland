@@ -1,6 +1,7 @@
 package db2.onlineshop.service.impl;
 
 import db2.onlineshop.entity.Movie;
+import db2.onlineshop.entity.compound.MovieItems;
 import db2.onlineshop.service.CountryService;
 import db2.onlineshop.service.GenreService;
 import db2.onlineshop.service.MovieEnricher;
@@ -26,7 +27,7 @@ public class CompoundMovieEnricher implements MovieEnricher {
     }
 
     @Override
-    public void enrich(Movie movie) {
+    public void enrich(MovieItems movie) {
         log.debug("enrich");
         ExecutorService executor = Executors.newFixedThreadPool(3);
         List<Callable<MovieEnrichParam>> tasks = new ArrayList<>(enrichers.size());
@@ -56,7 +57,7 @@ public class CompoundMovieEnricher implements MovieEnricher {
                     future.cancel(true);
                 }
                 MovieEnricher enricher = result.getEnricher();
-                Movie futureMovie = result.getMovie();
+                MovieItems futureMovie = result.getMovie();
                 // merge
                 if (enricher instanceof CountryService) {
                     movie.setCountries(futureMovie.getCountries());

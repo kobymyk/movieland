@@ -1,11 +1,11 @@
 package db2.onlineshop.dao;
 
-import db2.onlineshop.entity.Rating;
+import db2.onlineshop.entity.MovieRating;
 
 public interface RatingDao {
 
-    void add(Rating rating);
+    void add(MovieRating movieRating);
 
-    Rating getByMovie(int movieId, int userId);
+    MovieRating getByMovie(int movieId, int userId);
 
 }
