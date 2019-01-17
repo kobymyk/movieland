@@ -1,6 +1,6 @@
-package db2.onlineshop.entity.model;
+package db2.onlineshop.entity;
 
-import db2.onlineshop.entity.Country;
+
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.Column;
@@ -8,8 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "all_movie_country")
-public class MovieCountry extends Country {
+@Table(name = "all_movie_genre")
+public class MovieGenre extends Genre {
     @NaturalId
     @Column(name = "movie_id")
     private int movieId;
@@ -24,7 +24,7 @@ public class MovieCountry extends Country {
 
     @Override
     public String toString() {
-        return "MovieCountry{" +
+        return "Genre{" +
                 "movieId=" + movieId +
                 ", id=" + id +
                 ", name='" + name + '\'' +

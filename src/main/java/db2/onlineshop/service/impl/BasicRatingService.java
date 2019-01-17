@@ -1,7 +1,7 @@
 package db2.onlineshop.service.impl;
 
 import db2.onlineshop.dao.RatingDao;
-import db2.onlineshop.entity.model.MovieRating;
+import db2.onlineshop.entity.MovieRating;
 import db2.onlineshop.entity.User;
 import db2.onlineshop.service.RatingService;
 import db2.onlineshop.service.security.holder.SecurityHolder;
@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class BasicRatingService implements RatingService {
@@ -17,6 +18,7 @@ public class BasicRatingService implements RatingService {
     private RatingDao ratingDao;
 
     @Override
+    @Transactional
     public void add(MovieRating movieRating) {
         log.debug("add:rating={}", movieRating);
         ratingDao.add(movieRating);
@@ -28,7 +30,7 @@ public class BasicRatingService implements RatingService {
         User user = SecurityHolder.get();
         log.debug("getByMovie:user={}", user);
 
-        MovieRating result = ratingDao.getByMovie(movieId, user.getId());
+        MovieRating result = ratingDao.getRating(movieId, user.getId());
         log.debug("getByMovie:result={}", result);
 
         return result;

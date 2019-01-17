@@ -1,6 +1,6 @@
 package db2.onlineshop.web.controller;
 
-import db2.onlineshop.entity.model.MovieRating;
+import db2.onlineshop.entity.MovieRating;
 import db2.onlineshop.service.RatingService;
 import db2.onlineshop.service.security.entity.Role;
 import db2.onlineshop.service.security.holder.SecurityHolder;

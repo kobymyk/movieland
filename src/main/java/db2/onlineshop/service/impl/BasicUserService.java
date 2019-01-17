@@ -18,7 +18,7 @@ public class BasicUserService implements UserService {
 
     @Override
     public Optional<User> getByEmail(String email) {
-        return userDao.getByEmail(email);
+        return userDao.getByKey("email", email);
     }
 
     @Autowired

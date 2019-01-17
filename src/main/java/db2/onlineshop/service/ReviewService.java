@@ -1,6 +1,6 @@
 package db2.onlineshop.service;
 
-import db2.onlineshop.entity.model.MovieReview;
+import db2.onlineshop.entity.MovieReview;
 import db2.onlineshop.entity.Review;
 
 import java.util.List;

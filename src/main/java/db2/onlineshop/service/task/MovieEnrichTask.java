@@ -1,6 +1,6 @@
 package db2.onlineshop.service.task;
 
-import db2.onlineshop.entity.compound.MovieCompound;
+import db2.onlineshop.entity.MovieCompound;
 import db2.onlineshop.service.MovieEnricher;
 
 import java.util.concurrent.Callable;

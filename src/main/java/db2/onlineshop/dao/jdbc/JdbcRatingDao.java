@@ -1,7 +1,7 @@
 package db2.onlineshop.dao.jdbc;
 
 import db2.onlineshop.dao.RatingDao;
-import db2.onlineshop.entity.model.MovieRating;
+import db2.onlineshop.entity.MovieRating;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -30,7 +30,7 @@ public class JdbcRatingDao implements RatingDao {
     }
 
     @Override
-    public MovieRating getByMovie(int movieId, int userId) {
+    public MovieRating getRating(int movieId, int userId) {
         log.trace("getByMovie:movieId={};userId={}", movieId, userId);
         MovieRating result =  (MovieRating) session.byNaturalId(MovieRating.class)
                 .using("movieId", movieId)

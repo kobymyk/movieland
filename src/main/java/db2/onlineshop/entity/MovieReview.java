@@ -1,6 +1,6 @@
-package db2.onlineshop.entity.model;
+package db2.onlineshop.entity;
 
-import db2.onlineshop.entity.Genre;
+
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.Column;
@@ -8,8 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "movie_genre")
-public class MovieGenre extends Genre {
+@Table(name = "review")
+public class MovieReview extends Review {
     @NaturalId
     @Column(name = "movie_id")
     private int movieId;
@@ -24,10 +24,11 @@ public class MovieGenre extends Genre {
 
     @Override
     public String toString() {
-        return "MovieGenre{" +
+        return "MovieReview{" +
                 "movieId=" + movieId +
                 ", id=" + id +
-                ", name='" + name + '\'' +
+                ", text='" + text + '\'' +
+                ", user=" + userId +
                 '}';
     }
 }

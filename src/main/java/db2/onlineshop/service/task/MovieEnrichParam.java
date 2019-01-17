@@ -1,6 +1,6 @@
 package db2.onlineshop.service.task;
 
-import db2.onlineshop.entity.compound.MovieCompound;
+import db2.onlineshop.entity.MovieCompound;
 import db2.onlineshop.service.MovieEnricher;
 
 public class MovieEnrichParam {
@@ -14,7 +14,7 @@ public class MovieEnrichParam {
 
     private MovieCompound copyMovie(MovieCompound movie) {
         MovieCompound result = new MovieCompound();
-        result.setId(movie.getId());
+        //result.setId(movie.getId());
 
         return result;
     }

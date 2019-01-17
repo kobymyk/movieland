@@ -1,6 +1,6 @@
 package db2.onlineshop.service.impl;
 
-import db2.onlineshop.entity.compound.MovieCompound;
+import db2.onlineshop.entity.MovieCompound;
 import db2.onlineshop.service.CountryService;
 import db2.onlineshop.service.GenreService;
 import db2.onlineshop.service.MovieEnricher;
@@ -62,7 +62,7 @@ public class CompoundMovieEnricher implements MovieEnricher {
                     movie.setCountries(futureMovie.getCountries());
                 }
                 if (enricher instanceof GenreService) {
-                    movie.setGenres(futureMovie.getGenres());
+                    movie.setMovieGenres(futureMovie.getMovieGenres());
                 }
                 if (enricher instanceof ReviewService) {
                     movie.setReviews(futureMovie.getReviews());

@@ -2,8 +2,7 @@ package db2.onlineshop.service.impl;
 
 import db2.onlineshop.dao.GenreDao;
 import db2.onlineshop.entity.Genre;
-import db2.onlineshop.entity.compound.MovieCompound;
-import db2.onlineshop.entity.model.MovieGenre;
+import db2.onlineshop.entity.MovieCompound;
 import db2.onlineshop.service.GenreService;
 import db2.onlineshop.service.MovieChild;
 import org.slf4j.Logger;
@@ -20,8 +19,8 @@ public class BasicGenreService implements GenreService, MovieChild {
     private GenreDao genreDao;
 
     @Override
-    public List<MovieGenre> getAll() {
-        List<MovieGenre> result = genreDao.getAll();
+    public List<Genre> getAll() {
+        List<Genre> result = genreDao.getAll();
         log.info("getAll:result.size={}", result.size());
 
         return result;
@@ -29,7 +28,7 @@ public class BasicGenreService implements GenreService, MovieChild {
 
     @Override
     public List<Genre> getByMovie(int movieId) {
-        List<Genre> result = genreDao.getByMovie(movieId);
+        List<Genre> result = genreDao.listByKey("movieId", movieId);
         log.info("getByMovie:result.size={}", result.size());
 
         return result;
@@ -38,10 +37,9 @@ public class BasicGenreService implements GenreService, MovieChild {
     @Override
     public void enrich(MovieCompound movie) {
         log.debug("enrich");
-        int movieId = movie.getId();
-        List<Genre> genres = getByMovie(movieId);
+        List<Genre> genres = getByMovie(movie.getMovie().getId());
 
-        movie.setGenres(genres);
+        movie.setMovieGenres(genres);
     }
 
     @Override

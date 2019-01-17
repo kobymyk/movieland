@@ -1,7 +1,6 @@
 package db2.onlineshop.web.controller;
 
 import db2.onlineshop.entity.Genre;
-import db2.onlineshop.entity.model.MovieGenre;
 import db2.onlineshop.service.impl.BasicGenreService;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,7 +19,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
-public class GenreControllerTest {
+public class MovieGenreControllerTest {
     @Mock
     private BasicGenreService genreService;
     @InjectMocks

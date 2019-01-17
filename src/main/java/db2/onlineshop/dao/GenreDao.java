@@ -1,16 +1,9 @@
 package db2.onlineshop.dao;
 
 import db2.onlineshop.entity.Genre;
-import db2.onlineshop.entity.compound.MovieCompound;
-import db2.onlineshop.entity.model.MovieGenre;
+import db2.onlineshop.entity.MovieCompound;
 
-import java.util.List;
-
-public interface GenreDao {
-
-    List<MovieGenre> getAll();
-
-    List<Genre> getByMovie(int movieId);
+public interface GenreDao extends PersistOperation<Genre> {
 
     void addReference(MovieCompound movie);
 

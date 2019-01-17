@@ -1,6 +1,6 @@
 package db2.onlineshop.service.fx.impl;
 
-import db2.onlineshop.entity.compound.MovieCompound;
+import db2.onlineshop.entity.MovieCompound;
 import db2.onlineshop.service.MovieEnricher;
 import db2.onlineshop.service.fx.CurrencyService;
 import db2.onlineshop.service.fx.entity.Currency;

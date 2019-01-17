@@ -1,8 +1,8 @@
 package db2.onlineshop.web.controller;
 
 import db2.onlineshop.entity.Genre;
-import db2.onlineshop.entity.compound.MovieCompound;
-import db2.onlineshop.entity.model.Movie;
+import db2.onlineshop.entity.MovieCompound;
+import db2.onlineshop.entity.Movie;
 import db2.onlineshop.service.impl.BasicGenreService;
 import db2.onlineshop.service.impl.BasicMovieService;
 import org.junit.Before;
@@ -68,27 +68,6 @@ public class MovieControllerTest {
     }
 
     @Test
-    public void getRandom() throws Exception {
-        List<Movie> movies = mockMovies();
-        when(movieService.getRandom()).thenReturn(movies);
-
-        mockMvc.perform(get("/v1/movie/random"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-                // todo: 2x
-                .andExpect(jsonPath("$[0].id", is(1)))
-                .andExpect(jsonPath("$[0].name", is("имя 1")))
-                .andExpect(jsonPath("$[0].nameNative", is("name 1")))
-                .andExpect(jsonPath("$[0].yearOfRelease", is(1001)))
-                .andExpect(jsonPath("$[0].rating", is(1.01)))
-                .andExpect(jsonPath("$[0].price", is(10.1)))
-                .andExpect(jsonPath("$[0].picturePath", is("path/1")));
-
-        verify(movieService, times(1)).getRandom();
-        verifyNoMoreInteractions(movieService);
-    }
-
-    @Test
     public void getByGenre() throws Exception {
         final int genreId = 1;
         List<Movie> movies = mockMovies();
@@ -142,7 +121,7 @@ public class MovieControllerTest {
         Movie movie = null;
         List<Movie> result = new ArrayList<>();
 
-        movie = new MovieCompound();
+        movie = new Movie();
         movie.setId(1);
         movie.setName("имя 1");
         movie.setNameNative("name 1");
@@ -152,7 +131,7 @@ public class MovieControllerTest {
         movie.setPrice(10.1);
         result.add(movie);
 
-        movie = new MovieCompound();
+        movie = new Movie();
         movie.setId(2);
         movie.setName("имя 2");
         movie.setNameNative("name 2");
@@ -162,7 +141,7 @@ public class MovieControllerTest {
         movie.setPrice(20.2);
         result.add(movie);
 
-        movie = new MovieCompound();
+        movie = new Movie();
         movie.setId(3);
         movie.setName("имя 3");
         movie.setNameNative("name 3");

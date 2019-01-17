@@ -1,14 +1,13 @@
-package db2.onlineshop.entity.model;
+package db2.onlineshop.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "movie")
 public class Movie {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "movieSequence")
+    @SequenceGenerator(name = "movieSequence", sequenceName = "movie_seq", allocationSize = 1)
     protected int id;
     @Column(name = "release_year")
     protected int yearOfRelease;

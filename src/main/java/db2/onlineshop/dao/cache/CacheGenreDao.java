@@ -1,9 +1,8 @@
 package db2.onlineshop.dao.cache;
 
 import db2.onlineshop.dao.GenreDao;
-import db2.onlineshop.entity.model.MovieGenre;
+import db2.onlineshop.dao.jdbc.JdbcGenreDao;
 import db2.onlineshop.entity.Genre;
-import db2.onlineshop.entity.compound.MovieCompound;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,33 +16,18 @@ import java.util.List;
 
 @Repository
 @Primary
-public class CacheGenreDao implements GenreDao {
+public class CacheGenreDao extends JdbcGenreDao {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private GenreDao genreDao;
-    private volatile List<MovieGenre> cache;
+    private volatile List<Genre> cache;
 
     @Override
-    public List<MovieGenre> getAll() {
+    public List<Genre> getAll() {
         log.trace("getAll:cache.size={}", cache.size());
-        List<MovieGenre> result = new ArrayList<>(cache);
+        List<Genre> result = new ArrayList<>(cache);
         // return new copy
         return result;
-    }
-
-    @Override
-    public List<Genre> getByMovie(int movieId) {
-        return genreDao.getByMovie(movieId);
-    }
-
-    @Override
-    public void addReference(MovieCompound movie) {
-        genreDao.addReference(movie);
-    }
-
-    @Override
-    public void editReference(MovieCompound movie) {
-        genreDao.editReference(movie);
     }
 
     @Autowired

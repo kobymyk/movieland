@@ -1,15 +1,14 @@
 package db2.onlineshop.entity;
 
-public class RequestParams {
+public class Ordering {
     private String field;
+    // todo: ascending boolean
     private SortOrder direction;
-    // todo: ?enum
-    private String currency;
 
-    public RequestParams() {
+    public Ordering() {
     }
 
-    public RequestParams(String field, SortOrder direction) {
+    public Ordering(String field, SortOrder direction) {
         this.field = field;
         this.direction = direction;
     }
@@ -30,11 +29,4 @@ public class RequestParams {
         this.direction = direction;
     }
 
-    public String getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(String currency) {
-        this.currency = currency;
-    }
 }

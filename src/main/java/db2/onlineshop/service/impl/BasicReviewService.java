@@ -1,8 +1,9 @@
 package db2.onlineshop.service.impl;
 
 import db2.onlineshop.dao.ReviewDao;
-import db2.onlineshop.entity.model.MovieReview;
-import db2.onlineshop.entity.compound.MovieCompound;
+import db2.onlineshop.entity.Review;
+import db2.onlineshop.entity.MovieReview;
+import db2.onlineshop.entity.MovieCompound;
 import db2.onlineshop.service.ReviewService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,9 +19,9 @@ public class BasicReviewService implements ReviewService {
     private ReviewDao reviewDao;
 
     @Override
-    public List<db2.onlineshop.entity.Review> getByMovie(int movieId) {
+    public List<Review> getByMovie(int movieId) {
         log.debug("getByMovie:movieId={}", movieId);
-        List<db2.onlineshop.entity.Review> result = reviewDao.getByMovie(movieId);
+        List<Review> result = reviewDao.listByKey("movieId", movieId);
 
         return result;
     }
@@ -33,7 +34,7 @@ public class BasicReviewService implements ReviewService {
 
     @Override
     public void enrich(MovieCompound movie) {
-        int movieId = movie.getId();
+        int movieId = movie.getMovie().getId();
         log.debug("enrich:movieId={}", movieId);
         List<db2.onlineshop.entity.Review> reviews = getByMovie(movieId);
 

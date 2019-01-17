@@ -27,7 +27,7 @@ public class Country {
 
     @Override
     public String toString() {
-        return "CountryItem{" +
+        return "Country{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 '}';

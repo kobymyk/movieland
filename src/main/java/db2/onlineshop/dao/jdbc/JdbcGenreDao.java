@@ -1,69 +1,47 @@
 package db2.onlineshop.dao.jdbc;
 
 import db2.onlineshop.dao.GenreDao;
-import db2.onlineshop.dao.jdbc.mapper.GenreMapper;
 import db2.onlineshop.entity.Genre;
-import db2.onlineshop.entity.compound.MovieCompound;
-import db2.onlineshop.entity.model.MovieGenre;
+import db2.onlineshop.entity.MovieCompound;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
 @Repository
-public class JdbcGenreDao implements GenreDao {
+public class JdbcGenreDao extends EntityTemplate<Genre> implements GenreDao {
     private final Logger log = LoggerFactory.getLogger(getClass());
-    private static final GenreMapper ROW_MAPPER = new GenreMapper();
 
-    private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate namedJdbcTemplate;
 
-    private String selectAll;
-    private String selectByMovie;
     private String insertReference;
 
-    @Override
-    public List<MovieGenre> getAll() {
-        long startTime = System.currentTimeMillis();
-        //List<Genre> result = jdbcTemplate.query(selectAll, ROW_MAPPER);
-        log.info("getAll:duration={}", System.currentTimeMillis() - startTime);
-
-        return null;
-    }
-
-    @Override
-    public List<Genre> getByMovie(int movieId) {
-        long startTime = System.currentTimeMillis();
-        //List<GenreItem> result = jdbcTemplate.query(selectByMovie, ROW_MAPPER, movieId);
-        log.info("getByMovie:duration={}", System.currentTimeMillis() - startTime);
-
-        return new ArrayList<>();
+    public JdbcGenreDao() {
+        super();
+        setEntityClass(Genre.class);
     }
 
     @Override
     @Transactional
     public void addReference(MovieCompound movie) {
         log.trace("addReference");
-        List<Genre> genres = movie.getGenres();
+        List<Genre> genres = movie.getMovieGenres();
         // todo: getParams
         SqlParameterSource[] params = new MapSqlParameterSource[genres.size()];
         int i = 0;
         for (Genre item : genres) {
             params[i++] = new MapSqlParameterSource()
-                    .addValue("movieId", movie.getId())
+                    //.addValue("movieId", movie.getId())
                     .addValue("countryId", item.getId());
         }
-        log.trace("addReference:params={}", params);
 
         namedJdbcTemplate.batchUpdate(insertReference, params);
     }
@@ -75,24 +53,8 @@ public class JdbcGenreDao implements GenreDao {
     }
 
     @Autowired
-    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
-    @Autowired
     public void setNamedJdbcTemplate(NamedParameterJdbcTemplate namedJdbcTemplate) {
         this.namedJdbcTemplate = namedJdbcTemplate;
-    }
-
-    @Autowired
-    @Qualifier("selectAllGenres")
-    public void setSelectAll(String selectAll) {
-        this.selectAll = selectAll;
-    }
-
-    @Autowired
-    @Qualifier("selectByMovieGenres")
-    public void setSelectByMovie(String selectByMovie) {
-        this.selectByMovie = selectByMovie;
     }
 
     @Autowired

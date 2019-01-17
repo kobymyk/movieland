@@ -1,6 +1,5 @@
-package db2.onlineshop.entity.model;
+package db2.onlineshop.entity;
 
-import db2.onlineshop.entity.Rating;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;

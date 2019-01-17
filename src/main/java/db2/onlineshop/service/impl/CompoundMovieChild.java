@@ -1,6 +1,6 @@
 package db2.onlineshop.service.impl;
 
-import db2.onlineshop.entity.compound.MovieCompound;
+import db2.onlineshop.entity.MovieCompound;
 import db2.onlineshop.service.MovieChild;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

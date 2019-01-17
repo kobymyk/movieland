@@ -1,7 +1,7 @@
 package db2.onlineshop.dao.jdbc.builder;
 
 import db2.onlineshop.entity.SortOrder;
-import db2.onlineshop.entity.RequestParams;
+import db2.onlineshop.entity.Ordering;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
@@ -21,7 +21,7 @@ public class QueryBuilderTest {
     public void sort() {
         String expected = "SELECT * FROM dual ORDER BY dummy ASC";
 
-        RequestParams param = new RequestParams("dummy", SortOrder.ASC);
+        Ordering param = new Ordering("dummy", SortOrder.ASC);
         String actual = new QueryBuilder(original).addSort(param).build();
 
         assertEquals(expected, actual);
