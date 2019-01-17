@@ -1,14 +1,8 @@
 package db2.onlineshop.dao;
 
 import db2.onlineshop.entity.Review;
-import db2.onlineshop.entity.compound.ReviewItem;
+import db2.onlineshop.entity.model.MovieReview;
 
-import java.util.List;
-
-public interface ReviewDao {
-
-    List<ReviewItem> getByMovie(int movieId);
-
-    int add(int movieId, Review review);
+public interface ReviewDao extends Persistent<MovieReview>, MovieChild<Review> {
 
 }

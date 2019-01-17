@@ -1,10 +1,10 @@
 package db2.onlineshop.service;
 
-import db2.onlineshop.entity.compound.MovieItems;
+import db2.onlineshop.entity.compound.MovieCompound;
 
 public interface MovieChild {
 
-    void addReference(MovieItems movie);
+    void addReference(MovieCompound movie);
 
-    void editReference(MovieItems movie);
+    void editReference(MovieCompound movie);
 }

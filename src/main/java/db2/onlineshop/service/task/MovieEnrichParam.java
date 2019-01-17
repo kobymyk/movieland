@@ -1,26 +1,19 @@
 package db2.onlineshop.service.task;
 
-import db2.onlineshop.entity.Country;
-import db2.onlineshop.entity.Genre;
-import db2.onlineshop.entity.Movie;
-import db2.onlineshop.entity.Review;
-import db2.onlineshop.entity.compound.MovieItems;
+import db2.onlineshop.entity.compound.MovieCompound;
 import db2.onlineshop.service.MovieEnricher;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MovieEnrichParam {
     private MovieEnricher enricher;
-    private MovieItems movie;
+    private MovieCompound movie;
 
-    public MovieEnrichParam(MovieEnricher enricher, MovieItems movie) {
+    public MovieEnrichParam(MovieEnricher enricher, MovieCompound movie) {
         this.enricher = enricher;
         this.movie = copyMovie(movie);
     }
 
-    private MovieItems copyMovie(MovieItems movie) {
-        MovieItems result = new MovieItems();
+    private MovieCompound copyMovie(MovieCompound movie) {
+        MovieCompound result = new MovieCompound();
         result.setId(movie.getId());
 
         return result;
@@ -30,7 +23,7 @@ public class MovieEnrichParam {
         return enricher;
     }
 
-    public MovieItems getMovie() {
+    public MovieCompound getMovie() {
         return movie;
     }
 }

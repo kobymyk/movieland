@@ -1,4 +1,4 @@
-package db2.onlineshop.entity.compound;
+package db2.onlineshop.entity;
 
 import org.hibernate.annotations.NaturalId;
 
@@ -7,12 +7,12 @@ import javax.persistence.*;
 @MappedSuperclass
 public class Rating {
     @Id
-    private int id;
+    protected int id;
     @NaturalId
     @Column(name = "user_id")
-    private int userId;
+    protected int userId;
     @Column(nullable = false)
-    private double rating;
+    protected double rating;
 
     public int getUserId() {
         return userId;

@@ -1,6 +1,6 @@
-package db2.onlineshop.entity;
+package db2.onlineshop.entity.model;
 
-import db2.onlineshop.entity.compound.Rating;
+import db2.onlineshop.entity.Rating;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
@@ -24,5 +24,15 @@ public class MovieRating extends Rating {
 
     public void setMovieId(int movieId) {
         this.movieId = movieId;
+    }
+
+    @Override
+    public String toString() {
+        return "MovieRating{" +
+                "movieId=" + movieId +
+                ", id=" + id +
+                ", userId=" + userId +
+                ", rating=" + rating +
+                '}';
     }
 }

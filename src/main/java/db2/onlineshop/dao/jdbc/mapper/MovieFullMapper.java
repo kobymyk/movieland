@@ -1,6 +1,6 @@
 package db2.onlineshop.dao.jdbc.mapper;
 
-import db2.onlineshop.entity.Movie;
+import db2.onlineshop.entity.model.Movie;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

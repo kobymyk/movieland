@@ -1,6 +1,6 @@
 package db2.onlineshop.web.controller;
 
-import db2.onlineshop.entity.Review;
+import db2.onlineshop.entity.model.MovieReview;
 import db2.onlineshop.entity.User;
 import db2.onlineshop.service.ReviewService;
 import db2.onlineshop.service.security.entity.Role;
@@ -29,19 +29,14 @@ public class ReviewController {
         long startTime = System.currentTimeMillis();
         log.info("add:reviewRequest={}", reviewRequest);
 
-        Review review = new Review();
-        review.setUser(getUser());
-        review.setText(reviewRequest.getText());
+        MovieReview movieReview = new MovieReview();
+        movieReview.setMovieId(reviewRequest.getMovieId());
+        movieReview.setUserId(SecurityHolder.get().getId());
+        movieReview.setText(reviewRequest.getText());
+        log.info("add:movieReview={}", movieReview);
 
-        reviewService.add(reviewRequest.getMovieId(), review);
+        reviewService.add(movieReview);
         log.info("add:duration={}", System.currentTimeMillis() - startTime);
-    }
-
-    private User getUser() {
-        User result = SecurityHolder.get();
-        log.info("getUser:result={}", result);
-
-        return  result;
     }
 
     @Autowired

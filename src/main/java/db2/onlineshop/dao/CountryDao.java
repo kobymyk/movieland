@@ -1,19 +1,16 @@
 package db2.onlineshop.dao;
 
 import db2.onlineshop.entity.Country;
-import db2.onlineshop.entity.Movie;
-import db2.onlineshop.entity.compound.CountryItem;
-import db2.onlineshop.entity.compound.MovieItems;
+import db2.onlineshop.entity.compound.MovieCompound;
+import db2.onlineshop.entity.model.MovieCountry;
 
 import java.util.List;
 
-public interface CountryDao {
+public interface CountryDao extends Persistent<MovieCountry>, MovieChild<Country>{
 
-    List<CountryItem> getByMovie(int movieId);
+    List<MovieCountry> getAll();
 
-    List<Country> getAll();
+    void addReference(MovieCompound movie);
 
-    void addReference(MovieItems movie);
-
-    void updateReference(MovieItems movie);
+    void updateReference(MovieCompound movie);
 }

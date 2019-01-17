@@ -1,9 +1,9 @@
 package db2.onlineshop.web.controller;
 
-import db2.onlineshop.entity.Movie;
+import db2.onlineshop.entity.compound.MovieCompound;
+import db2.onlineshop.entity.model.Movie;
 import db2.onlineshop.entity.SortOrder;
 import db2.onlineshop.entity.RequestParams;
-import db2.onlineshop.entity.compound.MovieItems;
 import db2.onlineshop.service.MovieService;
 import db2.onlineshop.service.security.entity.Role;
 import db2.onlineshop.web.data.MovieAddRequest;
@@ -89,7 +89,7 @@ public class MovieController {
     public void add(@RequestBody MovieAddRequest request) {
         long startTime = System.currentTimeMillis();
         log.info("add:request={}", request);
-        MovieItems movie = request.getMovie();
+        MovieCompound movie = request.getMovie();
         log.info("add:movie={}", movie);
 
         movieService.add(movie);
@@ -101,7 +101,7 @@ public class MovieController {
     public void edit(@RequestBody MovieEditRequest request, @PathVariable int id) {
         long startTime = System.currentTimeMillis();
         log.info("edit:id={}", id);
-        MovieItems movie = request.getMovie();
+        MovieCompound movie = request.getMovie();
         movie.setId(id);
         log.debug("edit:movie={}", movie);
 

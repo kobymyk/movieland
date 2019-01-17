@@ -1,18 +1,21 @@
 package db2.onlineshop.entity.compound;
 
-import db2.onlineshop.entity.Movie;
+import db2.onlineshop.entity.Country;
+import db2.onlineshop.entity.Genre;
+import db2.onlineshop.entity.Review;
+import db2.onlineshop.entity.model.Movie;
 
 import java.util.List;
 
-public class MovieItems extends Movie {
-    private List<CountryItem> countries;
-    private List<GenreItem> genres;
-    private List<ReviewItem> reviews;
+public class MovieCompound extends Movie {
+    private List<Country> countries;
+    private List<Genre> genres;
+    private List<Review> reviews;
 
-    public MovieItems() {
+    public MovieCompound() {
     }
 
-    public MovieItems(Movie movie) {
+    public MovieCompound(Movie movie) {
         this.id = movie.getId();
         this.yearOfRelease = movie.getYearOfRelease();
         this.name = movie.getName();
@@ -23,27 +26,27 @@ public class MovieItems extends Movie {
         this.price = movie.getPrice();
     }
 
-    public List<CountryItem> getCountries() {
+    public List<Country> getCountries() {
         return countries;
     }
 
-    public List<ReviewItem> getReviews() {
+    public List<Review> getReviews() {
         return reviews;
     }
 
-    public List<GenreItem> getGenres() {
+    public List<Genre> getGenres() {
         return genres;
     }
 
-    public void setCountries(List<CountryItem> countries) {
+    public void setCountries(List<Country> countries) {
         this.countries = countries;
     }
 
-    public void setReviews(List<ReviewItem> reviews) {
+    public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
     }
 
-    public void setGenres(List<GenreItem> genres) {
+    public void setGenres(List<Genre> genres) {
         this.genres = genres;
     }
 

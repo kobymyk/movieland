@@ -3,9 +3,8 @@ package db2.onlineshop.dao.jdbc;
 import db2.onlineshop.dao.CountryDao;
 import db2.onlineshop.dao.jdbc.mapper.CountryMapper;
 import db2.onlineshop.entity.Country;
-import db2.onlineshop.entity.Movie;
-import db2.onlineshop.entity.compound.CountryItem;
-import db2.onlineshop.entity.compound.MovieItems;
+import db2.onlineshop.entity.compound.MovieCompound;
+import db2.onlineshop.entity.model.MovieCountry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +19,15 @@ import org.springframework.stereotype.Repository;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 
 @Repository
-public class JdbcCountryDao implements CountryDao {
+public class JdbcCountryDao extends MovieChildTemplate<Country, MovieCountry> implements CountryDao {
     private final Logger log = LoggerFactory.getLogger(getClass());
+
     private static final CountryMapper ROW_MAPPER = new CountryMapper();
 
     private JdbcTemplate jdbcTemplate;
@@ -38,36 +39,32 @@ public class JdbcCountryDao implements CountryDao {
     private String selectByMovie;
     private String selectAll;
     private String insertReference;
-
     private String updateReference;
 
-    @Override
-    public List<CountryItem> getByMovie(int movieId) {
-        log.trace("getByMovie");
-        List<CountryItem> result = jdbcTemplate.query(selectByMovie, ROW_MAPPER, movieId);
-        log.trace("getByMovie:result", result);
-
-        return result;
+    public JdbcCountryDao() {
+        super();
+        setModelType(MovieCountry.class);
+        setEntityType(Country.class);
     }
 
     @Override
-    public List<Country> getAll() {
+    public List<MovieCountry> getAll() {
         log.trace("getAll");
         //List<Country> result = jdbcTemplate.query(selectAll, ROW_MAPPER);
         //log.trace("getAll:result", result);
 
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
     @Transactional
-    public void addReference(MovieItems movie) {
+    public void addReference(MovieCompound movie) {
         log.trace("addReference");
-        List<CountryItem> countries = movie.getCountries();
+        List<Country> countries = movie.getCountries();
         // todo: getParams
         SqlParameterSource[] params = new MapSqlParameterSource[countries.size()];
         int i = 0;
-        for (CountryItem country : countries) {
+        for (Country country : countries) {
             params[i++] = new MapSqlParameterSource()
                     .addValue("movieId", movie.getId())
                     .addValue("countryId", country.getId());
@@ -79,7 +76,7 @@ public class JdbcCountryDao implements CountryDao {
 
     @Override
     @Transactional
-    public void updateReference(MovieItems movie) {
+    public void updateReference(MovieCompound movie) {
         String countryIds = movie.getCountries().stream()
                 .map(p -> String.valueOf(p.getId()))
                 .collect(Collectors.joining(",", "{\"result:\" [", "] }"));

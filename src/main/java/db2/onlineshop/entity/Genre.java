@@ -1,9 +1,13 @@
 package db2.onlineshop.entity;
 
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+
+@MappedSuperclass
 public class Genre {
-    private int id;
-    private int movieId;
-    private String name;
+    @Id
+    protected int id;
+    protected String name;
 
     public int getId() {
         return id;
@@ -13,24 +17,18 @@ public class Genre {
         return name;
     }
 
-    public int getMovieId() {
-        return movieId;
-    }
-
     public Genre() {
     }
 
-    public Genre(int id, int movieId, String name) {
+    public Genre(int id, String name) {
         this.id = id;
-        this.movieId = movieId;
         this.name = name;
     }
 
     @Override
     public String toString() {
-        return "Genre{" +
+        return "GenreItem{" +
                 "id=" + id +
-                ", movieId=" + movieId +
                 ", name='" + name + '\'' +
                 '}';
     }

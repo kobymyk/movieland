@@ -2,11 +2,9 @@ package db2.onlineshop.dao.jdbc;
 
 import db2.onlineshop.dao.GenreDao;
 import db2.onlineshop.dao.jdbc.mapper.GenreMapper;
-import db2.onlineshop.entity.Country;
 import db2.onlineshop.entity.Genre;
-import db2.onlineshop.entity.Movie;
-import db2.onlineshop.entity.compound.GenreItem;
-import db2.onlineshop.entity.compound.MovieItems;
+import db2.onlineshop.entity.compound.MovieCompound;
+import db2.onlineshop.entity.model.MovieGenre;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +16,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -34,7 +33,7 @@ public class JdbcGenreDao implements GenreDao {
     private String insertReference;
 
     @Override
-    public List<Genre> getAll() {
+    public List<MovieGenre> getAll() {
         long startTime = System.currentTimeMillis();
         //List<Genre> result = jdbcTemplate.query(selectAll, ROW_MAPPER);
         log.info("getAll:duration={}", System.currentTimeMillis() - startTime);
@@ -43,23 +42,23 @@ public class JdbcGenreDao implements GenreDao {
     }
 
     @Override
-    public List<GenreItem> getByMovie(int movieId) {
+    public List<Genre> getByMovie(int movieId) {
         long startTime = System.currentTimeMillis();
         //List<GenreItem> result = jdbcTemplate.query(selectByMovie, ROW_MAPPER, movieId);
         log.info("getByMovie:duration={}", System.currentTimeMillis() - startTime);
 
-        return null;
+        return new ArrayList<>();
     }
 
     @Override
     @Transactional
-    public void addReference(MovieItems movie) {
+    public void addReference(MovieCompound movie) {
         log.trace("addReference");
-        List<GenreItem> genres = movie.getGenres();
+        List<Genre> genres = movie.getGenres();
         // todo: getParams
         SqlParameterSource[] params = new MapSqlParameterSource[genres.size()];
         int i = 0;
-        for (GenreItem item : genres) {
+        for (Genre item : genres) {
             params[i++] = new MapSqlParameterSource()
                     .addValue("movieId", movie.getId())
                     .addValue("countryId", item.getId());
@@ -71,7 +70,7 @@ public class JdbcGenreDao implements GenreDao {
 
     @Override
     @Transactional
-    public void editReference(MovieItems movie) {
+    public void editReference(MovieCompound movie) {
         // todo:
     }
 

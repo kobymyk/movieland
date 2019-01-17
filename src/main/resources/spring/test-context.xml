@@ -10,7 +10,7 @@
     <import resource="sql-context.xml"/>
 
     <context:component-scan base-package="db2.onlineshop">
-        <context:exclude-filter type="regex" expression="db2\.onlineshop\.controller\..*"/>
+        <context:exclude-filter modelType="regex" expression="db2\.onlineshop\.controller\..*"/>
     </context:component-scan>
     <context:property-placeholder location="classpath:application.properties"/>
 

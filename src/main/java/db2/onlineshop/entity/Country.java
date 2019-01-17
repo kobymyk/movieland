@@ -1,9 +1,13 @@
 package db2.onlineshop.entity;
 
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
+
+@MappedSuperclass
 public class Country {
-    private int id;
-    private int movieId;
-    private String name;
+    @Id
+    protected int id;
+    protected String name;
 
     public int getId() {
         return id;
@@ -13,24 +17,18 @@ public class Country {
         return name;
     }
 
-    public int getMovieId() {
-        return movieId;
-    }
-
     public Country() {
     }
 
-    public Country(int id, int movieId, String name) {
+    public Country(int id, String name) {
         this.id = id;
-        this.movieId = movieId;
         this.name = name;
     }
 
     @Override
     public String toString() {
-        return "Country{" +
+        return "CountryItem{" +
                 "id=" + id +
-                ", movieId=" + movieId +
                 ", name='" + name + '\'' +
                 '}';
     }

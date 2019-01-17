@@ -1,13 +1,22 @@
-package db2.onlineshop.entity;
+package db2.onlineshop.entity.model;
 
-import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "movie")
 public class Movie {
+    @Id
     protected int id;
+    @Column(name = "release_year")
     protected int yearOfRelease;
     protected String name;
+    @Column(name = "name_native")
     protected String nameNative;
     protected String description;
+    @Column(name = "picture_path")
     protected String picturePath;
     protected double rating;
     protected double price;

@@ -1,9 +1,9 @@
 package db2.onlineshop.service.impl;
 
 import db2.onlineshop.dao.MovieDao;
-import db2.onlineshop.entity.Movie;
+import db2.onlineshop.entity.compound.MovieCompound;
+import db2.onlineshop.entity.model.Movie;
 import db2.onlineshop.entity.RequestParams;
-import db2.onlineshop.entity.compound.MovieItems;
 import db2.onlineshop.service.ServiceProvider;
 import db2.onlineshop.service.fx.CurrencyService;
 import db2.onlineshop.service.MovieService;
@@ -53,12 +53,12 @@ public class BasicMovieService implements MovieService {
     }
 
     @Override
-    public MovieItems getById(int id, RequestParams param) {
+    public MovieCompound getById(int id, RequestParams param) {
         Movie movie = movieDao.getById(id);
         log.trace("getById:movie={}", movie);
 
         CompoundMovieEnricher enricher = serviceProvider.getCompoundMovieEnricher();
-        MovieItems result = new MovieItems(movie);
+        MovieCompound result = new MovieCompound(movie);
         enricher.enrich(result);
         log.trace("getById:result={}", result);
 
@@ -73,7 +73,7 @@ public class BasicMovieService implements MovieService {
     }
 
     @Override
-    public int add(MovieItems movie) {
+    public int add(MovieCompound movie) {
         log.trace("add:movie={}", movie);
         int result = movieDao.add((Movie) movie);
         movie.setId(result);
@@ -85,7 +85,7 @@ public class BasicMovieService implements MovieService {
     }
 
     @Override
-    public void edit(MovieItems movie) {
+    public void edit(MovieCompound movie) {
         log.trace("edit:movie={}", movie);
         movieDao.edit((Movie) movie);
 

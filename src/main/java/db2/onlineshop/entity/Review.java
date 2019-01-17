@@ -1,19 +1,32 @@
 package db2.onlineshop.entity;
 
+import javax.persistence.*;
 
+@MappedSuperclass
 public class Review {
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reviewSequence")
+    @SequenceGenerator(name = "reviewSequence", sequenceName = "review_seq", allocationSize = 1)
+    protected int id;
+    @Column(name = "review_text")
+    protected String text;
+    @Column(name = "user_id")
+    protected int userId;
 
-    private String text;
-    private User user;
+    public Review() {
+    }
+
+    public Review(int id, String text, int userId) {
+        this.id = id;
+        this.text = text;
+        this.userId = userId;
+    }
 
     public int getId() {
         return id;
     }
 
-    public User getUser() {
-        return user;
-    }
+    public int getUserId() { return userId; }
 
     public String getText() {
         return text;
@@ -27,25 +40,16 @@ public class Review {
         this.text = text;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Review() {
-    }
-
-    public Review(int id, String text, User user) {
-        this.id = id;
-        this.text = text;
-        this.user = user;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     @Override
     public String toString() {
-        return "Review{" +
+        return "ReviewItem{" +
                 "id=" + id +
                 ", text='" + text + '\'' +
-                ", user=" + user +
+                ", userId=" + userId +
                 '}';
     }
 }

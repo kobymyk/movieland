@@ -1,6 +1,6 @@
 package db2.onlineshop.web.controller;
 
-import db2.onlineshop.entity.Country;
+import db2.onlineshop.entity.model.MovieCountry;
 import db2.onlineshop.service.CountryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,10 +20,10 @@ public class CountryController {
     private CountryService countryService;
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public List<Country> getAll() {
+    public List<MovieCountry> getAll() {
         log.info("getAll");
         long startTime = System.currentTimeMillis();
-        List<Country> result = countryService.getAll();
+        List<MovieCountry> result = countryService.getAll();
         log.info("getAll:duration={}", System.currentTimeMillis() - startTime);
 
         return result;

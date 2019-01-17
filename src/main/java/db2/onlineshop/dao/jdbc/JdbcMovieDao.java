@@ -4,8 +4,12 @@ import db2.onlineshop.dao.MovieDao;
 import db2.onlineshop.dao.jdbc.builder.QueryBuilder;
 import db2.onlineshop.dao.jdbc.mapper.MovieFullMapper;
 import db2.onlineshop.dao.jdbc.mapper.MovieMapper;
-import db2.onlineshop.entity.Movie;
+import db2.onlineshop.entity.Review;
+import db2.onlineshop.entity.model.Movie;
 import db2.onlineshop.entity.RequestParams;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +25,11 @@ import java.util.List;
 @Repository
 public class JdbcMovieDao implements MovieDao {
     private final Logger log = LoggerFactory.getLogger(getClass());
+    private final Class type = Movie.class;
+
+    private SessionFactory sessionFactory;
+    private Session session;
+
     private static final MovieMapper SIMPLE_MAPPER = new MovieMapper();
     private static final MovieFullMapper FULL_MAPPER = new MovieFullMapper(SIMPLE_MAPPER);
 
@@ -33,6 +42,14 @@ public class JdbcMovieDao implements MovieDao {
     private String selectById;
     private String insertRow;
     private String updateRow;
+
+    @Override
+    public Movie getById(int id) {
+        Movie result = (Movie) session.get(type, id);
+        log.debug("getById:result={}", result);
+
+        return result;
+    }
 
     @Override
     public List<Movie> getAll(RequestParams param) {
@@ -71,16 +88,6 @@ public class JdbcMovieDao implements MovieDao {
     }
 
     @Override
-    public Movie getById(int id) {
-        long startTime = System.currentTimeMillis();
-        log.debug("getById:id={}", id);
-        Movie result = jdbcTemplate.queryForObject(selectById, FULL_MAPPER, id);
-        log.debug("getById:duration={}", System.currentTimeMillis() - startTime);
-
-        return result;
-    }
-
-    @Override
     public int add(Movie movie) {
         log.debug("add");
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -111,6 +118,16 @@ public class JdbcMovieDao implements MovieDao {
                 .addValue("picturePath", movie.getPicturePath());
 
         namedJdbcTemplate.update(updateRow, params);
+    }
+
+    @Autowired
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+        try {
+            this.session = sessionFactory.getCurrentSession();
+        } catch (HibernateException e) {
+            this.session = sessionFactory.openSession();
+        }
     }
 
     @Autowired

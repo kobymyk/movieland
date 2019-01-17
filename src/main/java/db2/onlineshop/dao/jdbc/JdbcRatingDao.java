@@ -1,7 +1,7 @@
 package db2.onlineshop.dao.jdbc;
 
 import db2.onlineshop.dao.RatingDao;
-import db2.onlineshop.entity.MovieRating;
+import db2.onlineshop.entity.model.MovieRating;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;

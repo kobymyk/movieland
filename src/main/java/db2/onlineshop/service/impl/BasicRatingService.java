@@ -1,7 +1,7 @@
 package db2.onlineshop.service.impl;
 
 import db2.onlineshop.dao.RatingDao;
-import db2.onlineshop.entity.MovieRating;
+import db2.onlineshop.entity.model.MovieRating;
 import db2.onlineshop.entity.User;
 import db2.onlineshop.service.RatingService;
 import db2.onlineshop.service.security.holder.SecurityHolder;
