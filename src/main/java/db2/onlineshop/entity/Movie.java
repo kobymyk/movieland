@@ -1,6 +1,7 @@
 package db2.onlineshop.entity;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "movie")
@@ -19,6 +20,13 @@ public class Movie {
     protected String picturePath;
     protected double rating;
     protected double price;
+
+    @Transient
+    private List<Country> countries;
+    @Transient
+    private List<Genre> movieGenres;
+    @Transient
+    private List<Review> reviews;
 
     public int getId() {
         return id;
@@ -81,6 +89,30 @@ public class Movie {
 
     public void setDescription(String description) { this.description = description; }
 
+    public List<Country> getCountries() {
+        return countries;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public List<Genre> getMovieGenres() {
+        return movieGenres;
+    }
+
+    public void setCountries(List<Country> countries) {
+        this.countries = countries;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
+    public void setMovieGenres(List<Genre> movieGenres) {
+        this.movieGenres = movieGenres;
+    }
+
     @Override
     public String toString() {
         return "Movie{" +
@@ -92,6 +124,9 @@ public class Movie {
                 ", picturePath='" + picturePath + '\'' +
                 ", rating=" + rating +
                 ", price=" + price +
+                ", countries=" + countries +
+                ", movieGenres=" + movieGenres +
+                ", reviews=" + reviews +
                 '}';
     }
 }

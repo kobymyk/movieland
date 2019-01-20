@@ -2,7 +2,7 @@ package db2.onlineshop.service.impl;
 
 import db2.onlineshop.dao.CountryDao;
 import db2.onlineshop.entity.Country;
-import db2.onlineshop.entity.MovieCompound;
+import db2.onlineshop.entity.Movie;
 import db2.onlineshop.service.CountryService;
 import db2.onlineshop.service.MovieChild;
 import org.slf4j.Logger;
@@ -37,8 +37,8 @@ public class BasicCountryService implements CountryService, MovieChild {
     }
 
     @Override
-    public void enrich(MovieCompound movie) {
-        int movieId = movie.getMovie().getId();
+    public void enrich(Movie movie) {
+        int movieId = movie.getId();
         log.debug("enrich:movieId={}", movieId);
         List<Country> countries = getByMovie(movieId);
 
@@ -46,13 +46,13 @@ public class BasicCountryService implements CountryService, MovieChild {
     }
 
     @Override
-    public void addReference(MovieCompound movie) {
+    public void addReference(Movie movie) {
         log.debug("addReference");
         countryDao.addReference(movie);
     }
 
     @Override
-    public void editReference(MovieCompound movie) {
+    public void editReference(Movie movie) {
         countryDao.updateReference(movie);
     }
 

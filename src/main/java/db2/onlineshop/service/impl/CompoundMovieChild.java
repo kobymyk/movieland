@@ -1,6 +1,6 @@
 package db2.onlineshop.service.impl;
 
-import db2.onlineshop.entity.MovieCompound;
+import db2.onlineshop.entity.Movie;
 import db2.onlineshop.service.MovieChild;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +20,7 @@ public class CompoundMovieChild implements MovieChild {
 
 
     @Override
-    public void addReference(MovieCompound movie) {
+    public void addReference(Movie movie) {
         log.debug("addReference");
         for (MovieChild child : children) {
             child.addReference(movie);
@@ -28,7 +28,7 @@ public class CompoundMovieChild implements MovieChild {
     }
 
     @Override
-    public void editReference(MovieCompound movie) {
+    public void editReference(Movie movie) {
         log.debug("addReference");
         for (MovieChild child : children) {
             child.editReference(movie);

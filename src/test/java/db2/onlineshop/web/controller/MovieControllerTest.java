@@ -1,7 +1,7 @@
 package db2.onlineshop.web.controller;
 
 import db2.onlineshop.entity.Genre;
-import db2.onlineshop.entity.MovieCompound;
+import db2.onlineshop.entity.Movie;
 import db2.onlineshop.entity.Movie;
 import db2.onlineshop.service.impl.BasicGenreService;
 import db2.onlineshop.service.impl.BasicMovieService;

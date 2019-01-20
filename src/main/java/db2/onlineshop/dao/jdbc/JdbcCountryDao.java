@@ -2,7 +2,7 @@ package db2.onlineshop.dao.jdbc;
 
 import db2.onlineshop.dao.CountryDao;
 import db2.onlineshop.entity.Country;
-import db2.onlineshop.entity.MovieCompound;
+import db2.onlineshop.entity.Movie;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +39,7 @@ public class JdbcCountryDao extends EntityTemplate<Country> implements CountryDa
 
     @Override
     @Transactional
-    public void addReference(MovieCompound movie) {
+    public void addReference(Movie movie) {
         log.trace("addReference");
         List<Country> countries = movie.getCountries();
         // todo: getParams
@@ -47,7 +47,7 @@ public class JdbcCountryDao extends EntityTemplate<Country> implements CountryDa
         int i = 0;
         for (Country country : countries) {
             params[i++] = new MapSqlParameterSource()
-                    .addValue("movieId", movie.getMovie().getId())
+                    .addValue("movieId", movie.getId())
                     .addValue("countryId", country.getId());
         }
         //log.trace("addReference:params={}", params);
@@ -57,7 +57,7 @@ public class JdbcCountryDao extends EntityTemplate<Country> implements CountryDa
 
     @Override
     @Transactional
-    public void updateReference(MovieCompound movie) {
+    public void updateReference(Movie movie) {
         String countryIds = movie.getCountries().stream()
                 .map(p -> String.valueOf(p.getId()))
                 .collect(Collectors.joining(",", "{\"result:\" [", "] }"));

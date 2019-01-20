@@ -1,6 +1,5 @@
 package db2.onlineshop.service;
 
-import db2.onlineshop.entity.MovieCompound;
 import db2.onlineshop.entity.Movie;
 import db2.onlineshop.entity.Ordering;
 
@@ -12,9 +11,9 @@ public interface MovieService {
 
     List<Movie> getByGenre(int genreId);
 
-    MovieCompound getById(int id, String currency);
+    Movie getById(int id, String currency);
 
-    void add(MovieCompound movie);
+    void add(Movie movie);
 
-    void edit(MovieCompound movie);
+    void edit(Movie movie);
 }

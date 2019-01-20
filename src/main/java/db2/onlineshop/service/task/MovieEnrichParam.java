@@ -1,20 +1,20 @@
 package db2.onlineshop.service.task;
 
-import db2.onlineshop.entity.MovieCompound;
+import db2.onlineshop.entity.Movie;
 import db2.onlineshop.service.MovieEnricher;
 
 public class MovieEnrichParam {
     private MovieEnricher enricher;
-    private MovieCompound movie;
+    private Movie movie;
 
-    public MovieEnrichParam(MovieEnricher enricher, MovieCompound movie) {
+    public MovieEnrichParam(MovieEnricher enricher, Movie movie) {
         this.enricher = enricher;
         this.movie = copyMovie(movie);
     }
 
-    private MovieCompound copyMovie(MovieCompound movie) {
-        MovieCompound result = new MovieCompound();
-        //result.setId(movie.getId());
+    private Movie copyMovie(Movie movie) {
+        Movie result = new Movie();
+        result.setId(movie.getId());
 
         return result;
     }
@@ -23,7 +23,7 @@ public class MovieEnrichParam {
         return enricher;
     }
 
-    public MovieCompound getMovie() {
+    public Movie getMovie() {
         return movie;
     }
 }

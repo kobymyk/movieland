@@ -2,7 +2,6 @@ package db2.onlineshop.web.data;
 
 import db2.onlineshop.entity.Country;
 import db2.onlineshop.entity.Genre;
-import db2.onlineshop.entity.MovieCompound;
 import db2.onlineshop.entity.Movie;
 
 import java.util.ArrayList;
@@ -16,14 +15,12 @@ public class MovieEditRequest {
     private List<Integer> countries;
     private List<Integer> genres;
 
-    public MovieCompound getMovie() {
-        MovieCompound result = new MovieCompound();
-        Movie movie = new Movie();
-        movie.setName(nameRussian);
-        movie.setNameNative(nameNative);
-        movie.setPicturePath(picturePath);
+    public Movie getMovie() {
+        Movie result = new Movie();
+        result.setName(nameRussian);
+        result.setNameNative(nameNative);
+        result.setPicturePath(picturePath);
 
-        result.setMovie(movie);
         result.setCountries(getCountries());
         result.setMovieGenres(getGenres());
 

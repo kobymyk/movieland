@@ -1,8 +1,8 @@
 package db2.onlineshop.service;
 
-import db2.onlineshop.entity.MovieCompound;
+import db2.onlineshop.entity.Movie;
 
 public interface MovieEnricher {
 
-    void enrich(MovieCompound movie);
+    void enrich(Movie movie);
 }

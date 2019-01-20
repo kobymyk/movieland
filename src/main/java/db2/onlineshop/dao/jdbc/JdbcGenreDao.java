@@ -2,7 +2,7 @@ package db2.onlineshop.dao.jdbc;
 
 import db2.onlineshop.dao.GenreDao;
 import db2.onlineshop.entity.Genre;
-import db2.onlineshop.entity.MovieCompound;
+import db2.onlineshop.entity.Movie;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class JdbcGenreDao extends EntityTemplate<Genre> implements GenreDao {
 
     @Override
     @Transactional
-    public void addReference(MovieCompound movie) {
+    public void addReference(Movie movie) {
         log.trace("addReference");
         List<Genre> genres = movie.getMovieGenres();
         // todo: getParams
@@ -48,7 +48,7 @@ public class JdbcGenreDao extends EntityTemplate<Genre> implements GenreDao {
 
     @Override
     @Transactional
-    public void editReference(MovieCompound movie) {
+    public void editReference(Movie movie) {
         // todo:
     }
 

@@ -1,6 +1,5 @@
 package db2.onlineshop.web.controller;
 
-import db2.onlineshop.entity.MovieCompound;
 import db2.onlineshop.entity.Movie;
 import db2.onlineshop.entity.SortOrder;
 import db2.onlineshop.entity.Ordering;
@@ -61,12 +60,12 @@ public class MovieController {
     }
 
     @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public MovieCompound getById(@PathVariable int id,
+    public Movie getById(@PathVariable int id,
                          @RequestParam(name = "currency", required = false, defaultValue = "UAH") String currency) {
         long startTime = System.currentTimeMillis();
         log.info("getById:id={},currency={}", id, currency);
 
-        MovieCompound result = movieService.getById(id, currency);
+        Movie result = movieService.getById(id, currency);
         log.info("getById:duration={}", System.currentTimeMillis() - startTime);
 
         return result;
@@ -77,7 +76,7 @@ public class MovieController {
     public void add(@RequestBody MovieAddRequest request) {
         long startTime = System.currentTimeMillis();
         log.info("add:request={}", request);
-        MovieCompound movie = request.getMovie();
+        Movie movie = request.getMovie();
         log.info("add:movie={}", movie);
 
         movieService.add(movie);
@@ -89,7 +88,7 @@ public class MovieController {
     public void edit(@RequestBody MovieEditRequest request, @PathVariable int id) {
         long startTime = System.currentTimeMillis();
         log.info("edit:id={}", id);
-        MovieCompound movie = request.getMovie();
+        Movie movie = request.getMovie();
         //movie.setId(id);
         log.debug("edit:movie={}", movie);
 

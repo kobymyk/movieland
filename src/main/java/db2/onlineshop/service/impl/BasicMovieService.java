@@ -1,8 +1,6 @@
 package db2.onlineshop.service.impl;
 
-import db2.onlineshop.dao.MovieCompoundDao;
 import db2.onlineshop.dao.MovieDao;
-import db2.onlineshop.entity.MovieCompound;
 import db2.onlineshop.entity.Movie;
 import db2.onlineshop.entity.Ordering;
 import db2.onlineshop.service.ServiceProvider;
@@ -25,7 +23,6 @@ public class BasicMovieService implements MovieService {
     private CurrencyService currencyService;
 
     private MovieDao movieDao;
-    private MovieCompoundDao movieCompoundDao;
 
     @Override
     public List<Movie> getAll(Ordering ordering) {
@@ -45,20 +42,18 @@ public class BasicMovieService implements MovieService {
     }
 
     @Override
-    public MovieCompound getById(int id, String currency) {
-        Movie movie = movieDao.getById(id);
-        log.trace("getById:movie={}", movie);
+    public Movie getById(int id, String currency) {
+        Movie result = movieDao.getById(id);
+        log.trace("getById:movie={}", result);
 
         CompoundMovieEnricher enricher = serviceProvider.getCompoundMovieEnricher();
-        MovieCompound result = new MovieCompound();
-        result.setMovie(movie);
         enricher.enrich(result);
         log.trace("getById:result={}", result);
 
         if (currency != null) {
-            double price = currencyService.exchange(movie.getPrice(), currency);
+            double price = currencyService.exchange(result.getPrice(), currency);
             log.debug("getById:price={}", price);
-            result.getMovie().setPrice(price);
+            result.setPrice(price);
         }
 
         return result;
@@ -66,14 +61,14 @@ public class BasicMovieService implements MovieService {
 
     @Override
     @Transactional
-    public void add(MovieCompound movie) {
+    public void add(Movie movie) {
         log.trace("add:movie={}", movie);
-        movieCompoundDao.add(movie);
+        movieDao.add(movie);
     }
 
     @Override
     @Transactional
-    public void edit(MovieCompound movie) {
+    public void edit(Movie movie) {
         log.trace("edit:movie={}", movie);
         //movieDao.edit((Movie) movie);
 
@@ -84,11 +79,6 @@ public class BasicMovieService implements MovieService {
     @Autowired
     public void setMovieDao(MovieDao movieDao) {
         this.movieDao = movieDao;
-    }
-
-    @Autowired
-    public void setMovieCompoundDao(MovieCompoundDao movieCompoundDao) {
-        this.movieCompoundDao = movieCompoundDao;
     }
 
     @Autowired
