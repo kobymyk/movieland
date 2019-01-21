@@ -1,13 +1,15 @@
 package db2.onlineshop.entity;
 
+import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.Table;
 
-@MappedSuperclass
+@Entity
+@Table(name = "genre")
 public class Genre {
     @Id
-    protected int id;
-    protected String name;
+    private int id;
+    private String name;
 
     public int getId() {
         return id;
@@ -27,7 +29,7 @@ public class Genre {
 
     @Override
     public String toString() {
-        return "GenreItem{" +
+        return "Genre{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 '}';

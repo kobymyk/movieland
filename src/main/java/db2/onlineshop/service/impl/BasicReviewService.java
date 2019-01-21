@@ -36,7 +36,7 @@ public class BasicReviewService implements ReviewService {
     public void enrich(Movie movie) {
         int movieId = movie.getId();
         log.debug("enrich:movieId={}", movieId);
-        List<db2.onlineshop.entity.Review> reviews = getByMovie(movieId);
+        List<Review> reviews = getByMovie(movieId);
 
         movie.setReviews(reviews);
     }

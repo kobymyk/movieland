@@ -72,8 +72,8 @@ public class BasicMovieService implements MovieService {
         log.trace("edit:movie={}", movie);
         //movieDao.edit((Movie) movie);
 
-        CompoundMovieChild children = serviceProvider.getCompoundMovieChild();
-        children.editReference(movie);
+        //CompoundMovieChild2 children = serviceProvider.getCompoundMovieChild();
+        //children.editReference(movie);
     }
 
     @Autowired

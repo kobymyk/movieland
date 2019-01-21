@@ -28,7 +28,7 @@ public class MovieReview extends Review {
                 "movieId=" + movieId +
                 ", id=" + id +
                 ", text='" + text + '\'' +
-                ", user=" + userId +
+                ", user=" + user +
                 '}';
     }
 }

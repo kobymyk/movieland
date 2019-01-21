@@ -6,7 +6,5 @@ import java.util.List;
 
 public interface CountryService extends MovieEnricher {
 
-    List<Country> getByMovie(int movieId);
-
     List<Country> getAll();
 }

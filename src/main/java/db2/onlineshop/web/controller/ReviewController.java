@@ -30,7 +30,7 @@ public class ReviewController {
 
         MovieReview movieReview = new MovieReview();
         movieReview.setMovieId(reviewRequest.getMovieId());
-        movieReview.setUserId(SecurityHolder.get().getId());
+        movieReview.setUser(SecurityHolder.get());
         movieReview.setText(reviewRequest.getText());
         log.info("add:movieReview={}", movieReview);
 

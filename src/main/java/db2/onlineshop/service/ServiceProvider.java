@@ -28,9 +28,9 @@ public class ServiceProvider {
 
         return result;
     }
-
-    public CompoundMovieChild getCompoundMovieChild() {
-        CompoundMovieChild result = new CompoundMovieChild();
+    /*
+    public CompoundMovieChild2 getCompoundMovieChild() {
+        CompoundMovieChild2 result = new CompoundMovieChild2();
 
         result.add((MovieChild) genreService);
         result.add((MovieChild) countryService);
@@ -38,6 +38,7 @@ public class ServiceProvider {
 
         return result;
     }
+    */
 
     public List<Object> getAll() {
         if (services == null) {

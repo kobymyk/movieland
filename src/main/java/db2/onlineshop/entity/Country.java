@@ -1,13 +1,15 @@
 package db2.onlineshop.entity;
 
+import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.Table;
 
-@MappedSuperclass
+@Entity
+@Table(name = "country")
 public class Country {
     @Id
-    protected int id;
-    protected String name;
+    private int id;
+    private String name;
 
     public int getId() {
         return id;

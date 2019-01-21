@@ -8,5 +8,4 @@ public interface GenreService extends MovieEnricher {
 
     List<Genre> getAll();
 
-    List<Genre> getByMovie(int movieId);
 }

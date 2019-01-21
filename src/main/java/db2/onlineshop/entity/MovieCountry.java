@@ -1,18 +1,25 @@
 package db2.onlineshop.entity;
 
-import db2.onlineshop.entity.Country;
-import org.hibernate.annotations.NaturalId;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
-@Table(name = "all_movie_country")
-public class MovieCountry extends Country {
-    @NaturalId
+@Table(name = "movie_country")
+public class MovieCountry {
+    @Id
+    private int id;
     @Column(name = "movie_id")
     private int movieId;
+    @OneToOne(cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private Country country;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public int getMovieId() {
         return movieId;
@@ -22,12 +29,20 @@ public class MovieCountry extends Country {
         this.movieId = movieId;
     }
 
+    public Country getCountry() {
+        return country;
+    }
+
+    public void setCountry(Country country) {
+        this.country = country;
+    }
+
     @Override
     public String toString() {
-        return "Country{" +
-                "movieId=" + movieId +
-                ", id=" + id +
-                ", name='" + name + '\'' +
+        return "MovieCountry{" +
+                "id=" + id +
+                ", movieId=" + movieId +
+                ", country=" + country +
                 '}';
     }
 }

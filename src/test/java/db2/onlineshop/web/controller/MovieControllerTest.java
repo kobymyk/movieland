@@ -93,7 +93,7 @@ public class MovieControllerTest {
     public void getById() throws Exception {
         final int id = 1;
         //when(movieService.getById(id, null)).thenReturn(mockMovies().get(0));
-        when(genreService.getByMovie(id)).thenReturn(mockGenres());
+        //when(genreService.getByMovie(id)).thenReturn(mockGenres());
 
         mockMvc.perform(get("/v1/movie/1"))
                 .andExpect(status().isOk())

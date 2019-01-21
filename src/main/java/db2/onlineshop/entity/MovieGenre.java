@@ -1,18 +1,25 @@
 package db2.onlineshop.entity;
 
-
-import org.hibernate.annotations.NaturalId;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
-@Table(name = "all_movie_genre")
-public class MovieGenre extends Genre {
-    @NaturalId
+@Table(name = "movie_genre")
+public class MovieGenre {
+    @Id
+    private int id;
     @Column(name = "movie_id")
     private int movieId;
+    @OneToOne(cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    private Genre genre;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public int getMovieId() {
         return movieId;
@@ -22,12 +29,20 @@ public class MovieGenre extends Genre {
         this.movieId = movieId;
     }
 
+    public Genre getGenre() {
+        return genre;
+    }
+
+    public void setGenre(Genre genre) {
+        this.genre = genre;
+    }
+
     @Override
     public String toString() {
-        return "Genre{" +
-                "movieId=" + movieId +
-                ", id=" + id +
-                ", name='" + name + '\'' +
+        return "MovieGenre{" +
+                "id=" + id +
+                ", movieId=" + movieId +
+                ", genre=" + genre +
                 '}';
     }
 }

@@ -10,23 +10,22 @@ public class Review {
     protected int id;
     @Column(name = "review_text")
     protected String text;
-    @Column(name = "user_id")
-    protected int userId;
+    @OneToOne(cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    protected User user;
 
     public Review() {
     }
 
-    public Review(int id, String text, int userId) {
+    public Review(int id, String text, User user) {
         this.id = id;
         this.text = text;
-        this.userId = userId;
+        this.user = user;
     }
 
     public int getId() {
         return id;
     }
-
-    public int getUserId() { return userId; }
 
     public String getText() {
         return text;
@@ -40,8 +39,12 @@ public class Review {
         this.text = text;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
@@ -49,7 +52,7 @@ public class Review {
         return "ReviewItem{" +
                 "id=" + id +
                 ", text='" + text + '\'' +
-                ", userId=" + userId +
+                ", user=" + user +
                 '}';
     }
 }
