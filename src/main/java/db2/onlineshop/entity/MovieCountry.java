@@ -11,8 +11,8 @@ public class MovieCountry {
     private int id;
     @Column(name = "movie_id")
     private int movieId;
-    @OneToOne(cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
+    @OneToOne(cascade = CascadeType.REFRESH)
+    @JoinColumn(name="country_id")
     private Country country;
 
     public int getId() {

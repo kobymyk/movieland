@@ -6,11 +6,13 @@ import javax.persistence.*;
 @Table(name = "movie_genre")
 public class MovieGenre {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "movieGenreSequence")
+    @SequenceGenerator(name = "movieGenreSequence", sequenceName = "movie_genre_seq", allocationSize = 1)
     private int id;
     @Column(name = "movie_id")
     private int movieId;
-    @OneToOne(cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
+    @OneToOne(cascade = CascadeType.REFRESH)
+    @JoinColumn(name="genre_id")
     private Genre genre;
 
     public int getId() {

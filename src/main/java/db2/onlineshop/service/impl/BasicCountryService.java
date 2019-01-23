@@ -52,10 +52,9 @@ public class BasicCountryService implements CountryService, MovieChild {
     @Override
     public void addReference(Movie movie) {
         int movieId = movie.getId();
-        List<Country> countries = movie.getCountries();
-        log.debug("addReference:movieId={};countries={}", movieId, countries);
+        log.debug("addReference:movieId={}", movieId);
 
-        for (Country country : countries) {
+        for (Country country : movie.getCountries()) {
             MovieCountry movieCountry = new MovieCountry();
             movieCountry.setMovieId(movieId);
             movieCountry.setCountry(country);

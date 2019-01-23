@@ -2,9 +2,7 @@ package db2.onlineshop.service.impl;
 
 import db2.onlineshop.dao.GenreDao;
 import db2.onlineshop.dao.MovieGenreDao;
-import db2.onlineshop.entity.Genre;
-import db2.onlineshop.entity.Movie;
-import db2.onlineshop.entity.MovieGenre;
+import db2.onlineshop.entity.*;
 import db2.onlineshop.service.GenreService;
 import db2.onlineshop.service.MovieChild;
 import org.slf4j.Logger;
@@ -49,8 +47,15 @@ public class BasicGenreService implements GenreService, MovieChild {
 
     @Override
     public void addReference(Movie movie) {
-        log.debug("addReference");
-        //genreDao.addReference(movie);
+        int movieId = movie.getId();
+        log.debug("addReference:movieId={}", movieId);
+
+        for (Genre genre : movie.getGenres()) {
+            MovieGenre movieGenre = new MovieGenre();
+            movieGenre.setMovieId(movieId);
+            movieGenre.setGenre(genre);
+            movieGenreDao.add(movieGenre);
+        }
     }
 
     @Autowired
