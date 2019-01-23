@@ -1,12 +1,10 @@
-package db2.onlineshop.service.impl;
+package db2.onlineshop.service.enricher;
 
 import db2.onlineshop.entity.Movie;
 import db2.onlineshop.service.CountryService;
 import db2.onlineshop.service.GenreService;
 import db2.onlineshop.service.MovieEnricher;
 import db2.onlineshop.service.ReviewService;
-import db2.onlineshop.service.task.MovieEnrichParam;
-import db2.onlineshop.service.task.MovieEnrichTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,27 +13,28 @@ import java.util.List;
 import java.util.concurrent.*;
 
 
-public class CompoundMovieEnricher implements MovieEnricher {
+public class MovieEnrichExecutor {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     List<MovieEnricher> enrichers = new ArrayList<>();
+
+    public MovieEnrichExecutor(List<MovieEnricher> enrichers) {
+        this.enrichers = enrichers;
+    }
 
     public void add(MovieEnricher enricher) {
         log.debug("add");
         enrichers.add(enricher);
     }
 
-    @Override
     public void enrich(Movie movie) {
         log.debug("enrich");
         ExecutorService executor = Executors.newFixedThreadPool(3);
         List<Callable<MovieEnrichParam>> tasks = new ArrayList<>(enrichers.size());
         // fill tasks
-        for (MovieEnricher enricher : enrichers) {
-            Callable<MovieEnrichParam> task = new MovieEnrichTask();
-
+        for (db2.onlineshop.service.MovieEnricher enricher : enrichers) {
             MovieEnrichParam param = new MovieEnrichParam(enricher, movie);
-            ((MovieEnrichTask) task).setParam(param);
+            Callable<MovieEnrichParam> task = new MovieEnrichTask(param);
 
             tasks.add(task);
         }
@@ -56,17 +55,7 @@ public class CompoundMovieEnricher implements MovieEnricher {
                     future.cancel(true);
                 }
                 MovieEnricher enricher = result.getEnricher();
-                Movie futureMovie = result.getMovie();
-                // merge
-                if (enricher instanceof CountryService) {
-                    movie.setCountries(futureMovie.getCountries());
-                }
-                if (enricher instanceof GenreService) {
-                    movie.setMovieGenres(futureMovie.getMovieGenres());
-                }
-                if (enricher instanceof ReviewService) {
-                    movie.setReviews(futureMovie.getReviews());
-                }
+                enricher.merge(result.getMovie(), movie);
             }
         } catch (InterruptedException | ExecutionException e) {
             log.error("enrich::interrupt", e);

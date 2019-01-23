@@ -24,7 +24,7 @@ public class Movie {
     @Transient
     private List<Country> countries;
     @Transient
-    private List<Genre> movieGenres;
+    private List<Genre> genres;
     @Transient
     private List<Review> reviews;
 
@@ -97,8 +97,8 @@ public class Movie {
         return reviews;
     }
 
-    public List<Genre> getMovieGenres() {
-        return movieGenres;
+    public List<Genre> getGenres() {
+        return genres;
     }
 
     public void setCountries(List<Country> countries) {
@@ -109,8 +109,8 @@ public class Movie {
         this.reviews = reviews;
     }
 
-    public void setMovieGenres(List<Genre> movieGenres) {
-        this.movieGenres = movieGenres;
+    public void setGenres(List<Genre> genres) {
+        this.genres = genres;
     }
 
     @Override
@@ -125,7 +125,7 @@ public class Movie {
                 ", rating=" + rating +
                 ", price=" + price +
                 ", countries=" + countries +
-                ", movieGenres=" + movieGenres +
+                ", genres=" + genres +
                 ", reviews=" + reviews +
                 '}';
     }

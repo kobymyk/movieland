@@ -1,4 +1,4 @@
-package db2.onlineshop.service.task;
+package db2.onlineshop.service.enricher;
 
 import db2.onlineshop.entity.Movie;
 import db2.onlineshop.service.MovieEnricher;

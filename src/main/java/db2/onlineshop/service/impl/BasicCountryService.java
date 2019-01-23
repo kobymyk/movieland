@@ -45,14 +45,22 @@ public class BasicCountryService implements CountryService, MovieChild {
     }
 
     @Override
-    public void addReference(Movie movie) {
-        log.debug("addReference");
-        countryDao.addReference(movie);
+    public void merge(Movie movie, Movie result) {
+        result.setCountries(movie.getCountries());
     }
 
     @Override
-    public void editReference(Movie movie) {
-        countryDao.updateReference(movie);
+    public void addReference(Movie movie) {
+        int movieId = movie.getId();
+        List<Country> countries = movie.getCountries();
+        log.debug("addReference:movieId={};countries={}", movieId, countries);
+
+        for (Country country : countries) {
+            MovieCountry movieCountry = new MovieCountry();
+            movieCountry.setMovieId(movieId);
+            movieCountry.setCountry(country);
+            movieCountryDao.add(movieCountry);
+        }
     }
 
     @Autowired

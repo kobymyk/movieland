@@ -6,6 +6,8 @@ import javax.persistence.*;
 @Table(name = "movie_country")
 public class MovieCountry {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "movieCountrySequence")
+    @SequenceGenerator(name = "movieCountrySequence", sequenceName = "movie_country_seq", allocationSize = 1)
     private int id;
     @Column(name = "movie_id")
     private int movieId;

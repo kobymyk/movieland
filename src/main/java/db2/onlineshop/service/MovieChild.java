@@ -6,5 +6,4 @@ public interface MovieChild<T> {
 
     void addReference(Movie movie);
 
-    void editReference(Movie movie);
 }

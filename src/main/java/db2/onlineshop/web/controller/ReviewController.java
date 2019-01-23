@@ -1,6 +1,7 @@
 package db2.onlineshop.web.controller;
 
 import db2.onlineshop.entity.MovieReview;
+import db2.onlineshop.entity.User;
 import db2.onlineshop.service.ReviewService;
 import db2.onlineshop.service.security.entity.Role;
 import db2.onlineshop.service.security.holder.SecurityHolder;
@@ -30,7 +31,9 @@ public class ReviewController {
 
         MovieReview movieReview = new MovieReview();
         movieReview.setMovieId(reviewRequest.getMovieId());
-        movieReview.setUser(SecurityHolder.get());
+        User user = new User();
+        user.setId(SecurityHolder.get().getUserId());
+        movieReview.setUser(user);
         movieReview.setText(reviewRequest.getText());
         log.info("add:movieReview={}", movieReview);
 

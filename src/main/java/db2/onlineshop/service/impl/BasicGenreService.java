@@ -39,17 +39,18 @@ public class BasicGenreService implements GenreService, MovieChild {
         for (MovieGenre movieGenre : movieGenres) {
             genres.add(movieGenre.getGenre());
         }
-        movie.setMovieGenres(genres);
+        movie.setGenres(genres);
+    }
+
+    @Override
+    public void merge(Movie movie, Movie result) {
+        result.setGenres(movie.getGenres());
     }
 
     @Override
     public void addReference(Movie movie) {
         log.debug("addReference");
-        genreDao.addReference(movie);
-    }
-
-    @Override
-    public void editReference(Movie movie) {
+        //genreDao.addReference(movie);
     }
 
     @Autowired

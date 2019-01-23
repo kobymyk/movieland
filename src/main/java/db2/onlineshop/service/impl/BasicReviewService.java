@@ -41,6 +41,11 @@ public class BasicReviewService implements ReviewService {
         movie.setReviews(reviews);
     }
 
+    @Override
+    public void merge(Movie movie, Movie result) {
+        result.setReviews(movie.getReviews());
+    }
+
     @Autowired
     public void setReviewDao(ReviewDao reviewDao) {
         this.reviewDao = reviewDao;

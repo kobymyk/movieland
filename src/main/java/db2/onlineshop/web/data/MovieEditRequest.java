@@ -22,7 +22,7 @@ public class MovieEditRequest {
         result.setPicturePath(picturePath);
 
         result.setCountries(getCountries());
-        result.setMovieGenres(getGenres());
+        result.setGenres(getGenres());
 
         return result;
     }

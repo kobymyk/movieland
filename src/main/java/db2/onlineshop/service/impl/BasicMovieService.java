@@ -3,7 +3,10 @@ package db2.onlineshop.service.impl;
 import db2.onlineshop.dao.MovieDao;
 import db2.onlineshop.entity.Movie;
 import db2.onlineshop.entity.Ordering;
+import db2.onlineshop.service.MovieChild;
+import db2.onlineshop.service.MovieEnricher;
 import db2.onlineshop.service.ServiceProvider;
+import db2.onlineshop.service.enricher.MovieEnrichExecutor;
 import db2.onlineshop.service.fx.CurrencyService;
 import db2.onlineshop.service.MovieService;
 import org.slf4j.Logger;
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BasicMovieService implements MovieService {
@@ -46,8 +50,12 @@ public class BasicMovieService implements MovieService {
         Movie result = movieDao.getById(id);
         log.trace("getById:movie={}", result);
 
-        CompoundMovieEnricher enricher = serviceProvider.getCompoundMovieEnricher();
-        enricher.enrich(result);
+        List<MovieEnricher> enrichers = serviceProvider.getAll().stream()
+                .filter(p -> p instanceof MovieEnricher)
+                .map(p -> (MovieEnricher) p)
+                .collect(Collectors.toList());
+        MovieEnrichExecutor enrichExecutor = new MovieEnrichExecutor(enrichers);
+        enrichExecutor.enrich(result);
         log.trace("getById:result={}", result);
 
         if (currency != null) {
@@ -64,16 +72,21 @@ public class BasicMovieService implements MovieService {
     public void add(Movie movie) {
         log.trace("add:movie={}", movie);
         movieDao.add(movie);
+
+        List<MovieChild> children = serviceProvider.getAll().stream()
+                .filter(p -> p instanceof MovieChild)
+                .map(p -> (MovieChild) p)
+                .collect(Collectors.toList());
+        for (MovieChild child : children) {
+            child.addReference(movie);
+        }
     }
 
     @Override
     @Transactional
     public void edit(Movie movie) {
         log.trace("edit:movie={}", movie);
-        //movieDao.edit((Movie) movie);
-
-        //CompoundMovieChild2 children = serviceProvider.getCompoundMovieChild();
-        //children.editReference(movie);
+        movieDao.edit(movie);
     }
 
     @Autowired

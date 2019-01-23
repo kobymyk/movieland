@@ -27,10 +27,10 @@ public class BasicRatingService implements RatingService {
     @Override
     public MovieRating getByMovie(int movieId) {
         log.debug("getByMovie:movieId={}", movieId);
-        User user = SecurityHolder.get();
-        log.debug("getByMovie:user={}", user);
+        int userId = SecurityHolder.get().getUserId();
+        log.debug("getByMovie:userId={}", userId);
 
-        MovieRating result = ratingDao.getRating(movieId, user.getId());
+        MovieRating result = ratingDao.getRating(movieId, userId);
         log.debug("getByMovie:result={}", result);
 
         return result;

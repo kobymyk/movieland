@@ -3,7 +3,6 @@ package db2.onlineshop.web.data;
 import db2.onlineshop.entity.Country;
 import db2.onlineshop.entity.Genre;
 import db2.onlineshop.entity.Movie;
-import db2.onlineshop.entity.Movie;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +29,7 @@ public class MovieAddRequest {
         result.setPrice(price);
 
         result.setCountries(getCountries());
-        result.setMovieGenres(getGenres());
+        result.setGenres(getGenres());
 
         return result;
     }

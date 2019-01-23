@@ -1,6 +1,6 @@
 package db2.onlineshop.web.handler;
 
-import db2.onlineshop.entity.User;
+import db2.onlineshop.entity.UserLogin;
 import db2.onlineshop.service.security.entity.Role;
 import db2.onlineshop.service.security.exception.AuthenticationException;
 import db2.onlineshop.service.security.holder.SecurityHolder;
@@ -21,7 +21,7 @@ public class PermissionInterceptor extends HandlerInterceptorAdapter {
     @Override
     // todo: move to SecurityInterceptor
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        User user = SecurityHolder.get();
+        UserLogin user = SecurityHolder.get();
         HandlerMethod method = (HandlerMethod) handler;
         Permission annotation = method.getMethodAnnotation(Permission.class);
         if (annotation == null) {
