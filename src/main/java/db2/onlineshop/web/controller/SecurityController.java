@@ -25,7 +25,7 @@ public class SecurityController {
 
         Session session = securityService.login(email, request.getPassword());
         LoginResponse result = new LoginResponse();
-        //result.setNickname(session.getUser().getNickname());
+        result.setNickname(session.getUser().getNickname());
         result.setUuid(session.getToken());
         log.info("login:duration={}", System.currentTimeMillis() - startTime);
 

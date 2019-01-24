@@ -1,7 +1,7 @@
 package db2.onlineshop.service.security.impl;
 
-import db2.onlineshop.dao.UserLoginDao;
-import db2.onlineshop.entity.UserLogin;
+import db2.onlineshop.dao.UserDao;
+import db2.onlineshop.entity.User;
 import db2.onlineshop.service.security.SecurityService;
 import db2.onlineshop.service.security.entity.Session;
 import db2.onlineshop.service.security.exception.AuthenticationException;
@@ -21,16 +21,16 @@ import java.util.concurrent.ConcurrentHashMap;
 public class DefaultSecurityService implements SecurityService {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private UserLoginDao loginDao;
+    private UserDao userDao;
     private Long maxDuration;
     // index by token
     private final Map<String, Session> sessions = new ConcurrentHashMap<>();
 
     @Override
-    public Optional<UserLogin> getUserLogin(String token) {
+    public Optional<User> getUserLogin(String token) {
         Optional<Session> session = get(token);
         if (session.isPresent()) {
-            UserLogin result = session.get().getUser();
+            User result = session.get().getUser();
             return Optional.of(result);
         }
         log.debug("getUser:empty");
@@ -41,7 +41,7 @@ public class DefaultSecurityService implements SecurityService {
     @Override
     public Session login(String email, String password) {
         Session result = null;
-        UserLogin user = authenticate(email, password);
+        User user = authenticate(email, password);
 
         Optional<Session> anySession = find(user);
         if (anySession.isPresent()) {
@@ -61,12 +61,12 @@ public class DefaultSecurityService implements SecurityService {
         sessions.remove(token);
     }
 
-    private UserLogin authenticate(String email, String password) {
-        Optional<UserLogin> anyUser = loginDao.getByKey("email", email);
+    private User authenticate(String email, String password) {
+        Optional<User> anyUser = userDao.getByKey("email", email);
         if (!anyUser.isPresent()) {
             throw new AuthenticationException("Invalid user");
         }
-        UserLogin result = anyUser.get();
+        User result = anyUser.get();
         if (!password.equals(result.getPassword())) {
             throw new AuthenticationException("Invalid password");
         }
@@ -75,7 +75,7 @@ public class DefaultSecurityService implements SecurityService {
         return result;
     }
 
-    private Optional<Session> find(UserLogin user) {
+    private Optional<Session> find(User user) {
         for (Session result : sessions.values()) {
             String email = result.getUser().getEmail();
             if (email.equals(user.getEmail()) ) {
@@ -94,7 +94,7 @@ public class DefaultSecurityService implements SecurityService {
         return result;
     }
 
-    private Session create(UserLogin user) {
+    private Session create(User user) {
         String token = UUID.randomUUID().toString();
         LocalDateTime expireDate = getExpireDate();
 
@@ -125,8 +125,8 @@ public class DefaultSecurityService implements SecurityService {
     }
 
     @Autowired
-    public void setLoginDao(UserLoginDao loginDao) {
-        this.loginDao = loginDao;
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
     }
 
     @Value("${session.maxDuration}")

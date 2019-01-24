@@ -30,7 +30,7 @@ public class RatingController {
 
         MovieRating movieRating = new MovieRating();
         movieRating.setMovieId(movieId);
-        movieRating.setUserId(SecurityHolder.get().getUserId());
+        movieRating.setUserId(SecurityHolder.get().getId());
         movieRating.setRating(ratingRequest.getRating());
 
         ratingService.add(movieRating);

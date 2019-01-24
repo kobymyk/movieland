@@ -1,6 +1,6 @@
 package db2.onlineshop.service.security;
 
-import db2.onlineshop.entity.UserLogin;
+import db2.onlineshop.entity.User;
 import db2.onlineshop.service.security.entity.Session;
 
 import java.util.Optional;
@@ -10,6 +10,6 @@ public interface SecurityService {
 
     void logout(String token);
 
-    Optional<UserLogin> getUserLogin(String token);
+    Optional<User> getUserLogin(String token);
 
 }

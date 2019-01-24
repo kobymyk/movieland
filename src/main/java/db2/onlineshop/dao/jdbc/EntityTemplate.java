@@ -71,9 +71,9 @@ public abstract class EntityTemplate<T> implements PersistOperation<T> {
 
         Optional<T> result;
         try {
-            T entity = (T) getSession().byNaturalId(entityClass)
-                    .using(key, value)
-                    .load();
+            Criteria criteria = getCriteria();
+            criteria.add(Restrictions.eq(key, value));
+            T entity = (T) criteria.uniqueResult();
             result = Optional.of(entity);
         } catch (ObjectNotFoundException e) {
             log.warn("getByKey:empty", e);

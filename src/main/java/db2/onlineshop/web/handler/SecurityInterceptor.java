@@ -1,6 +1,6 @@
 package db2.onlineshop.web.handler;
 
-import db2.onlineshop.entity.UserLogin;
+import db2.onlineshop.entity.User;
 import db2.onlineshop.service.security.SecurityService;
 import db2.onlineshop.service.security.holder.SecurityHolder;
 import org.slf4j.Logger;
@@ -31,12 +31,12 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
 
         if (token != null) {
             log.info("preHandle:token={}", token);
-            Optional<UserLogin> anyUser = securityService.getUserLogin(token);
+            Optional<User> anyUser = securityService.getUserLogin(token);
             if (anyUser.isPresent()) {
-                UserLogin user = anyUser.get();
+                User user = anyUser.get();
 
                 SecurityHolder.set(user);
-                MDC.put("userId", Integer.toString(user.getUserId()));
+                MDC.put("userId", Integer.toString(user.getId()));
             }
         }
 

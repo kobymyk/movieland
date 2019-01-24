@@ -1,15 +1,15 @@
 package db2.onlineshop.service.security.holder;
 
-import db2.onlineshop.entity.UserLogin;
+import db2.onlineshop.entity.User;
 
 public class SecurityHolder {
-    private static final ThreadLocal<UserLogin> threadLocal = new ThreadLocal<>();
+    private static final ThreadLocal<User> threadLocal = new ThreadLocal<>();
 
-    public static UserLogin get() {
+    public static User get() {
         return threadLocal.get();
     }
 
-    public static void set(UserLogin user) {
+    public static void set(User user) {
         threadLocal.set(user);
     }
 

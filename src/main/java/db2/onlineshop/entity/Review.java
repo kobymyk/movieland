@@ -10,8 +10,8 @@ public class Review {
     protected int id;
     @Column(name = "review_text")
     protected String text;
-    @OneToOne(cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
+    @OneToOne(cascade = CascadeType.REFRESH)
+    @JoinColumn(name="user_id")
     protected User user;
 
     public Review() {

@@ -1,27 +1,27 @@
 package db2.onlineshop.service.security.entity;
 
 
-import db2.onlineshop.entity.UserLogin;
+import db2.onlineshop.entity.User;
 
 import java.time.LocalDateTime;
 
 public class Session {
-    private UserLogin user;
+    private User user;
     private String token;
 
     private LocalDateTime expireDate;
 
-    public Session(UserLogin user, String token, LocalDateTime expireDate) {
+    public Session(User user, String token, LocalDateTime expireDate) {
         this.user = user;
         this.token = token;
         this.expireDate = expireDate;
     }
 
-    public UserLogin getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(UserLogin user) {
+    public void setUser(User user) {
         this.user = user;
     }
 

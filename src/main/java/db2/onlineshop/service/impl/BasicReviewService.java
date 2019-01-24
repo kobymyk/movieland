@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,14 +20,7 @@ public class BasicReviewService implements ReviewService {
     private ReviewDao reviewDao;
 
     @Override
-    public List<Review> getByMovie(int movieId) {
-        log.debug("getByMovie:movieId={}", movieId);
-        List<Review> result = reviewDao.listByKey("movieId", movieId);
-
-        return result;
-    }
-
-    @Override
+    @Transactional
     public void add(MovieReview movieReview) {
         log.debug("add:movieReview={}", movieReview);
         reviewDao.add(movieReview);
@@ -36,7 +30,7 @@ public class BasicReviewService implements ReviewService {
     public void enrich(Movie movie) {
         int movieId = movie.getId();
         log.debug("enrich:movieId={}", movieId);
-        List<Review> reviews = getByMovie(movieId);
+        List<Review> reviews = reviewDao.listByKey("movieId", movieId);;
 
         movie.setReviews(reviews);
     }
