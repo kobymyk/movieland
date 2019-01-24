@@ -1,6 +1,13 @@
 package db2.onlineshop.entity;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "country")
 public class Country {
+    @Id
     private int id;
     private String name;
 
@@ -18,5 +25,13 @@ public class Country {
     public Country(int id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Country{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

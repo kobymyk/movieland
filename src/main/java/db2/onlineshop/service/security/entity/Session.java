@@ -1,5 +1,6 @@
 package db2.onlineshop.service.security.entity;
 
+
 import db2.onlineshop.entity.User;
 
 import java.time.LocalDateTime;
@@ -43,7 +44,7 @@ public class Session {
     @Override
     public String toString() {
         return "Session{" +
-                "user.id=" + user.getId() +
+                "user=" + user +
                 ", token='" + token + '\'' +
                 ", expireDate=" + expireDate +
                 '}';

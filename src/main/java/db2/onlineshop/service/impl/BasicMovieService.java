@@ -2,16 +2,21 @@ package db2.onlineshop.service.impl;
 
 import db2.onlineshop.dao.MovieDao;
 import db2.onlineshop.entity.Movie;
-import db2.onlineshop.entity.RequestParams;
+import db2.onlineshop.entity.Ordering;
+import db2.onlineshop.service.MovieChild;
+import db2.onlineshop.service.MovieEnricher;
 import db2.onlineshop.service.ServiceProvider;
+import db2.onlineshop.service.enricher.MovieEnrichExecutor;
 import db2.onlineshop.service.fx.CurrencyService;
 import db2.onlineshop.service.MovieService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BasicMovieService implements MovieService {
@@ -22,45 +27,37 @@ public class BasicMovieService implements MovieService {
     private CurrencyService currencyService;
 
     private MovieDao movieDao;
-    private int randomCount;
 
     @Override
-    public List<Movie> getAll(RequestParams param) {
-        List<Movie> result = movieDao.getAll(param);
-        log.trace("getAll:result={}", result);
+    public List<Movie> getAll(Ordering ordering) {
+        movieDao.setOrdering(ordering);
+        List<Movie> result = movieDao.getAll();
         log.info("getAll:result.size={}", result.size());
 
         return result;
     }
 
     @Override
-    public List<Movie> getRandom() {
-        log.info("getRandom:randomCount={}", randomCount);
-        List<Movie> result = movieDao.getRandom(randomCount);
-        log.trace("getRandom:result={}", result);
-
-        return result;
-    }
-
-    @Override
     public List<Movie> getByGenre(int genreId) {
-        List<Movie> result = movieDao.getByGenre(genreId);
-        log.trace("getByGenre:result={}", result);
+        List<Movie> result = movieDao.listByKey("genreId", genreId);
         log.info("getByGenre:result.size={}", result.size());
 
         return result;
     }
 
     @Override
-    public Movie getById(int id, RequestParams param) {
+    public Movie getById(int id, String currency) {
         Movie result = movieDao.getById(id);
+        log.trace("getById:movie={}", result);
+
+        List<MovieEnricher> enrichers = serviceProvider.getAll().stream()
+                .filter(p -> p instanceof MovieEnricher)
+                .map(p -> (MovieEnricher) p)
+                .collect(Collectors.toList());
+        MovieEnrichExecutor enrichExecutor = new MovieEnrichExecutor(enrichers);
+        enrichExecutor.enrich(result);
         log.trace("getById:result={}", result);
 
-        CompoundMovieEnricher enricher = serviceProvider.getCompoundMovieEnricher();
-        enricher.enrich(result);
-        log.trace("getById:result={}", result);
-
-        String currency = param.getCurrency();
         if (currency != null) {
             double price = currencyService.exchange(result.getPrice(), currency);
             log.debug("getById:price={}", price);
@@ -71,34 +68,30 @@ public class BasicMovieService implements MovieService {
     }
 
     @Override
-    public int add(Movie movie) {
+    @Transactional
+    public void add(Movie movie) {
         log.trace("add:movie={}", movie);
-        int result = movieDao.add(movie);
-        movie.setId(result);
+        movieDao.add(movie);
 
-        CompoundMovieChild children = serviceProvider.getCompoundMovieChild();
-        children.addReference(movie);
-
-        return result;
+        List<MovieChild> children = serviceProvider.getAll().stream()
+                .filter(p -> p instanceof MovieChild)
+                .map(p -> (MovieChild) p)
+                .collect(Collectors.toList());
+        for (MovieChild child : children) {
+            child.addReference(movie);
+        }
     }
 
     @Override
+    @Transactional
     public void edit(Movie movie) {
         log.trace("edit:movie={}", movie);
         movieDao.edit(movie);
-
-        CompoundMovieChild children = serviceProvider.getCompoundMovieChild();
-        children.editReference(movie);
     }
 
     @Autowired
     public void setMovieDao(MovieDao movieDao) {
         this.movieDao = movieDao;
-    }
-
-    @Value("${movie.randomCount:3}")
-    public void setRandomCount(int randomCount) {
-        this.randomCount = randomCount;
     }
 
     @Autowired

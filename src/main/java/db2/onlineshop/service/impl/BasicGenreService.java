@@ -1,25 +1,24 @@
 package db2.onlineshop.service.impl;
 
 import db2.onlineshop.dao.GenreDao;
-import db2.onlineshop.entity.Genre;
-import db2.onlineshop.entity.Movie;
+import db2.onlineshop.dao.MovieGenreDao;
+import db2.onlineshop.entity.*;
 import db2.onlineshop.service.GenreService;
 import db2.onlineshop.service.MovieChild;
-import db2.onlineshop.service.MovieEnricher;
-import db2.onlineshop.service.task.MovieEnrichTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 @Service
 public class BasicGenreService implements GenreService, MovieChild {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private GenreDao genreDao;
+    private MovieGenreDao movieGenreDao;
 
     @Override
     public List<Genre> getAll() {
@@ -30,35 +29,42 @@ public class BasicGenreService implements GenreService, MovieChild {
     }
 
     @Override
-    public List<Genre> getByMovie(int movieId) {
-        List<Genre> result = genreDao.getByMovie(movieId);
-        log.info("getByMovie:result.size={}", result.size());
-
-        return result;
-    }
-
-    @Override
     public void enrich(Movie movie) {
-        log.debug("enrich");
         int movieId = movie.getId();
-        List<Genre> genres = getByMovie(movieId);
-
+        log.debug("enrich:movieId={}", movieId);
+        List<MovieGenre> movieGenres = movieGenreDao.listByKey("movieId", movieId);
+        List<Genre> genres = new ArrayList<>(movieGenres.size());
+        for (MovieGenre movieGenre : movieGenres) {
+            genres.add(movieGenre.getGenre());
+        }
         movie.setGenres(genres);
     }
 
     @Override
-    public void addReference(Movie movie) {
-        log.debug("addReference");
-        genreDao.addReference(movie);
+    public void merge(Movie movie, Movie result) {
+        result.setGenres(movie.getGenres());
     }
 
     @Override
-    public void editReference(Movie movie) {
+    public void addReference(Movie movie) {
+        int movieId = movie.getId();
+        log.debug("addReference:movieId={}", movieId);
 
+        for (Genre genre : movie.getGenres()) {
+            MovieGenre movieGenre = new MovieGenre();
+            movieGenre.setMovieId(movieId);
+            movieGenre.setGenre(genre);
+            movieGenreDao.add(movieGenre);
+        }
     }
 
     @Autowired
     public void setGenreDao(GenreDao genreDao) {
         this.genreDao = genreDao;
+    }
+
+    @Autowired
+    public void setMovieGenreDao(MovieGenreDao movieGenreDao) {
+        this.movieGenreDao = movieGenreDao;
     }
 }

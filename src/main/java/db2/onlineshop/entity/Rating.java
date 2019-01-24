@@ -1,24 +1,25 @@
 package db2.onlineshop.entity;
 
+import org.hibernate.annotations.NaturalId;
+
+import javax.persistence.*;
+
+@MappedSuperclass
 public class Rating {
-    private int movieId;
-    private User user;
-    private double rating;
+    @Id
+    protected int id;
+    @NaturalId
+    @Column(name = "user_id")
+    protected int userId;
+    @Column(nullable = false)
+    protected double rating;
 
-    public int getMovieId() {
-        return movieId;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setMovieId(int movieId) {
-        this.movieId = movieId;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public double getRating() {
@@ -32,8 +33,7 @@ public class Rating {
     @Override
     public String toString() {
         return "Rating{" +
-                "movieId=" + movieId +
-                ", user=" + user +
+                ", userId=" + userId +
                 ", rating=" + rating +
                 '}';
     }

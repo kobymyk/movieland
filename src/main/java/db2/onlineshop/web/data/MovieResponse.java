@@ -67,7 +67,7 @@ public class MovieResponse {
 
     @Override
     public String toString() {
-        return "MovieResponse{" +
+        return "MovieItems{" +
                 "id=" + id +
                 ", yearOfRelease=" + yearOfRelease +
                 ", name='" + name + '\'' +

@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
-public class GenreControllerTest {
+public class MovieGenreControllerTest {
     @Mock
     private BasicGenreService genreService;
     @InjectMocks
@@ -34,8 +34,8 @@ public class GenreControllerTest {
 
     @Test
     public void getAll() throws Exception {
-        List<Genre> genres = mockGenres();
-        when(genreService.getAll()).thenReturn(genres);
+        List<Genre> movieGenres = mockGenres();
+        //when(genreService.getAll()).thenReturn(movieGenres);
 
         mockMvc.perform(get("/v1/genre"))
                 .andExpect(status().isOk())

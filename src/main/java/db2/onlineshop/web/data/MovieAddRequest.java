@@ -37,8 +37,8 @@ public class MovieAddRequest {
     public List<Country> getCountries(){
         List<Country> result = new ArrayList<>();
         for (Integer countryId : countries) {
-            Country country = new Country(countryId, null);
-            result.add(country);
+            Country item = new Country(countryId, null);
+            result.add(item);
         }
 
         return result;
@@ -47,8 +47,8 @@ public class MovieAddRequest {
     public List<Genre> getGenres(){
         List<Genre> result = new ArrayList<>();
         for (Integer genreId : genres) {
-            Genre genre = new Genre(genreId, null);
-            result.add(genre);
+            Genre item = new Genre(genreId, null);
+            result.add(item);
         }
 
         return result;

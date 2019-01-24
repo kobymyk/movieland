@@ -1,7 +1,6 @@
 package db2.onlineshop.service;
 
 import db2.onlineshop.service.fx.CurrencyService;
-import db2.onlineshop.service.impl.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,54 +9,26 @@ import java.util.List;
 
 @Service
 public class ServiceProvider {
+    private List<Object> services;
+
     private MovieService movieService;
     private GenreService genreService;
     private CountryService countryService;
     private ReviewService reviewService;
     private CurrencyService currencyService;
 
-    public CompoundMovieEnricher getCompoundMovieEnricher() {
-        CompoundMovieEnricher result = new CompoundMovieEnricher();
-
-        result.add(genreService);
-        result.add(countryService);
-        result.add(reviewService);
-        //result.add((MovieEnricher) currencyService);
-
-        return result;
-    }
-
-    public CompoundMovieChild getCompoundMovieChild() {
-        CompoundMovieChild result = new CompoundMovieChild();
-
-        result.add((MovieChild) genreService);
-        result.add((MovieChild) countryService);
-        //result.add((MovieChild) reviewService);
-
-        return result;
-    }
-
     public List<Object> getAll() {
-        List<Object> result = new ArrayList<>();
+        if (services == null) {
+            services = new ArrayList<>();
 
-        result.add(movieService);
-        result.add(genreService);
-        result.add(countryService);
-        result.add(reviewService);
-
-        return result;
-    }
-
-    public List<Object> filter(Class<?> anyInterface) {
-        List<Object> result = new ArrayList<>();
-        List<Object> services = getAll();
-        for (Object service : services) {
-            if (anyInterface.isAssignableFrom(service.getClass())) {
-                result.add(service);
-            }
+            services.add(movieService);
+            services.add(genreService);
+            services.add(countryService);
+            services.add(reviewService);
+            services.add(currencyService);
         }
 
-        return result;
+        return services;
     }
 
     @Autowired

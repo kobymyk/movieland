@@ -2,12 +2,18 @@ package db2.onlineshop.entity;
 
 import db2.onlineshop.service.security.entity.Role;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "users")
 public class User {
+    @Id
     private int id;
+    @Column(name = "name")
     private String nickname;
     private String email;
-
     private String password;
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     public int getId() {
@@ -56,7 +62,6 @@ public class User {
                 "id=" + id +
                 ", nickname='" + nickname + '\'' +
                 ", email='" + email + '\'' +
-                ", role='" + role + '\'' +
                 '}';
     }
 }

@@ -1,13 +1,15 @@
 package db2.onlineshop.service.impl;
 
 import db2.onlineshop.dao.ReviewDao;
-import db2.onlineshop.entity.Movie;
 import db2.onlineshop.entity.Review;
+import db2.onlineshop.entity.MovieReview;
+import db2.onlineshop.entity.Movie;
 import db2.onlineshop.service.ReviewService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,26 +20,24 @@ public class BasicReviewService implements ReviewService {
     private ReviewDao reviewDao;
 
     @Override
-    public List<Review> getByMovie(int movieId) {
-        log.debug("getByMovie:movieId={}", movieId);
-        List<Review> result = reviewDao.getByMovie(movieId);
-
-        return result;
-    }
-
-    @Override
-    public void add(int movieId, Review review) {
-        log.debug("add:movieId={}", movieId);
-        reviewDao.add(movieId, review);
+    @Transactional
+    public void add(MovieReview movieReview) {
+        log.debug("add:movieReview={}", movieReview);
+        reviewDao.add(movieReview);
     }
 
     @Override
     public void enrich(Movie movie) {
         int movieId = movie.getId();
         log.debug("enrich:movieId={}", movieId);
-        List<Review> reviews = getByMovie(movieId);
+        List<Review> reviews = reviewDao.listByKey("movieId", movieId);;
 
         movie.setReviews(reviews);
+    }
+
+    @Override
+    public void merge(Movie movie, Movie result) {
+        result.setReviews(movie.getReviews());
     }
 
     @Autowired

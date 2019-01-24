@@ -1,13 +1,7 @@
-package db2.onlineshop.service.task;
+package db2.onlineshop.service.enricher;
 
-import db2.onlineshop.entity.Country;
-import db2.onlineshop.entity.Genre;
 import db2.onlineshop.entity.Movie;
-import db2.onlineshop.entity.Review;
 import db2.onlineshop.service.MovieEnricher;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MovieEnrichParam {
     private MovieEnricher enricher;

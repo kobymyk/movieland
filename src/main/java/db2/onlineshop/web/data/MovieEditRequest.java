@@ -20,6 +20,7 @@ public class MovieEditRequest {
         result.setName(nameRussian);
         result.setNameNative(nameNative);
         result.setPicturePath(picturePath);
+
         result.setCountries(getCountries());
         result.setGenres(getGenres());
 

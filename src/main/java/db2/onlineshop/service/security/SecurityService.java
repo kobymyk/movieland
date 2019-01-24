@@ -10,6 +10,6 @@ public interface SecurityService {
 
     void logout(String token);
 
-    Optional<User> getUser(String token);
+    Optional<User> getUserLogin(String token);
 
 }

@@ -2,6 +2,7 @@ package db2.onlineshop.web.controller;
 
 import db2.onlineshop.entity.Genre;
 import db2.onlineshop.entity.Movie;
+import db2.onlineshop.entity.Movie;
 import db2.onlineshop.service.impl.BasicGenreService;
 import db2.onlineshop.service.impl.BasicMovieService;
 import org.junit.Before;
@@ -67,27 +68,6 @@ public class MovieControllerTest {
     }
 
     @Test
-    public void getRandom() throws Exception {
-        List<Movie> movies = mockMovies();
-        when(movieService.getRandom()).thenReturn(movies);
-
-        mockMvc.perform(get("/v1/movie/random"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-                // todo: 2x
-                .andExpect(jsonPath("$[0].id", is(1)))
-                .andExpect(jsonPath("$[0].name", is("имя 1")))
-                .andExpect(jsonPath("$[0].nameNative", is("name 1")))
-                .andExpect(jsonPath("$[0].yearOfRelease", is(1001)))
-                .andExpect(jsonPath("$[0].rating", is(1.01)))
-                .andExpect(jsonPath("$[0].price", is(10.1)))
-                .andExpect(jsonPath("$[0].picturePath", is("path/1")));
-
-        verify(movieService, times(1)).getRandom();
-        verifyNoMoreInteractions(movieService);
-    }
-
-    @Test
     public void getByGenre() throws Exception {
         final int genreId = 1;
         List<Movie> movies = mockMovies();
@@ -112,8 +92,8 @@ public class MovieControllerTest {
     @Test
     public void getById() throws Exception {
         final int id = 1;
-        when(movieService.getById(id)).thenReturn(mockMovies().get(0));
-        when(genreService.getByMovie(id)).thenReturn(mockGenres());
+        //when(movieService.getById(id, null)).thenReturn(mockMovies().get(0));
+        //when(genreService.getByMovie(id)).thenReturn(mockGenres());
 
         mockMvc.perform(get("/v1/movie/1"))
                 .andExpect(status().isOk())
@@ -123,7 +103,7 @@ public class MovieControllerTest {
                 .andExpect(jsonPath("$.genres[0].name", is("имя 1")))
                 .andExpect(jsonPath("$.nameNative", is("name 1")));
 
-        verify(movieService, times(1)).getById(id);
+        verify(movieService, times(1)).getById(id, null);
         verifyNoMoreInteractions(movieService);
     }
 

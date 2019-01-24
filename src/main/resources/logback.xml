@@ -25,7 +25,7 @@
         </layout>
     </appender>
     <!-- Send logs to both console and file audit -->
-    <logger name="db2.onlineshop" level="debug" additivity="false">
+    <logger name="db2.onlineshop" level="trace" additivity="false">
         <appender-ref ref="FILE" />
         <appender-ref ref="STDOUT" />
     </logger>

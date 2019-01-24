@@ -1,21 +1,31 @@
 package db2.onlineshop.entity;
 
+import javax.persistence.*;
 import java.util.List;
 
+@Entity
+@Table(name = "movie")
 public class Movie {
-    private int id;
-    private int yearOfRelease;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "movieSequence")
+    @SequenceGenerator(name = "movieSequence", sequenceName = "movie_seq", allocationSize = 1)
+    protected int id;
+    @Column(name = "release_year")
+    protected int yearOfRelease;
+    protected String name;
+    @Column(name = "name_native")
+    protected String nameNative;
+    protected String description;
+    @Column(name = "picture_path")
+    protected String picturePath;
+    protected double rating;
+    protected double price;
 
-    private String name;
-    private String nameNative;
-    private String description;
-    private String picturePath;
-
-    private double rating;
-    private double price;
-
+    @Transient
     private List<Country> countries;
+    @Transient
     private List<Genre> genres;
+    @Transient
     private List<Review> reviews;
 
     public int getId() {
@@ -48,17 +58,6 @@ public class Movie {
 
     public String getDescription() { return description; }
 
-    public List<Country> getCountries() {
-        return countries;
-    }
-
-    public List<Review> getReviews() {
-        return reviews;
-    }
-
-    public List<Genre> getGenres() {
-        return genres;
-    }
 
     public void setId(int id) {
         this.id = id;
@@ -89,6 +88,18 @@ public class Movie {
     }
 
     public void setDescription(String description) { this.description = description; }
+
+    public List<Country> getCountries() {
+        return countries;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public List<Genre> getGenres() {
+        return genres;
+    }
 
     public void setCountries(List<Country> countries) {
         this.countries = countries;
