@@ -25,4 +25,6 @@
             <bean class="db2.onlineshop.web.handler.PermissionInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>
+
+    <mvc:resources mapping="/resources/**" location="/WEB-INF/resources/" />
 </beans>

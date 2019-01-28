@@ -8,16 +8,24 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
-@RequestMapping("/v1")
+@Controller
 public class SecurityController {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private SecurityService securityService;
 
-    @PostMapping(value = "/login", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @GetMapping(value = "/login")
+    public String login() {
+        log.info("login");
+
+        return "login.html";
+    }
+
+    @ResponseBody
+    @PostMapping(value = "/v1/login", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public LoginResponse login(@RequestBody LoginRequest request) {
         long startTime = System.currentTimeMillis();
         String email = request.getEmail();
@@ -32,7 +40,7 @@ public class SecurityController {
         return result;
     }
 
-    @RequestMapping(value = "/logout", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @RequestMapping(value = "/v1/logout", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public void logout(@RequestHeader(value = "uuid") String token) {
         log.info("logout:token={}", token);
         securityService.logout(token);

@@ -26,11 +26,11 @@ app.controller('LoginController', ['$scope', 'LoginService', function ($scope, L
 
 app.service('LoginService', ['$http', function ($http) {
 
-    this.login = function login(name, email){
+    this.login = function login(email, password){
         return $http({
           method: 'POST',
-          url: 'login',
-          data: {name:email, email:password}
+          url: 'v1/login',
+          data: {email:email, password:password}
         });
     }
 
