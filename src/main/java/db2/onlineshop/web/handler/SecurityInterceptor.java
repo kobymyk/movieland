@@ -31,7 +31,7 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
 
         if (token != null) {
             log.info("preHandle:token={}", token);
-            Optional<User> anyUser = securityService.getUserLogin(token);
+            Optional<User> anyUser = securityService.getUser(token);
             if (anyUser.isPresent()) {
                 User user = anyUser.get();
 
