@@ -1,12 +1,12 @@
 'use strict';
 
-var module = angular.module('app.controllers', []);
+angular
+    .module('app')
+    .controller('LoginController', LoginController);
 
-module.controller('LoginController', LoginController);
+LoginController.$inject = ['$scope', '$location', '$window', 'LoginService'];
 
-LoginController.$inject = ['$scope', 'LoginService'];
-
-function LoginController($scope, LoginService) {
+function LoginController($scope, $location, $window, LoginService) {
     $scope.login = login;
 
     function login() {
@@ -15,6 +15,8 @@ function LoginController($scope, LoginService) {
         promised.then(
             function(value) {
                 console.log("value :" + value);
+                $window.sessionStorage.setItem("userData", value);
+                $location.path('/');
             },
             function(reason) {
                 console.log("status :" + reason.status);

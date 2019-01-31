@@ -43,6 +43,12 @@ public class MvcConfig implements WebMvcConfigurer {
                 .addPathPatterns("/v1/movie/**");
     }
 
+
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/").setViewName("index");
+    }
+
     @Bean
     public SpringResourceTemplateResolver templateResolver() {
         SpringResourceTemplateResolver result = new SpringResourceTemplateResolver();
