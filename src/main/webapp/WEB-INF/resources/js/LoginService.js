@@ -15,7 +15,9 @@ module.factory('LoginService', ['$http', '$q',
 
             $http.post("v1/login", {email:email, password:password}).then(
                 function(response) {
-                    deferred.resolve(response.data);
+                    var result = response.data;
+                    $http.defaults.headers.common['uuid'] = result.uuid;
+                    deferred.resolve(result);
                 },
                 function(error) {
                     console.log("statusText: " + error.statusText);

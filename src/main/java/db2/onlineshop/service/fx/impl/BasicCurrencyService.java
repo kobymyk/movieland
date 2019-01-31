@@ -25,7 +25,7 @@ public class BasicCurrencyService implements CurrencyService {
     private String url;
     private String pattern;
 
-    private RestTemplate restTemplate;
+    private RestTemplate restTemplate = new RestTemplate();
 
     private volatile Map<String, Double> cache;
 
@@ -92,11 +92,6 @@ public class BasicCurrencyService implements CurrencyService {
     @Value("${currency.default}")
     public void setDefaultCurrency(String defaultCurrency) {
         this.defaultCurrency = defaultCurrency;
-    }
-
-    @Autowired
-    public void setRestTemplate(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
     }
 
     @Value("${currency.url.default}")
