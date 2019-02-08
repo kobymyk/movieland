@@ -27,8 +27,8 @@ public class DefaultSecurityService implements SecurityService {
     private final Map<String, Session> sessions = new ConcurrentHashMap<>();
 
     @Override
-    public Optional<User> getUserLogin(String token) {
-        Optional<Session> session = get(token);
+    public Optional<User> getUser(String token) {
+        Optional<Session> session = getSession(token);
         if (session.isPresent()) {
             User result = session.get().getUser();
             return Optional.of(result);
@@ -62,11 +62,10 @@ public class DefaultSecurityService implements SecurityService {
     }
 
     private User authenticate(String email, String password) {
-        Optional<User> anyUser = userDao.getByKey("email", email);
-        if (!anyUser.isPresent()) {
+        User result = userDao.getByKey("email", email);
+        if (result == null) {
             throw new AuthenticationException("Invalid user");
         }
-        User result = anyUser.get();
         if (!password.equals(result.getPassword())) {
             throw new AuthenticationException("Invalid password");
         }
@@ -105,7 +104,7 @@ public class DefaultSecurityService implements SecurityService {
         return result;
     }
 
-    private Optional<Session> get(String token) {
+    private Optional<Session> getSession(String token) {
         if (sessions.containsKey(token)) {
             Session result = sessions.get(token);
 

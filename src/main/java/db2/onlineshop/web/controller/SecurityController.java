@@ -32,8 +32,8 @@ public class SecurityController {
         return result;
     }
 
-    @RequestMapping(value = "/logout", method = RequestMethod.DELETE, produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    public void logout(@RequestHeader(value = "uuid") String token) {
+    @RequestMapping(value = "/logout", method = RequestMethod.DELETE)
+    public void logout(@RequestHeader(value = "uuid", required = false) String token) {
         log.info("logout:token={}", token);
         securityService.logout(token);
     }

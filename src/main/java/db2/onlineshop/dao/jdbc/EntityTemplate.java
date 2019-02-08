@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
-import java.util.Optional;
 
 public abstract class EntityTemplate<T> implements PersistOperation<T> {
     protected final Logger log = LoggerFactory.getLogger(getClass());
@@ -66,19 +65,11 @@ public abstract class EntityTemplate<T> implements PersistOperation<T> {
     }
 
     @Override
-    public Optional<T> getByKey(String key, Object value) {
+    public T getByKey(String key, Object value) {
         log.trace("getByKey:key={};value={}", key, value);
-
-        Optional<T> result;
-        try {
-            Criteria criteria = getCriteria();
-            criteria.add(Restrictions.eq(key, value));
-            T entity = (T) criteria.uniqueResult();
-            result = Optional.of(entity);
-        } catch (ObjectNotFoundException e) {
-            log.warn("getByKey:empty", e);
-            result = Optional.empty();
-        }
+        Criteria criteria = getCriteria();
+        criteria.add(Restrictions.eq(key, value));
+        T result = (T) criteria.uniqueResult();
         log.trace("getByKey:result={}", result);
 
         return result;
