@@ -18,12 +18,13 @@ function HomeController($scope, $location, $window, LoginService) {
         var promised = LoginService.logout();
 
         promised.then(
-            function(response) {
-                $window.sessionStorage.setItem("userData", '');
+            value => {
+                $window.sessionStorage.removeItem("userData");
+                console.log("value :" + value);
             },
-            function(reason) {
+            reason => {
                 console.log("status :" + reason.status);
             }
-        );
+        )
     }
 };

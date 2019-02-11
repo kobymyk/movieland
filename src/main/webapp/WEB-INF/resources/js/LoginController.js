@@ -10,17 +10,22 @@ function LoginController($scope, $location, $window, LoginService) {
     $scope.login = login;
 
     function login() {
-        var promised = LoginService.login($scope.user.email, $scope.user.password);
+        let userObj = {
+            email: $scope.user.email,
+            password: $scope.user.password
+        }
+        var promised = LoginService.login(userObj);
 
         promised.then(
-            function(value) {
-                console.log("value :" + value);
-                $window.sessionStorage.setItem("userData", value);
+            value => {
+                let userData = JSON.stringify(value);
+                console.log("userData :" + userData);
+                $window.sessionStorage.setItem("userData", userData);
                 $location.path('/');
             },
-            function(reason) {
+            reason => {
                 console.log("status :" + reason.status);
             }
-        );
+        )
     }
 };
