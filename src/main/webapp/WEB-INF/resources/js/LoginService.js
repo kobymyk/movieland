@@ -10,21 +10,25 @@ angular
 
         return factory;
 
-        function login(email, password) {
+        function login(userObj) {
             var deferred = $q.defer();
-            var user = {email: email, password: password};
+            let userData = JSON.stringify(userObj);
 
-            $http.post("v1/login", user).then(
-                function(response) {
-                    var result = response.data;
-                    $http.defaults.headers.common['uuid'] = result.uuid;
-                    deferred.resolve(result);
+            $http.post("v1/login", userData).then(
+                response => {
+                    let userObj = response.data;
+                    $http.defaults.headers.common['uuid'] = userObj.uuid;
+                    console.log("statusText: " + response.statusText);
+
+                    deferred.resolve(userObj);
                 },
-                function(error) {
+                error => {
                     console.log("statusText: " + error.statusText);
+
                     deferred.reject(error);
                 }
             )
+
             return deferred.promise;
         }
 
@@ -32,15 +36,19 @@ angular
             var deferred = $q.defer();
 
             $http.delete("v1/logout").then(
-                function(response) {
+                response => {
                     $http.defaults.headers.common['uuid'] = '';
-                    deferred.resolve(response);
-                },
-                function(error) {
                     console.log("statusText: " + error.statusText);
+
+                    deferred.resolve(response.status);
+                },
+                error => {
+                    console.log("statusText: " + error.statusText);
+
                     deferred.reject(error);
                 }
             )
+
             return deferred.promise;
         }
     }
