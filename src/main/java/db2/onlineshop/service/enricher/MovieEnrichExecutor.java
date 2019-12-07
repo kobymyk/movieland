@@ -32,7 +32,7 @@ public class MovieEnrichExecutor {
         ExecutorService executor = Executors.newFixedThreadPool(3);
         List<Callable<MovieEnrichParam>> tasks = new ArrayList<>(enrichers.size());
         // fill tasks
-        for (db2.onlineshop.service.MovieEnricher enricher : enrichers) {
+        for (MovieEnricher enricher : enrichers) {
             MovieEnrichParam param = new MovieEnrichParam(enricher, movie);
             Callable<MovieEnrichParam> task = new MovieEnrichTask(param);
 

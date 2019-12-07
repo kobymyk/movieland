@@ -25,7 +25,7 @@ public class ServiceProvider {
             services.add(genreService);
             services.add(countryService);
             services.add(reviewService);
-            services.add(currencyService);
+            //services.add(currencyService);
         }
 
         return services;

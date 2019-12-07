@@ -17,6 +17,11 @@ function config($routeProvider, $locationProvider) {
             templateUrl: 'resources/login.view.html',
             controllerAs: 'vm'
         })
+        .when('/movie', {
+                    controller: 'MovieController',
+                    templateUrl: 'resources/movie.view.html',
+                    controllerAs: 'movie'
+                })
         .otherwise({
             redirectTo: '/login'
         });
