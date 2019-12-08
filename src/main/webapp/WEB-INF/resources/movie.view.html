@@ -1,5 +1,15 @@
 <div class="container">
-    <h1>this.movies: {{movies}}</h1>
-    <h1>$scope.movies: {{movie.movies}}</h1>
-    <p><a href="#!/movies" class="btn btn-primary">Movies</a></p>
+    <h1>$movie.movieTable.count: {{$movie.movieTable.count()}}</h1>
+
+    <p><a href="#!/movie" class="btn btn-primary" ng-click="getAll()">GetAll</a></p>
+    <table ng-table="$movie.movieTable" class="table" show-filter="true">
+        <tr ng-repeat="movie in $data">
+            <td title="'Id'" filter="{ id: 'number'}" sortable="'id'">
+                {{movie.id}}</td>
+            <td title="'Name'" filter="{ name: 'text'}" sortable="'name'">
+                {{movie.name}}</td>
+            <td title="'Year'" filter="{ yearOfRelease: 'number'}" sortable="'yearOfRelease'">
+                {{movie.yearOfRelease}}</td>
+        </tr>
+    </table>
 </div>

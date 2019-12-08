@@ -12,7 +12,6 @@ angular
 
         function getAll() {
             var deferred = $q.defer();
-            //let userData = JSON.stringify(userObj);
 
             $http.get("v1/movie").then(
                 response => {

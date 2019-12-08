@@ -4,9 +4,9 @@ angular
     .module('app')
     .controller('MovieController', MovieController);
 
-MovieController.$inject = ['$scope', '$location', '$window', 'LoginService'];
+MovieController.$inject = ['$scope', 'NgTableParams', 'MovieService'];
 
-function MovieController($scope, $location, $window, MovieService) {
+function MovieController($scope, NgTableParams, MovieService) {
     var self = this;
     $scope.getAll = getAll;
 
@@ -14,11 +14,9 @@ function MovieController($scope, $location, $window, MovieService) {
         var promised = MovieService.getAll();
 
         promised.then(
-            value => {
-                let result = JSON.stringify(value);
-                console.log("result :" + result);
-                $scope.movies = result;
-                self.movies = {};
+            data => {
+                console.log("data.length :" + data.length);
+                self.movieTable = new NgTableParams({}, {dataset: data});
                 //$location.path('/');
             },
             reason => {

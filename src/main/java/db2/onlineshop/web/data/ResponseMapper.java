@@ -21,14 +21,14 @@ public class ResponseMapper<T, R> {
         List<R> result = list.stream()
                 .map(o -> mapObject(o))
                 .collect(Collectors.toList());
-        log.info("mapList:result={}", result);
+        log.trace("mapList:result.size={}", result.size());
 
         return result;
     }
 
     public R mapObject(T object) {
         R result = modelMapper.map(object, type);
-        log.info("mapObject:result={}", result);
+        log.trace("mapObject:result={}", result);
 
         return result;
     }
