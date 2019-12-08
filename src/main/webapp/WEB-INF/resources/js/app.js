@@ -1,6 +1,6 @@
 'use strict';
  
-angular.module('app', ['ngRoute'])
+angular.module('app', ['ngRoute', 'ngTable'])
     .config(config)
     .run(run);
 
@@ -10,13 +10,18 @@ function config($routeProvider, $locationProvider) {
         .when('/', {
             controller: 'HomeController',
             templateUrl: 'resources/home.view.html',
-            controllerAs: 'vm'
+            controllerAs: '$home'
         })
         .when('/login', {
             controller: 'LoginController',
             templateUrl: 'resources/login.view.html',
-            controllerAs: 'vm'
+            controllerAs: '$login'
         })
+        .when('/movie', {
+                    controller: 'MovieController',
+                    templateUrl: 'resources/movie.view.html',
+                    controllerAs: '$movie'
+                })
         .otherwise({
             redirectTo: '/login'
         });
