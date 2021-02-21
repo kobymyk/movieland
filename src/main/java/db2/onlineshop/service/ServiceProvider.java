@@ -10,12 +10,17 @@ import java.util.List;
 @Service
 public class ServiceProvider {
     private List<Object> services;
+    private List<MovieEnricher> enrichers;
 
     private MovieService movieService;
     private GenreService genreService;
     private CountryService countryService;
     private ReviewService reviewService;
     private CurrencyService currencyService;
+
+    public ServiceProvider(List<MovieEnricher> enrichers) {
+        this.enrichers = enrichers;
+    }
 
     public List<Object> getAll() {
         if (services == null) {
