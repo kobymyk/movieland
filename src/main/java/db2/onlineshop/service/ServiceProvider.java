@@ -4,7 +4,7 @@ import db2.onlineshop.service.fx.CurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -12,7 +12,7 @@ public class ServiceProvider {
     private List<Object> services;
     private List<MovieEnricher> enrichers;
 
-    private MovieService movieService;
+    //private MovieService movieService;
     private GenreService genreService;
     private CountryService countryService;
     private ReviewService reviewService;
@@ -22,23 +22,17 @@ public class ServiceProvider {
         this.enrichers = enrichers;
     }
 
+    public List<MovieEnricher> getEnrichers() {
+        return enrichers;
+    }
+
     public List<Object> getAll() {
         if (services == null) {
-            services = new ArrayList<>();
-
-            services.add(movieService);
-            services.add(genreService);
-            services.add(countryService);
-            services.add(reviewService);
+            services = Arrays.asList(genreService, countryService, reviewService);
             //services.add(currencyService);
         }
 
         return services;
-    }
-
-    @Autowired
-    public void setMovieService(MovieService movieService) {
-        this.movieService = movieService;
     }
 
     @Autowired

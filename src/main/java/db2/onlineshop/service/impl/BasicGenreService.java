@@ -17,8 +17,14 @@ import java.util.List;
 public class BasicGenreService implements GenreService, MovieChild {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private GenreDao genreDao;
-    private MovieGenreDao movieGenreDao;
+    private final GenreDao genreDao;
+    private final MovieGenreDao movieGenreDao;
+
+    @Autowired
+    public BasicGenreService(GenreDao genreDao, MovieGenreDao movieGenreDao) {
+        this.genreDao = genreDao;
+        this.movieGenreDao = movieGenreDao;
+    }
 
     @Override
     public List<Genre> getAll() {
@@ -58,13 +64,4 @@ public class BasicGenreService implements GenreService, MovieChild {
         }
     }
 
-    @Autowired
-    public void setGenreDao(GenreDao genreDao) {
-        this.genreDao = genreDao;
-    }
-
-    @Autowired
-    public void setMovieGenreDao(MovieGenreDao movieGenreDao) {
-        this.movieGenreDao = movieGenreDao;
-    }
 }

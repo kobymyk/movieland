@@ -16,7 +16,7 @@ import java.util.concurrent.*;
 public class MovieEnrichExecutor {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    List<MovieEnricher> enrichers = new ArrayList<>();
+    List<MovieEnricher> enrichers;
 
     public MovieEnrichExecutor(List<MovieEnricher> enrichers) {
         this.enrichers = enrichers;

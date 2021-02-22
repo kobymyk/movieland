@@ -26,9 +26,13 @@ public class MovieController {
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final ResponseMapper<Movie, MovieResponse> MOVIE_MAPPER = new ResponseMapper(MovieResponse.class);
 
-    private MovieService movieService;
+    private final MovieService movieService;
+    @Autowired
+    public MovieController(MovieService movieService) {
+        this.movieService = movieService;
+    }
 
-    @GetMapping(produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<MovieResponse> getAll(@RequestParam(value = "rating", required = false) SortOrder ratingOrder,
                                       @RequestParam(value = "price", required = false) SortOrder priceOrder) {
         long startTime = System.currentTimeMillis();
@@ -48,7 +52,7 @@ public class MovieController {
         return result;
     }
 
-    @GetMapping(value = "/genre/{id}", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @GetMapping(value = "/genre/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<MovieResponse> getByGenre(@PathVariable int id) {
         long startTime = System.currentTimeMillis();
         log.debug("getByGenre:id={}", id);
@@ -59,7 +63,7 @@ public class MovieController {
         return result;
     }
 
-    @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public Movie getById(@PathVariable int id,
                          @RequestParam(name = "currency", required = false, defaultValue = "UAH") String currency) {
         long startTime = System.currentTimeMillis();
@@ -71,7 +75,7 @@ public class MovieController {
         return result;
     }
 
-    @PostMapping(consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE})
     @Permission(roles = Role.ADMIN)
     public void add(@RequestBody MovieAddRequest request) {
         long startTime = System.currentTimeMillis();
@@ -83,7 +87,7 @@ public class MovieController {
         log.info("add:duration={}", System.currentTimeMillis() - startTime);
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE})
     @Permission(roles = Role.ADMIN)
     public void edit(@RequestBody MovieEditRequest request, @PathVariable int id) {
         long startTime = System.currentTimeMillis();
@@ -94,11 +98,6 @@ public class MovieController {
 
         movieService.edit(movie);
         log.info("edit:duration={}", System.currentTimeMillis() - startTime);
-    }
-
-    @Autowired
-    public void setMovieService(MovieService movieService) {
-        this.movieService = movieService;
     }
 
     @InitBinder

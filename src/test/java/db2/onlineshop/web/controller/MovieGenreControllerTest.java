@@ -1,7 +1,6 @@
 package db2.onlineshop.web.controller;
 
-import db2.onlineshop.entity.Genre;
-import db2.onlineshop.service.impl.BasicGenreService;
+import db2.onlineshop.service.GenreService;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -11,10 +10,8 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.ArrayList;
 
-import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -22,13 +19,13 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
 
 public class MovieGenreControllerTest {
     @Mock
-    private BasicGenreService genreService;
+    private GenreService genreService;
     @InjectMocks
     private GenreController genreController;
     private MockMvc mockMvc;
 
     @Before
-    public void setupMock() {
+    public void setup() {
         MockitoAnnotations.initMocks(this);
         mockMvc = standaloneSetup(genreController).build();
     }
@@ -36,29 +33,14 @@ public class MovieGenreControllerTest {
     @Test
     @Ignore
     public void getAll() throws Exception {
-        List<Genre> movieGenres = mockGenres();
-        //when(genreService.getAll()).thenReturn(movieGenres);
+        when(genreService.getAll()).thenReturn(new ArrayList<>());
 
         mockMvc.perform(get("/v1/genre"))
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-                .andExpect(jsonPath("$[0].id", is(1)))
-                .andExpect(jsonPath("$[0].name", is("название 1")))
-
-                .andExpect(jsonPath("$[1].id", is(2)))
-                .andExpect(jsonPath("$[1].name", is("название 2")));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
 
         verify(genreService, times(1)).getAll();
         verifyNoMoreInteractions(genreService);
-    }
-
-    private List<Genre> mockGenres() {
-        List<Genre> result = Arrays.asList(
-                new Genre(1, "название 1"),
-                new Genre(2, "название 2"),
-                new Genre(3, "название 3"));
-
-        return result;
     }
 
 }
