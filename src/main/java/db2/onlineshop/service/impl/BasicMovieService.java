@@ -3,9 +3,8 @@ package db2.onlineshop.service.impl;
 import db2.onlineshop.dao.MovieDao;
 import db2.onlineshop.entity.Movie;
 import db2.onlineshop.entity.Ordering;
-import db2.onlineshop.service.Child;
 import db2.onlineshop.service.MovieEnricher;
-import db2.onlineshop.service.ServiceProvider;
+import db2.onlineshop.service.ServiceFactory;
 import db2.onlineshop.service.enricher.MovieEnrichExecutor;
 import db2.onlineshop.service.fx.CurrencyService;
 import db2.onlineshop.service.MovieService;
@@ -16,20 +15,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class BasicMovieService implements MovieService {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private final ServiceProvider serviceProvider;
+    private final ServiceFactory serviceFactory;
     // todo: enrich
     private final CurrencyService currencyService;
     private final MovieDao movieDao;
 
     @Autowired
-    public BasicMovieService(ServiceProvider serviceProvider, CurrencyService currencyService, MovieDao movieDao) {
-        this.serviceProvider = serviceProvider;
+    public BasicMovieService(ServiceFactory serviceFactory, CurrencyService currencyService, MovieDao movieDao) {
+        this.serviceFactory = serviceFactory;
         this.currencyService = currencyService;
         this.movieDao = movieDao;
     }
@@ -56,7 +54,7 @@ public class BasicMovieService implements MovieService {
         Movie result = movieDao.getById(id);
         log.trace("getById:movie={}", result);
 
-        List<MovieEnricher> enrichers = serviceProvider.getEnrichers();
+        List<MovieEnricher> enrichers = serviceFactory.getEnrichers();
         MovieEnrichExecutor enrichExecutor = new MovieEnrichExecutor(enrichers);
         enrichExecutor.enrich(result);
         log.trace("getById:result={}", result);
@@ -76,7 +74,7 @@ public class BasicMovieService implements MovieService {
         log.trace("add:movie={}", movie);
         movieDao.add(movie);
 
-        serviceProvider.getMovieChildren().forEach(child -> child.addReference(movie));
+        serviceFactory.getMovieChildren().forEach(child -> child.addReference(movie));
     }
 
     @Override
