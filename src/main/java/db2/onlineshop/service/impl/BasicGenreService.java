@@ -4,7 +4,7 @@ import db2.onlineshop.dao.GenreDao;
 import db2.onlineshop.dao.MovieGenreDao;
 import db2.onlineshop.entity.*;
 import db2.onlineshop.service.GenreService;
-import db2.onlineshop.service.MovieChild;
+import db2.onlineshop.service.Child;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +14,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class BasicGenreService implements GenreService, MovieChild {
+public class BasicGenreService implements GenreService, Child<Movie> {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private GenreDao genreDao;
-    private MovieGenreDao movieGenreDao;
+    private final GenreDao genreDao;
+    private final MovieGenreDao movieGenreDao;
+
+    @Autowired
+    public BasicGenreService(GenreDao genreDao, MovieGenreDao movieGenreDao) {
+        this.genreDao = genreDao;
+        this.movieGenreDao = movieGenreDao;
+    }
 
     @Override
     public List<Genre> getAll() {
@@ -58,13 +64,4 @@ public class BasicGenreService implements GenreService, MovieChild {
         }
     }
 
-    @Autowired
-    public void setGenreDao(GenreDao genreDao) {
-        this.genreDao = genreDao;
-    }
-
-    @Autowired
-    public void setMovieGenreDao(MovieGenreDao movieGenreDao) {
-        this.movieGenreDao = movieGenreDao;
-    }
 }

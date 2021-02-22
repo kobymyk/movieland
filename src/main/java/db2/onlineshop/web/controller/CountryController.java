@@ -21,8 +21,12 @@ public class CountryController {
 
     private CountryService countryService;
 
+    public CountryController(CountryService countryService) {
+        this.countryService = countryService;
+    }
+
     @ResponseBody
-    @GetMapping(value = "/v1/country", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
+    @GetMapping(value = "/v1/country", produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<Country> getAll() {
         log.info("getAll");
         long startTime = System.currentTimeMillis();
@@ -40,8 +44,4 @@ public class CountryController {
         return "countryList.html";
     }
 
-    @Autowired
-    public void setCountryService(CountryService countryService) {
-        this.countryService = countryService;
-    }
 }

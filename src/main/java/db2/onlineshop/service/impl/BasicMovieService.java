@@ -3,9 +3,8 @@ package db2.onlineshop.service.impl;
 import db2.onlineshop.dao.MovieDao;
 import db2.onlineshop.entity.Movie;
 import db2.onlineshop.entity.Ordering;
-import db2.onlineshop.service.MovieChild;
 import db2.onlineshop.service.MovieEnricher;
-import db2.onlineshop.service.ServiceProvider;
+import db2.onlineshop.service.ServiceFactory;
 import db2.onlineshop.service.enricher.MovieEnrichExecutor;
 import db2.onlineshop.service.fx.CurrencyService;
 import db2.onlineshop.service.MovieService;
@@ -16,17 +15,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class BasicMovieService implements MovieService {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private ServiceProvider serviceProvider;
+    private final ServiceFactory serviceFactory;
     // todo: enrich
-    private CurrencyService currencyService;
+    private final CurrencyService currencyService;
+    private final MovieDao movieDao;
 
-    private MovieDao movieDao;
+    @Autowired
+    public BasicMovieService(ServiceFactory serviceFactory, CurrencyService currencyService, MovieDao movieDao) {
+        this.serviceFactory = serviceFactory;
+        this.currencyService = currencyService;
+        this.movieDao = movieDao;
+    }
 
     @Override
     public List<Movie> getAll(Ordering ordering) {
@@ -50,10 +54,7 @@ public class BasicMovieService implements MovieService {
         Movie result = movieDao.getById(id);
         log.trace("getById:movie={}", result);
 
-        List<MovieEnricher> enrichers = serviceProvider.getAll().stream()
-                .filter(p -> p instanceof MovieEnricher)
-                .map(p -> (MovieEnricher) p)
-                .collect(Collectors.toList());
+        List<MovieEnricher> enrichers = serviceFactory.getEnrichers();
         MovieEnrichExecutor enrichExecutor = new MovieEnrichExecutor(enrichers);
         enrichExecutor.enrich(result);
         log.trace("getById:result={}", result);
@@ -73,13 +74,7 @@ public class BasicMovieService implements MovieService {
         log.trace("add:movie={}", movie);
         movieDao.add(movie);
 
-        List<MovieChild> children = serviceProvider.getAll().stream()
-                .filter(p -> p instanceof MovieChild)
-                .map(p -> (MovieChild) p)
-                .collect(Collectors.toList());
-        for (MovieChild child : children) {
-            child.addReference(movie);
-        }
+        serviceFactory.getMovieChildren().forEach(child -> child.addReference(movie));
     }
 
     @Override
@@ -89,18 +84,4 @@ public class BasicMovieService implements MovieService {
         movieDao.edit(movie);
     }
 
-    @Autowired
-    public void setMovieDao(MovieDao movieDao) {
-        this.movieDao = movieDao;
-    }
-
-    @Autowired
-    public void setCurrencyService(CurrencyService currencyService) {
-        this.currencyService = currencyService;
-    }
-
-    @Autowired
-    public void setServiceProvider(ServiceProvider serviceProvider) {
-        this.serviceProvider = serviceProvider;
-    }
 }
