@@ -4,7 +4,7 @@ import db2.onlineshop.dao.GenreDao;
 import db2.onlineshop.dao.MovieGenreDao;
 import db2.onlineshop.entity.*;
 import db2.onlineshop.service.GenreService;
-import db2.onlineshop.service.MovieChild;
+import db2.onlineshop.service.Child;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class BasicGenreService implements GenreService, MovieChild {
+public class BasicGenreService implements GenreService, Child<Movie> {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final GenreDao genreDao;

@@ -6,7 +6,7 @@ import db2.onlineshop.entity.Country;
 import db2.onlineshop.entity.Movie;
 import db2.onlineshop.entity.MovieCountry;
 import db2.onlineshop.service.CountryService;
-import db2.onlineshop.service.MovieChild;
+import db2.onlineshop.service.Child;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class BasicCountryService implements CountryService, MovieChild {
+public class BasicCountryService implements CountryService, Child<Movie> {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private CountryDao countryDao;

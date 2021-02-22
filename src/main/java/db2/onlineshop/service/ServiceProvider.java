@@ -1,5 +1,6 @@
 package db2.onlineshop.service;
 
+import db2.onlineshop.entity.Movie;
 import db2.onlineshop.service.fx.CurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,7 +11,8 @@ import java.util.List;
 @Service
 public class ServiceProvider {
     private List<Object> services;
-    private List<MovieEnricher> enrichers;
+    private final List<MovieEnricher> enrichers;
+    private final List<Child<Movie>> movieChildren;
 
     //private MovieService movieService;
     private GenreService genreService;
@@ -18,12 +20,17 @@ public class ServiceProvider {
     private ReviewService reviewService;
     private CurrencyService currencyService;
 
-    public ServiceProvider(List<MovieEnricher> enrichers) {
+    public ServiceProvider(List<MovieEnricher> enrichers, List<Child<Movie>> movieChildren) {
         this.enrichers = enrichers;
+        this.movieChildren = movieChildren;
     }
 
     public List<MovieEnricher> getEnrichers() {
         return enrichers;
+    }
+
+    public List<Child<Movie>> getMovieChildren() {
+        return movieChildren;
     }
 
     public List<Object> getAll() {

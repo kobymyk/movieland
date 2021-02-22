@@ -3,7 +3,7 @@ package db2.onlineshop.service.impl;
 import db2.onlineshop.dao.MovieDao;
 import db2.onlineshop.entity.Movie;
 import db2.onlineshop.entity.Ordering;
-import db2.onlineshop.service.MovieChild;
+import db2.onlineshop.service.Child;
 import db2.onlineshop.service.MovieEnricher;
 import db2.onlineshop.service.ServiceProvider;
 import db2.onlineshop.service.enricher.MovieEnrichExecutor;
@@ -76,13 +76,7 @@ public class BasicMovieService implements MovieService {
         log.trace("add:movie={}", movie);
         movieDao.add(movie);
 
-        List<MovieChild> children = serviceProvider.getAll().stream()
-                .filter(p -> p instanceof MovieChild)
-                .map(p -> (MovieChild) p)
-                .collect(Collectors.toList());
-        for (MovieChild child : children) {
-            child.addReference(movie);
-        }
+        serviceProvider.getMovieChildren().forEach(child -> child.addReference(movie));
     }
 
     @Override
