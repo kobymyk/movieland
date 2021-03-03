@@ -1,7 +1,7 @@
 package db2.onlineshop.service.security.impl;
 
 import db2.onlineshop.dao.UserDao;
-import db2.onlineshop.entity.User;
+import db2.onlineshop.entity.main.User;
 import db2.onlineshop.service.security.SecurityService;
 import db2.onlineshop.service.security.entity.Session;
 import db2.onlineshop.service.security.exception.AuthenticationException;

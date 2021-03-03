@@ -1,6 +1,6 @@
 package db2.onlineshop.web.data;
 
-import db2.onlineshop.entity.Country;
+import db2.onlineshop.entity.common.Country;
 import db2.onlineshop.entity.Genre;
 import db2.onlineshop.entity.Movie;
 

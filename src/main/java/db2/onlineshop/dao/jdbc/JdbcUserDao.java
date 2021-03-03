@@ -1,7 +1,7 @@
 package db2.onlineshop.dao.jdbc;
 
 import db2.onlineshop.dao.UserDao;
-import db2.onlineshop.entity.User;
+import db2.onlineshop.entity.main.User;
 import org.springframework.stereotype.Repository;
 
 

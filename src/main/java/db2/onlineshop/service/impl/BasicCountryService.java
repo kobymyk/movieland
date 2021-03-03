@@ -2,7 +2,7 @@ package db2.onlineshop.service.impl;
 
 import db2.onlineshop.dao.CountryDao;
 import db2.onlineshop.dao.MovieCountryDao;
-import db2.onlineshop.entity.Country;
+import db2.onlineshop.entity.common.Country;
 import db2.onlineshop.entity.Movie;
 import db2.onlineshop.entity.MovieCountry;
 import db2.onlineshop.service.CountryService;

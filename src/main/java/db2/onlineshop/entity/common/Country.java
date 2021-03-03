@@ -1,11 +1,11 @@
-package db2.onlineshop.entity;
+package db2.onlineshop.entity.common;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "country")
+@Table(name = "country", schema = "mysql")
 public class Country {
     @Id
     private int id;
