@@ -22,29 +22,17 @@ import java.util.Properties;
 public class PersistenceConfig {
 
     @Autowired
-    private Environment environment;
+    private BasicDataSource dataSource;
 
     @Bean
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-        sessionFactory.setDataSource(dataSource());
+        sessionFactory.setDataSource(dataSource);
         sessionFactory.setPackagesToScan(
                 new String[] {"db2.onlineshop.entity"});
         sessionFactory.setHibernateProperties(hibernateProperties());
 
         return sessionFactory;
-    }
-
-    @Bean(name = "dataSource")
-    public BasicDataSource dataSource() {
-        BasicDataSource result = new BasicDataSource();
-        result.setDriverClassName(environment.getProperty("jdbc.driver"));
-        result.setUrl(environment.getProperty("jdbc.url"));
-        result.setUsername(environment.getProperty("jdbc.user"));
-        result.setPassword(environment.getProperty("jdbc.password"));
-        result.setInitialSize(Integer.parseInt(environment.getProperty("jdbc.poolsize")));
-
-        return result;
     }
 
     @Bean
