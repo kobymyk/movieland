@@ -1,11 +1,11 @@
-package db2.onlineshop.entity;
+package db2.onlineshop.entity.main;
 
 import db2.onlineshop.service.security.entity.Role;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "users")
+@Table(name = "users", schema = "main")
 public class User {
     @Id
     private int id;

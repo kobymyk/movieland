@@ -1,6 +1,6 @@
 package db2.onlineshop.service;
 
-import db2.onlineshop.entity.Country;
+import db2.onlineshop.entity.common.Country;
 
 import java.util.List;
 

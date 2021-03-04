@@ -1,6 +1,6 @@
 package db2.onlineshop.web.handler;
 
-import db2.onlineshop.entity.User;
+import db2.onlineshop.entity.main.User;
 import db2.onlineshop.service.security.SecurityService;
 import db2.onlineshop.service.security.holder.SecurityHolder;
 import org.slf4j.Logger;

@@ -1,6 +1,6 @@
 package db2.onlineshop.service.security.holder;
 
-import db2.onlineshop.entity.User;
+import db2.onlineshop.entity.main.User;
 
 public class SecurityHolder {
     private static final ThreadLocal<User> threadLocal = new ThreadLocal<>();
