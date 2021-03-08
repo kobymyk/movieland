@@ -125,16 +125,27 @@
             <version>0.7.4</version>
         </dependency>
 
-        <!-- DB -->
+        <!-- DB Oracle-->
         <dependency>
             <groupId>com.oracle</groupId>
             <artifactId>ojdbc6</artifactId>
             <version>11.2.0.3</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/ojdbc6-11.2.0.3.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-dbcp2</artifactId>
             <version>2.1</version>
+        </dependency>
+
+        <!-- DB MySQL-->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.21</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/mysql-connector-java-8.0.21.jar</systemPath>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
