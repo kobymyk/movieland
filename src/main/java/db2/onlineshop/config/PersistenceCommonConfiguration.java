@@ -51,11 +51,11 @@ public class PersistenceCommonConfiguration {
     public BasicDataSource commonDataSource() {
         BasicDataSource result = new BasicDataSource();
         //todo: "jdbc.driverClassName"
-        result.setDriverClassName(env.getProperty("jdbc.driver"));
-        result.setUrl(env.getProperty("jdbc.url"));
-        result.setUsername(env.getProperty("jdbc.user"));
-        result.setPassword(env.getProperty("jdbc.password"));
-        result.setInitialSize(Integer.parseInt(env.getProperty("jdbc.poolsize")));
+        result.setDriverClassName(env.getProperty("mySql.jdbc.driver"));
+        result.setUrl(env.getProperty("mySql.jdbc.url"));
+        result.setUsername(env.getProperty("mySql.jdbc.user"));
+        result.setPassword(env.getProperty("mySql.jdbc.password"));
+        result.setInitialSize(Integer.parseInt(env.getProperty("mySql.jdbc.poolsize")));
 
         return result;
     }
