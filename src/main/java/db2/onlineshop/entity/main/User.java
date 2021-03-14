@@ -5,7 +5,7 @@ import db2.onlineshop.service.security.entity.Role;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "users", schema = "main")
+@Table(name = "users"/*, schema = "main"*/)
 public class User {
     @Id
     private int id;
@@ -15,6 +15,17 @@ public class User {
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    public User() {
+    }
+
+    public User(int id, String nickname, String email, String password, Role role) {
+        this.id = id;
+        this.nickname = nickname;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
 
     public int getId() {
         return id;
