@@ -4,7 +4,7 @@ import db2.onlineshop.dao.UserDao;
 import db2.onlineshop.entity.main.User;
 import org.springframework.stereotype.Repository;
 
-
+@Deprecated
 @Repository
 public class JdbcUserDao extends EntityTemplate<User> implements UserDao {
 

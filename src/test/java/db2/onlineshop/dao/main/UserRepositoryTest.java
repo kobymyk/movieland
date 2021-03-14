@@ -29,4 +29,10 @@ public class UserRepositoryTest {
 
         assertNotNull(userRepository.findById(1));
     }
+
+    @Test
+    public void shouldFindByEmail() {
+        User user = userRepository.findByEmail("ronald.reynolds66@example.com");
+        assertNotNull(user);
+    }
 }
