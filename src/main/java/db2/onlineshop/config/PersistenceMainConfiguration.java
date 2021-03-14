@@ -54,11 +54,11 @@ public class PersistenceMainConfiguration {
     @Primary
     public BasicDataSource mainDataSource() {
         BasicDataSource result = new BasicDataSource();
-        result.setDriverClassName(env.getProperty("jdbc.driver"));
-        result.setUrl(env.getProperty("jdbc.url"));
-        result.setUsername(env.getProperty("jdbc.user"));
-        result.setPassword(env.getProperty("jdbc.password"));
-        result.setInitialSize(Integer.parseInt(env.getProperty("jdbc.poolsize")));
+        result.setDriverClassName(env.getProperty("oracle.jdbc.driver"));
+        result.setUrl(env.getProperty("oracle.jdbc.url"));
+        result.setUsername(env.getProperty("oracle.jdbc.user"));
+        result.setPassword(env.getProperty("oracle.jdbc.password"));
+        result.setInitialSize(Integer.parseInt(env.getProperty("oracle.jdbc.poolsize")));
 
         return result;
     }
