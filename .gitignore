@@ -2,4 +2,5 @@
 .gitattributes
 target
 logs
+lib
 *.iml

@@ -1,13 +1,12 @@
 package db2.onlineshop.service.security.impl;
 
-import db2.onlineshop.dao.UserDao;
+import db2.onlineshop.dao.main.UserRepository;
 import db2.onlineshop.entity.main.User;
 import db2.onlineshop.service.security.SecurityService;
 import db2.onlineshop.service.security.entity.Session;
 import db2.onlineshop.service.security.exception.AuthenticationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -20,11 +19,15 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service
 public class DefaultSecurityService implements SecurityService {
     private final Logger log = LoggerFactory.getLogger(getClass());
-
-    private UserDao userDao;
+    @Value("${session.maxDuration:60}")
     private Long maxDuration;
-    // index by token
     private final Map<String, Session> sessions = new ConcurrentHashMap<>();
+
+    private UserRepository userRepository;
+
+    public DefaultSecurityService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public Optional<User> getUser(String token) {
@@ -40,12 +43,12 @@ public class DefaultSecurityService implements SecurityService {
 
     @Override
     public Session login(String email, String password) {
-        Session result = null;
+        Session result;
         User user = authenticate(email, password);
 
-        Optional<Session> anySession = find(user);
-        if (anySession.isPresent()) {
-            result = anySession.get();
+        Optional<Session> session = find(user);
+        if (session.isPresent()) {
+            result = session.get();
             result.setExpireDate(getExpireDate());
         } else {
             result = create(user);
@@ -57,12 +60,12 @@ public class DefaultSecurityService implements SecurityService {
 
     @Override
     public void logout(String token) {
-        log.info("logout", token);
+        log.info("logout:token={}", token);
         sessions.remove(token);
     }
 
     private User authenticate(String email, String password) {
-        User result = userDao.getByKey("email", email);
+        User result = userRepository.findByEmail(email);
         if (result == null) {
             throw new AuthenticationException("Invalid user");
         }
@@ -88,9 +91,7 @@ public class DefaultSecurityService implements SecurityService {
     }
 
     private LocalDateTime getExpireDate() {
-        LocalDateTime result = LocalDateTime.now().plusMinutes(maxDuration);
-
-        return result;
+        return LocalDateTime.now().plusMinutes(maxDuration);
     }
 
     private Session create(User user) {
@@ -123,13 +124,4 @@ public class DefaultSecurityService implements SecurityService {
         return Optional.empty();
     }
 
-    @Autowired
-    public void setUserDao(UserDao userDao) {
-        this.userDao = userDao;
-    }
-
-    @Value("${session.maxDuration}")
-    public void setMaxDuration(Long maxDuration) {
-        this.maxDuration = maxDuration;
-    }
 }
