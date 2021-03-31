@@ -11,8 +11,10 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.version>5.2.3.RELEASE</spring.version>
+        <spring-security.version>5.2.5.RELEASE</spring-security.version>
         <hibernate.version>5.4.9.Final</hibernate.version>
         <tomcat.version>9.0.29</tomcat.version>
+        <jwt.version>0.9.1</jwt.version>
     </properties>
 
     <build>
@@ -22,8 +24,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>9</source>
+                    <target>9</target>
                 </configuration>
             </plugin>
             <plugin>
@@ -92,6 +94,19 @@
             <artifactId>spring-orm</artifactId>
             <version>${spring.version}</version>
         </dependency>
+
+        <!--spring:security-->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${spring-security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${spring-security.version}</version>
+        </dependency>
+
         <!-- spring:jpa -->
         <dependency>
             <groupId>org.springframework.data</groupId>
@@ -191,6 +206,11 @@
             <artifactId>json-path-assert</artifactId>
             <version>2.2.0</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>${jwt.version}</version>
         </dependency>
     </dependencies>
 </project>
