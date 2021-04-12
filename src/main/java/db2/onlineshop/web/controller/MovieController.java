@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,6 +34,7 @@ public class MovieController {
     }
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
+    //@PreAuthorize("hasAuthority('user:read')")
     public List<MovieResponse> getAll(@RequestParam(value = "rating", required = false) SortOrder ratingOrder,
                                       @RequestParam(value = "price", required = false) SortOrder priceOrder) {
         long startTime = System.currentTimeMillis();
@@ -53,6 +55,7 @@ public class MovieController {
     }
 
     @GetMapping(value = "/genre/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PreAuthorize("hasAuthority('user:read')")
     public List<MovieResponse> getByGenre(@PathVariable int id) {
         long startTime = System.currentTimeMillis();
         log.debug("getByGenre:id={}", id);
@@ -64,6 +67,7 @@ public class MovieController {
     }
 
     @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PreAuthorize("hasAuthority('user:read')")
     public Movie getById(@PathVariable int id,
                          @RequestParam(name = "currency", required = false, defaultValue = "UAH") String currency) {
         long startTime = System.currentTimeMillis();
@@ -76,7 +80,8 @@ public class MovieController {
     }
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE})
-    @Permission(roles = Role.ADMIN)
+    //@Permission(roles = Role.ADMIN)
+    @PreAuthorize("hasAuthority('user:write')")
     public void add(@RequestBody MovieAddRequest request) {
         long startTime = System.currentTimeMillis();
         log.info("add:request={}", request);
@@ -88,7 +93,8 @@ public class MovieController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE})
-    @Permission(roles = Role.ADMIN)
+    //@Permission(roles = Role.ADMIN)
+    @PreAuthorize("hasAuthority('user:write')")
     public void edit(@RequestBody MovieEditRequest request, @PathVariable int id) {
         long startTime = System.currentTimeMillis();
         log.info("edit:id={}", id);

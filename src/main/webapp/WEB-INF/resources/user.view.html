@@ -1,0 +1,14 @@
+<div class="container">
+    <h1>$user.userTable.count: {{$user.userTable.count()}}</h1>
+
+    <p><a href="#!/user" class="btn btn-primary" ng-click="getAll()">GetAll</a></p>
+    <table ng-table="$user.userTable" class="table" show-filter="true">
+        <tr ng-repeat="user in $data">
+            <td title="'Id'" filter="{ id: 'number'}" sortable="'id'">
+                {{user.id}}</td>
+            <td title="'email'" filter="{ email: 'text'}" sortable="'email'">
+                {{user.email}}</td>
+        </tr>
+    </table>
+</div>
+

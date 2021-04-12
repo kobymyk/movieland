@@ -11,11 +11,11 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/v1")
+@RequestMapping("/v2")
 public class SecurityController {
-    private final Logger log = LoggerFactory.getLogger(getClass());
+/*    private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private SecurityService securityService;
+    *//*private SecurityService securityService;*//*
 
     @PostMapping(value = "/login", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
     public LoginResponse login(@RequestBody LoginRequest request) {
@@ -23,10 +23,12 @@ public class SecurityController {
         String email = request.getEmail();
         log.info("login:email={}", email);
 
-        Session session = securityService.login(email, request.getPassword());
+        //Session session = securityService.login(email, request.getPassword());
         LoginResponse result = new LoginResponse();
-        result.setNickname(session.getUser().getNickname());
-        result.setUuid(session.getToken());
+        result.setUuid(email);
+
+        //result.setNickname(session.getUser().getNickname());
+        //result.setUuid(session.getToken());
         log.info("login:duration={}", System.currentTimeMillis() - startTime);
 
         return result;
@@ -35,11 +37,11 @@ public class SecurityController {
     @RequestMapping(value = "/logout", method = RequestMethod.DELETE)
     public void logout(@RequestHeader(value = "uuid", required = false) String token) {
         log.info("logout:token={}", token);
-        securityService.logout(token);
-    }
+        //securityService.logout(token);
+    }*/
 
-    @Autowired
+   /* @Autowired
     public void setSecurityService(SecurityService securityService) {
         this.securityService = securityService;
-    }
+    }*/
 }

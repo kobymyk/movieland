@@ -5,6 +5,7 @@ import db2.onlineshop.service.CountryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +25,7 @@ public class CountryController {
 
     @ResponseBody
     @GetMapping(value = "/v1/country", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PreAuthorize("hasAuthority('user:read')")
     public List<Country> getAll() {
         log.info("getAll");
         long startTime = System.currentTimeMillis();
@@ -34,6 +36,7 @@ public class CountryController {
     }
 
     @GetMapping(value = "/country")
+    @PreAuthorize("hasAuthority('user:read')")
     public String list(Model model) {
         List<Country> countries = countryService.getAll();
         model.addAttribute("countries", countries);

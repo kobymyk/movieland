@@ -18,7 +18,7 @@ import java.util.Optional;
 public class SecurityInterceptor extends HandlerInterceptorAdapter {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private SecurityService securityService;
+    //private SecurityService securityService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
@@ -33,12 +33,12 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
 
     private void holdUser(String token) {
         log.info("holdUser:token={}", token);
-        Optional<User> anyUser = securityService.getUser(token);
+       /* Optional<User> anyUser = securityService.getUser(token);
         if (anyUser.isPresent()) {
             User user = anyUser.get();
 
             SecurityHolder.set(user);
-        }
+        }*/
     }
 
     @Override
@@ -46,8 +46,8 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
         SecurityHolder.clear();
     }
 
-    @Autowired
+   /* @Autowired
     public void setSecurityService(SecurityService securityService) {
         this.securityService = securityService;
-    }
+    }*/
 }

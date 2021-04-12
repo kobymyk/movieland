@@ -21,7 +21,12 @@ function config($routeProvider, $locationProvider) {
                     controller: 'MovieController',
                     templateUrl: 'resources/movie.view.html',
                     controllerAs: '$movie'
-                })
+        })
+        .when('/user', {
+                    controller: 'UserController',
+                    templateUrl: 'resources/user.view.html',
+                    controllerAs: '$user'
+        })
         .otherwise({
             redirectTo: '/login'
         });
@@ -29,11 +34,12 @@ function config($routeProvider, $locationProvider) {
 
 run.$inject = ['$rootScope', '$location', '$http', '$window'];
 function run($rootScope, $location, $http, $window) {
+    //var userData = $window.localStorage.getItem('userData');
     var userData = $window.sessionStorage.getItem('userData');
     if (userData) {
         try {
             let userObj = JSON.parse(userData);
-            $http.defaults.headers.common['uuid'] = userObj.uuid;
+           // $http.defaults.headers.common['uuid'] = userObj.uuid;
         } catch(e) {
             console.log("Error :" + e.message);
         }
