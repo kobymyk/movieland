@@ -4,13 +4,13 @@ angular
     .module('app')
     .controller('UserController', UserController);
 
-MovieController.$inject = ['$scope', 'NgTableParams', 'UserService'];
+UserController.$inject = ['$scope', 'NgTableParams', 'UserService'];
 
 function UserController($scope, NgTableParams, UserService) {
     var self = this;
     $scope.getAll = getAll;
 
-    function getAllUsers() {
+    function getAll() {
         var promised = UserService.getAll();
 
         promised.then(
