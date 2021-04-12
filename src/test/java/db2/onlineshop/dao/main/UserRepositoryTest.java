@@ -11,6 +11,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -32,7 +34,7 @@ public class UserRepositoryTest {
 
     @Test
     public void shouldFindByEmail() {
-        User user = userRepository.findByEmail("ronald.reynolds66@example.com");
+        Optional<User> user = userRepository.findByEmail("ronald.reynolds66@example.com");
         assertNotNull(user);
     }
 }

@@ -17,10 +17,14 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -63,5 +67,38 @@ public class AuthenticationControllerTest {
                 .content(requestJson))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(APPLICATION_JSON_VALUE));
+    }
+
+    @Test
+    public void getAuthorities_RoleAdmin() {
+        //given
+        User user = new User();
+        user.setEmail("ronald.reynolds66@example.com");
+        user.setPassword("paco");
+        user.setRole(Role.ADMIN);
+
+        //when
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>(user.getRole().getAuthorities());
+
+        //then
+        assertEquals(2, authorities.size());
+        assertEquals("user:read", authorities.get(0).toString());
+        assertEquals("user:write", authorities.get(1).toString());
+    }
+
+    @Test
+    public void getAuthorities_RoleUser() {
+        //given
+        User user = new User();
+        user.setEmail("user@example.com");
+        user.setPassword("user");
+        user.setRole(Role.USER);
+
+        //when
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>(user.getRole().getAuthorities());
+
+        //then
+        assertEquals(1, authorities.size());
+        assertEquals("user:read", authorities.get(0).toString());
     }
 }

@@ -16,9 +16,9 @@ angular
 
             $http.post("v1/login", userData).then(
                 response => {
-                    let userObj = response.data;
+                  /*  let userObj = response.data;
                     $http.defaults.headers.common['uuid'] = userObj.uuid;
-                    console.log("statusText: " + response.statusText);
+                    console.log("statusText: " + response.statusText);*/
 
                     deferred.resolve(userObj);
                 },
@@ -37,8 +37,8 @@ angular
 
             $http.delete("v1/logout").then(
                 response => {
-                    $http.defaults.headers.common['uuid'] = '';
-                    console.log("statusText: " + error.statusText);
+                   /* $http.defaults.headers.common['uuid'] = '';
+                    console.log("statusText: " + error.statusText);*/
 
                     deferred.resolve(response.status);
                 },

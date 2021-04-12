@@ -31,12 +31,12 @@ public class DefaultSecurityService implements SecurityService {
 
     @Override
     public Optional<User> getUser(String token) {
-        Optional<Session> session = getSession(token);
+      /*  Optional<Session> session = getSession(token);
         if (session.isPresent()) {
             User result = session.get().getUser();
             return Optional.of(result);
         }
-        log.debug("getUser:empty");
+        log.debug("getUser:empty");*/
 
         return Optional.empty();
     }
@@ -44,18 +44,18 @@ public class DefaultSecurityService implements SecurityService {
     @Override
     public Session login(String email, String password) {
         Session result;
-        User user = authenticate(email, password);
+        Optional<User> user = authenticate(email, password);
 
-        Optional<Session> session = find(user);
+       /* Optional<Session> session = find(user);
         if (session.isPresent()) {
             result = session.get();
             result.setExpireDate(getExpireDate());
         } else {
             result = create(user);
         }
-        log.trace("login:result={}", result);
+        log.trace("login:result={}", result);*/
 
-        return result;
+        return null;
     }
 
     @Override
@@ -64,28 +64,28 @@ public class DefaultSecurityService implements SecurityService {
         sessions.remove(token);
     }
 
-    private User authenticate(String email, String password) {
-        User result = userRepository.findByEmail(email);
+    private Optional<User> authenticate(String email, String password) {
+/*        Optional<User> result = userRepository.findByEmail(email);
         if (result == null) {
             throw new AuthenticationException("Invalid user");
         }
         if (!password.equals(result.getPassword())) {
             throw new AuthenticationException("Invalid password");
         }
-        log.debug("authenticate:result={}", result);
+        log.debug("authenticate:result={}", result);*/
 
-        return result;
+        return Optional.empty();
     }
 
     private Optional<Session> find(User user) {
-        for (Session result : sessions.values()) {
+      /*  for (Session result : sessions.values()) {
             String email = result.getUser().getEmail();
             if (email.equals(user.getEmail()) ) {
                 log.debug("find:email={}", email);
                 return Optional.of(result);
             }
         }
-        log.debug("find:empty");
+        log.debug("find:empty");*/
 
         return Optional.empty();
     }
@@ -95,18 +95,18 @@ public class DefaultSecurityService implements SecurityService {
     }
 
     private Session create(User user) {
-        String token = UUID.randomUUID().toString();
+       /* String token = UUID.randomUUID().toString();
         LocalDateTime expireDate = getExpireDate();
 
         Session result = new Session(user, token, expireDate);
         sessions.put(token, result);
         log.trace("create:result={}", result);
-
-        return result;
+*/
+        return null;
     }
 
     private Optional<Session> getSession(String token) {
-        if (sessions.containsKey(token)) {
+       /* if (sessions.containsKey(token)) {
             Session result = sessions.get(token);
 
             LocalDateTime expireDate = result.getExpireDate();
@@ -119,7 +119,7 @@ public class DefaultSecurityService implements SecurityService {
                 return Optional.of(result);
             }
         }
-        log.debug("get:empty");
+        log.debug("get:empty");*/
 
         return Optional.empty();
     }
