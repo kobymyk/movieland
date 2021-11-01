@@ -16,6 +16,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Deprecated
 @Service
 public class DefaultSecurityService implements SecurityService {
     private final Logger log = LoggerFactory.getLogger(getClass());

@@ -25,7 +25,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    @PreAuthorize("hasAnyAuthority('user:read', 'user:write')")
+    //@PreAuthorize("hasAnyAuthority('user:read', 'user:write')")
     public User getById(@PathVariable int id) {
         return userRepository.getOne(id);
     }

@@ -1,13 +1,8 @@
 package db2.onlineshop.web.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import db2.onlineshop.dao.main.UserRepository;
-import db2.onlineshop.entity.Movie;
 import db2.onlineshop.entity.main.User;
-import db2.onlineshop.service.MovieService;
-import db2.onlineshop.service.security.AuthenticationRequestDTO;
 import db2.onlineshop.service.security.JwtTokenProvider;
 import db2.onlineshop.service.security.entity.Role;
 import org.junit.Before;
@@ -15,18 +10,15 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
-import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;

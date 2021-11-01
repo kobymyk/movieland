@@ -1,35 +1,30 @@
 package db2.onlineshop.service.security;
 
 import db2.onlineshop.service.security.exception.JwtAuthenticationException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
-import org.springframework.web.filter.GenericFilterBean;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@Component
-public class JwtTokenFilter extends GenericFilterBean {
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
+public class JwtTokenFilter extends OncePerRequestFilter {
+    private JwtTokenProvider tokenProvider;
+
+    public JwtTokenFilter(JwtTokenProvider tokenProvider) {
+        this.tokenProvider = tokenProvider;
+    }
 
     @Override
-    public void doFilter(ServletRequest servletRequest,
-                         ServletResponse servletResponse,
-                         FilterChain filterChain) throws IOException, ServletException
-    {
-        String token = jwtTokenProvider.resolveToken((HttpServletRequest) servletRequest);
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        String token = tokenProvider.resolveToken(request);
 
         try {
-            if (token != null && jwtTokenProvider.validateToken(token)) {
-                Authentication authentication = jwtTokenProvider.getAuthentication(token);
+            if (token != null && tokenProvider.validateToken(token)) {
+                Authentication authentication = tokenProvider.getAuthentication(token);
 
                 if (authentication != null) {
                     SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -37,10 +32,10 @@ public class JwtTokenFilter extends GenericFilterBean {
             }
         } catch (JwtAuthenticationException e) {
             SecurityContextHolder.clearContext();
-            ((HttpServletResponse) servletResponse).sendError(e.getHttpStatus().value());
+            response.sendError(e.getHttpStatus().value());
             throw new JwtAuthenticationException("Jwt token is expired or invalid");
         }
 
-        filterChain.doFilter(servletRequest, servletResponse);
+        filterChain.doFilter(request, response);
     }
 }

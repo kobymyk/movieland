@@ -1,25 +1,26 @@
 package db2.onlineshop.service.security;
 
-import db2.onlineshop.dao.main.UserRepository;
 import db2.onlineshop.entity.main.User;
+import db2.onlineshop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
-@Service("userDetailsServiceImpl")
+@Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-    @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
+
+    public UserDetailsServiceImpl(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
+    @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email).orElseThrow(() ->
-                new UsernameNotFoundException("user doesn't exists"));
-
-        return SecurityUser.fromUser(user);
+        User user = userService.findByEmail(email);
+        return SecurityUserFactory.create(user);
     }
 }

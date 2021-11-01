@@ -1,20 +1,17 @@
 package db2.onlineshop.service.security;
 
-import db2.onlineshop.entity.main.User;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
 
 public class SecurityUser implements UserDetails {
-    private final String nickname;
+    private final String email;
     private final String password;
-    private final List<SimpleGrantedAuthority> authorities;
+    private final Collection<? extends GrantedAuthority> authorities;
 
-    public SecurityUser(String nickname, String password, List<SimpleGrantedAuthority> authorities) {
-        this.nickname = nickname;
+    public SecurityUser(String email, String password, Collection<? extends GrantedAuthority> authorities) {
+        this.email = email;
         this.password = password;
         this.authorities = authorities;
     }
@@ -31,7 +28,7 @@ public class SecurityUser implements UserDetails {
 
     @Override
     public String getUsername() {
-        return nickname;
+        return email;
     }
 
     @Override
@@ -53,7 +50,7 @@ public class SecurityUser implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
+    /* moved to SecurityUserFactory
     public static UserDetails fromUser(User user) {
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(),
@@ -61,4 +58,5 @@ public class SecurityUser implements UserDetails {
                 user.getRole().getAuthorities()
         );
     }
+    */
 }

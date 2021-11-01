@@ -1,38 +1,50 @@
 package db2.onlineshop.config;
 
-import db2.onlineshop.service.security.JwtConfigurer;
+import db2.onlineshop.service.security.JwtTokenFilter;
+import db2.onlineshop.service.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
-    private JwtConfigurer jwtConfigurer;
+    private JwtTokenProvider tokenProvider;
+    @Autowired
+    private UserDetailsService userDetailsService;
+
+    private static final String ADMIN_ENDPOINT = "/v1/user/**";
+    private static final String LOGIN_ENDPOINT = "/v1/login";
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder managerBuilder) throws Exception {
+        managerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
+        http.httpBasic().disable().csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
-                .antMatchers("/").permitAll()
-                .antMatchers("/v1/login").permitAll()
-                .anyRequest()
-                .authenticated()
-                .and()
-                .apply(jwtConfigurer);
+                    .antMatchers(LOGIN_ENDPOINT).permitAll()
+                    .antMatchers(ADMIN_ENDPOINT).hasRole("ADMIN")
+                    .anyRequest().authenticated();
+
+        JwtTokenFilter filter = new JwtTokenFilter(tokenProvider);
+        http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean
