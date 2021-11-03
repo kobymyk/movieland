@@ -38,16 +38,16 @@ public class MovieController {
     public List<MovieResponse> getAll(@RequestParam(value = "rating", required = false) SortOrder ratingOrder,
                                       @RequestParam(value = "price", required = false) SortOrder priceOrder) {
         long startTime = System.currentTimeMillis();
-        Ordering param = null;
+        Ordering ordering = null;
         if (ratingOrder != null) {
             log.info("getAll:ratingOrder={}", ratingOrder);
-            param = new Ordering("rating", ratingOrder);
+            ordering = new Ordering("rating", ratingOrder);
         } else if (priceOrder != null) {
             log.info("getAll:priceOrder={}", priceOrder);
-            param = new Ordering("price", priceOrder);
+            ordering = new Ordering("price", priceOrder);
         }
 
-        List<Movie> movies = movieService.getAll(param);
+        List<Movie> movies = movieService.getAll(ordering);
         List<MovieResponse> result = MOVIE_MAPPER.mapList(movies);
         log.info("getAll:duration={}", System.currentTimeMillis() - startTime);
 

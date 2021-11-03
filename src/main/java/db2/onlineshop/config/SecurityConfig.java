@@ -40,7 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
                     .antMatchers(LOGIN_ENDPOINT).permitAll()
-                    .antMatchers(ADMIN_ENDPOINT).hasRole("ADMIN")
+                    //.antMatchers(ADMIN_ENDPOINT).hasRole("ADMIN")
                     .anyRequest().authenticated();
 
         JwtTokenFilter filter = new JwtTokenFilter(tokenProvider);

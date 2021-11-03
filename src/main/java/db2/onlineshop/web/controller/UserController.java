@@ -19,7 +19,7 @@ public class UserController {
     private UserRepository userRepository;
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-    @PreAuthorize("hasAnyAuthority('user:read', 'user:write')")
+    //@PreAuthorize("hasAuthority('ADMIN')")
     public List<User> getAll() {
         return userRepository.findAll();
     }
