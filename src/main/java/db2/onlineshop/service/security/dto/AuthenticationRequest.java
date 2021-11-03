@@ -1,6 +1,6 @@
-package db2.onlineshop.service.security;
+package db2.onlineshop.service.security.dto;
 
-public class AuthenticationRequestDTO {
+public class AuthenticationRequest {
     private String email;
     private String password;
 

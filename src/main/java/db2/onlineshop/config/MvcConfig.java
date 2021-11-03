@@ -38,11 +38,10 @@ public class MvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         //registry.addInterceptor(securityInterceptor)
         //        .addPathPatterns("/**");
-        registry.addInterceptor(permissionInterceptor)
-                .addPathPatterns("/v1/review/**")
-                .addPathPatterns("/v1/movie/**");
+        //registry.addInterceptor(permissionInterceptor)
+        //        .addPathPatterns("/v1/review/**")
+        //        .addPathPatterns("/v1/movie/**");
     }
-
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {

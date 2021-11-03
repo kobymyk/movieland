@@ -19,13 +19,13 @@ public class UserController {
     private UserRepository userRepository;
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-    @PreAuthorize("hasAnyAuthority('user:read', 'user:write')")
+    //@PreAuthorize("hasAuthority('ADMIN')")
     public List<User> getAll() {
         return userRepository.findAll();
     }
 
     @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    @PreAuthorize("hasAnyAuthority('user:read', 'user:write')")
+    //@PreAuthorize("hasAnyAuthority('user:read', 'user:write')")
     public User getById(@PathVariable int id) {
         return userRepository.getOne(id);
     }
