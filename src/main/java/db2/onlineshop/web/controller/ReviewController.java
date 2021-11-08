@@ -23,8 +23,7 @@ public class ReviewController {
 
     private ReviewService reviewService;
 
-    @RequestMapping(method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    @Permission(roles = {Role.ADMIN, Role.USER})
+    @RequestMapping(method = RequestMethod.POST, consumes = {MediaType.APPLICATION_JSON_VALUE})
     public void add(@RequestBody ReviewRequest reviewRequest) {
         long startTime = System.currentTimeMillis();
         log.info("add:reviewRequest={}", reviewRequest);

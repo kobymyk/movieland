@@ -26,7 +26,7 @@ public class UserRepositoryTest {
     @Test
     @Transactional
     public void whenCreatingUser_thenCreated() {
-        User user = new User(1, "nickname", "123@123.com", "123", Role.USER);
+        User user = new User(1, "nickname", "123@123.com", "123", Role.ROLE_USER);
         userRepository.save(user);
 
         assertNotNull(userRepository.findById(1));

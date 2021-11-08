@@ -19,7 +19,6 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     //private BCryptPasswordEncoder passwordEncoder;
 
-
     public UserServiceImpl(AuthenticationManager authenticationManager, JwtTokenProvider tokenProvider, UserRepository userRepository) {
         this.authenticationManager = authenticationManager;
         this.tokenProvider = tokenProvider;

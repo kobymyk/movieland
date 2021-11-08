@@ -25,7 +25,6 @@ public class CountryController {
 
     @ResponseBody
     @GetMapping(value = "/v1/country", produces = {MediaType.APPLICATION_JSON_VALUE})
-    //@PreAuthorize("hasAuthority('user:read')")
     public List<Country> getAll() {
         log.info("getAll");
         long startTime = System.currentTimeMillis();
@@ -36,7 +35,6 @@ public class CountryController {
     }
 
     @GetMapping(value = "/country")
-    //@PreAuthorize("hasAuthority('user:read')")
     public String list(Model model) {
         List<Country> countries = countryService.getAll();
         model.addAttribute("countries", countries);
