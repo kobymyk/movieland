@@ -48,7 +48,7 @@ public class AuthenticationControllerTest {
         User user = new User();
         user.setEmail("ronald.reynolds66@example.com");
         user.setPassword("paco");
-        user.setRole(Role.ADMIN);
+        user.setRole(Role.ROLE_ADMIN);
 
         when(userRepository.findByEmail(any())).thenReturn(java.util.Optional.of(user));
 
@@ -67,7 +67,7 @@ public class AuthenticationControllerTest {
         User user = new User();
         user.setEmail("ronald.reynolds66@example.com");
         user.setPassword("paco");
-        user.setRole(Role.ADMIN);
+        user.setRole(Role.ROLE_ADMIN);
 
         //when
         List<SimpleGrantedAuthority> authorities = new ArrayList<>(user.getRole().getAuthorities());
@@ -84,7 +84,7 @@ public class AuthenticationControllerTest {
         User user = new User();
         user.setEmail("user@example.com");
         user.setPassword("user");
-        user.setRole(Role.USER);
+        user.setRole(Role.ROLE_USER);
 
         //when
         List<SimpleGrantedAuthority> authorities = new ArrayList<>(user.getRole().getAuthorities());

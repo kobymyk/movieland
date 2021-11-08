@@ -1,13 +1,9 @@
 package db2.onlineshop.web.controller;
 
-import db2.onlineshop.entity.main.User;
 import db2.onlineshop.service.UserService;
 import db2.onlineshop.service.security.dto.AuthenticationRequest;
-import db2.onlineshop.service.security.JwtTokenProvider;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.web.bind.annotation.*;

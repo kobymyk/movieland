@@ -25,7 +25,7 @@ import java.util.List;
 @RequestMapping(value = "/v1/movie")
 public class MovieController {
     private final Logger log = LoggerFactory.getLogger(getClass());
-    private final ResponseMapper<Movie, MovieResponse> MOVIE_MAPPER = new ResponseMapper(MovieResponse.class);
+    private final ResponseMapper<Movie, MovieResponse> MOVIE_MAPPER = new ResponseMapper<>(MovieResponse.class);
 
     private final MovieService movieService;
     @Autowired
@@ -34,7 +34,6 @@ public class MovieController {
     }
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-    //@PreAuthorize("isAuthenticated()")
     public List<MovieResponse> getAll(@RequestParam(value = "rating", required = false) SortOrder ratingOrder,
                                       @RequestParam(value = "price", required = false) SortOrder priceOrder) {
         long startTime = System.currentTimeMillis();
@@ -55,7 +54,6 @@ public class MovieController {
     }
 
     @GetMapping(value = "/genre/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    //@PreAuthorize("hasAuthority('user:read')")
     public List<MovieResponse> getByGenre(@PathVariable int id) {
         long startTime = System.currentTimeMillis();
         log.debug("getByGenre:id={}", id);
@@ -67,7 +65,6 @@ public class MovieController {
     }
 
     @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    //@PreAuthorize("hasAuthority('user:read')")
     public Movie getById(@PathVariable int id,
                          @RequestParam(name = "currency", required = false, defaultValue = "UAH") String currency) {
         long startTime = System.currentTimeMillis();
@@ -80,8 +77,7 @@ public class MovieController {
     }
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE})
-    //@Permission(roles = Role.ADMIN)
-    //@PreAuthorize("hasAuthority('user:write')")
+    @PreAuthorize("hasRole('ADMIN')")
     public void add(@RequestBody MovieAddRequest request) {
         long startTime = System.currentTimeMillis();
         log.info("add:request={}", request);
@@ -93,8 +89,6 @@ public class MovieController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = {MediaType.APPLICATION_JSON_VALUE})
-    //@Permission(roles = Role.ADMIN)
-    //@PreAuthorize("hasAuthority('user:write')")
     public void edit(@RequestBody MovieEditRequest request, @PathVariable int id) {
         long startTime = System.currentTimeMillis();
         log.info("edit:id={}", id);

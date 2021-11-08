@@ -18,18 +18,19 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/v1/movie/{movieId}")
 public class RatingController {
     private final Logger log = LoggerFactory.getLogger(getClass());
-    private final ResponseMapper<MovieRating, RatingResponse> RATING_MAPPER = new ResponseMapper(RatingResponse.class);
+    private final ResponseMapper<MovieRating, RatingResponse> RATING_MAPPER = new ResponseMapper<>(RatingResponse.class);
 
     private RatingService ratingService;
 
-    @PostMapping(value = "/rate", consumes = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    @Permission(roles = {Role.ADMIN, Role.USER})
+    @PostMapping(value = "/rate", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @Permission(roles = {Role.ROLE_ADMIN, Role.ROLE_USER})
     public void add(@PathVariable int movieId, @RequestBody RatingRequest ratingRequest) {
         log.info("add:movieId={};ratingRequest={}", movieId, ratingRequest);
         long startTime = System.currentTimeMillis();
 
         MovieRating movieRating = new MovieRating();
         movieRating.setMovieId(movieId);
+        //todo:
         movieRating.setUserId(SecurityHolder.get().getId());
         movieRating.setRating(ratingRequest.getRating());
 
@@ -38,8 +39,8 @@ public class RatingController {
         log.info("add:duration={}", System.currentTimeMillis() - startTime);
     }
 
-    @GetMapping(value = "/rating", produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    @Permission(roles = {Role.USER})
+    @GetMapping(value = "/rating", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @Permission(roles = {Role.ROLE_USER})
     public RatingResponse getByMovie(@PathVariable int movieId) {
         long startTime = System.currentTimeMillis();
         log.info("getByMovie:movieId={}", movieId);

@@ -19,8 +19,7 @@ public class GenreController {
     private GenreService genreService;
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    @GetMapping(produces = {MediaType.APPLICATION_JSON_UTF8_VALUE})
-    //@PreAuthorize("user:read")
+    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     public List<Genre> getAll() {
         long startTime = System.currentTimeMillis();
         List<Genre> result = genreService.getAll();
