@@ -1,4 +1,4 @@
-package db2.onlineshop.dao.jdbc;
+package db2.onlineshop.dao.impl;
 
 import db2.onlineshop.dao.ReviewDao;
 import db2.onlineshop.entity.Review;
@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public class JdbcReviewDao extends EntityTemplate<Review> implements ReviewDao {
+public class JdbcReviewDao extends AbstractGenericDao<Review> implements ReviewDao {
 
     public JdbcReviewDao() {
         super();

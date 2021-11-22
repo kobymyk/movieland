@@ -1,14 +1,10 @@
 package db2.onlineshop.config;
 
 import org.apache.commons.dbcp2.BasicDataSource;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
-import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.orm.hibernate5.HibernateTransactionManager;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -16,13 +12,12 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.util.HashMap;
-import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
 @PropertySource({"classpath:application.properties"})
 @EnableJpaRepositories(
-        basePackages = "db2.onlineshop.dao.main",
+        basePackages = {"db2.onlineshop.dao.main", "db2.onlineshop.dao.impl"},
         entityManagerFactoryRef = "mainEntityManager",
         transactionManagerRef = "mainTransactionManager"
 )
@@ -35,8 +30,7 @@ public class PersistenceMainConfiguration {
     public LocalContainerEntityManagerFactoryBean mainEntityManager() {
         LocalContainerEntityManagerFactoryBean result = new LocalContainerEntityManagerFactoryBean();
         result.setDataSource(mainDataSource());
-        //todo: ("db2.onlineshop.entity.main")
-        result.setPackagesToScan(new String[] {"db2.onlineshop.entity.main"});
+        result.setPackagesToScan("db2.onlineshop.entity.main");
 
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         result.setJpaVendorAdapter(vendorAdapter);

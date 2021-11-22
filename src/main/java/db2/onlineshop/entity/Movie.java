@@ -1,6 +1,7 @@
 package db2.onlineshop.entity;
 
 import db2.onlineshop.entity.common.Country;
+import db2.onlineshop.entity.main.Genre;
 
 import javax.persistence.*;
 import java.util.List;

@@ -1,4 +1,4 @@
-package db2.onlineshop.dao.jdbc.builder;
+package db2.onlineshop.dao.impl.builder;
 
 import db2.onlineshop.entity.SortOrder;
 import db2.onlineshop.entity.Ordering;

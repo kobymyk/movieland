@@ -4,7 +4,6 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -32,8 +31,7 @@ public class PersistenceCommonConfiguration {
     public LocalContainerEntityManagerFactoryBean commonEntityManager() {
         LocalContainerEntityManagerFactoryBean result = new LocalContainerEntityManagerFactoryBean();
         result.setDataSource(commonDataSource());
-        //todo: ("db2.onlineshop.entity.common")
-        result.setPackagesToScan(new String[] {"db2.onlineshop.entity.common"});
+        result.setPackagesToScan("db2.onlineshop.entity.common");
 
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         result.setJpaVendorAdapter(vendorAdapter);

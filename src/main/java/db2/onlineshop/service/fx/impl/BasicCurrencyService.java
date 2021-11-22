@@ -25,7 +25,7 @@ public class BasicCurrencyService implements CurrencyService {
     private String url;
     private String pattern;
 
-    private RestTemplate restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate = new RestTemplate();
 
     private volatile Map<String, Double> cache;
 
@@ -35,9 +35,8 @@ public class BasicCurrencyService implements CurrencyService {
             return value;
         }
         double rate = getRate(code);
-        double result = value / rate;
 
-        return result;
+        return value / rate;
     }
 
     @PostConstruct
