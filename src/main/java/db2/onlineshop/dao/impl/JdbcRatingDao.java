@@ -1,4 +1,4 @@
-package db2.onlineshop.dao.jdbc;
+package db2.onlineshop.dao.impl;
 
 import db2.onlineshop.dao.RatingDao;
 import db2.onlineshop.entity.MovieRating;
@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public class JdbcRatingDao extends EntityTemplate<MovieRating> implements RatingDao {
+public class JdbcRatingDao extends AbstractGenericDao<MovieRating> implements RatingDao {
 
     @Override
     public void add(MovieRating movieRating) {

@@ -13,28 +13,27 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @EnableTransactionManagement
 @ContextConfiguration(classes = PersistenceMainConfiguration.class)
 public class UserRepositoryTest {
-
     @Autowired
     private UserRepository userRepository;
 
     @Test
     @Transactional
-    public void whenCreatingUser_thenCreated() {
+    public void save() {
         User user = new User(1, "nickname", "123@123.com", "123", Role.ROLE_USER);
         userRepository.save(user);
 
-        assertNotNull(userRepository.findById(1));
+        assertTrue(userRepository.findById(1).isPresent());
     }
 
     @Test
-    public void shouldFindByEmail() {
+    public void findByEmail() {
         Optional<User> user = userRepository.findByEmail("ronald.reynolds66@example.com");
-        assertNotNull(user);
+        assertTrue(user.isPresent());
     }
 }

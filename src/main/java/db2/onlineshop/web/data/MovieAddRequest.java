@@ -1,7 +1,7 @@
 package db2.onlineshop.web.data;
 
 import db2.onlineshop.entity.common.Country;
-import db2.onlineshop.entity.Genre;
+import db2.onlineshop.entity.main.Genre;
 import db2.onlineshop.entity.Movie;
 
 import java.util.ArrayList;

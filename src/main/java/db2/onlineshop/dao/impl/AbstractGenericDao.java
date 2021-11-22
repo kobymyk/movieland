@@ -1,18 +1,21 @@
-package db2.onlineshop.dao.jdbc;
+package db2.onlineshop.dao.impl;
 
-import db2.onlineshop.dao.PersistOperation;
+import db2.onlineshop.dao.GenericDao;
 import org.hibernate.*;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-public abstract class EntityTemplate<T> implements PersistOperation<T> {
+@Component
+public abstract class AbstractGenericDao<T> implements GenericDao<T> {
     protected final Logger log = LoggerFactory.getLogger(getClass());
     private Class<T> entityClass;
 
+    @Autowired
     private SessionFactory sessionFactory;
 
     protected void persist(Object entity) {
@@ -47,7 +50,7 @@ public abstract class EntityTemplate<T> implements PersistOperation<T> {
 
     @Override
     public T getById(int id) {
-        T result = (T) getSession().get(entityClass, id);
+        T result = getSession().get(entityClass, id);
         log.debug("getById:result={}", result);
 
         return result;
@@ -56,6 +59,7 @@ public abstract class EntityTemplate<T> implements PersistOperation<T> {
     @Override
     public List<T> listByKey(String key, Object value) {
         log.trace("listByKey:key={};value={}", key, value);
+        //todo: query
         Criteria criteria = getCriteria();
         criteria.add(Restrictions.eq(key, value));
         List<T> result = criteria.list();
@@ -67,6 +71,7 @@ public abstract class EntityTemplate<T> implements PersistOperation<T> {
     @Override
     public T getByKey(String key, Object value) {
         log.trace("getByKey:key={};value={}", key, value);
+        //todo: query
         Criteria criteria = getCriteria();
         criteria.add(Restrictions.eq(key, value));
         T result = (T) criteria.uniqueResult();
@@ -98,8 +103,4 @@ public abstract class EntityTemplate<T> implements PersistOperation<T> {
         return getSession().createCriteria(entityClass);
     }
 
-    @Autowired
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
 }

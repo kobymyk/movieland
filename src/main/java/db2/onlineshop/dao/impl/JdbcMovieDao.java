@@ -1,4 +1,4 @@
-package db2.onlineshop.dao.jdbc;
+package db2.onlineshop.dao.impl;
 
 import db2.onlineshop.dao.MovieDao;
 import db2.onlineshop.entity.Movie;
@@ -8,7 +8,7 @@ import org.hibernate.criterion.Order;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class JdbcMovieDao extends EntityTemplate<Movie> implements MovieDao {
+public class JdbcMovieDao extends AbstractGenericDao<Movie> implements MovieDao {
     private Ordering ordering;
 
     public JdbcMovieDao() {

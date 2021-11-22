@@ -1,5 +1,7 @@
 package db2.onlineshop.entity;
 
+import db2.onlineshop.entity.main.Genre;
+
 import javax.persistence.*;
 
 @Entity

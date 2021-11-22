@@ -26,7 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
 
-    private static final String ADMIN_ENDPOINT = "/v1/user/**";
+    //private static final String ADMIN_ENDPOINT = "/v1/user/**";
     private static final String LOGIN_ENDPOINT = "/v1/login";
 
     @Override

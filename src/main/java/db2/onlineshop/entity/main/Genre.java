@@ -1,4 +1,4 @@
-package db2.onlineshop.entity;
+package db2.onlineshop.entity.main;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

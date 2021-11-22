@@ -1,7 +1,8 @@
 package db2.onlineshop.dao;
 
-import db2.onlineshop.entity.Genre;
+import db2.onlineshop.entity.main.Genre;
 
-public interface GenreDao extends PersistOperation<Genre> {
+@Deprecated
+public interface GenreDao extends GenericDao<Genre> {
 
 }

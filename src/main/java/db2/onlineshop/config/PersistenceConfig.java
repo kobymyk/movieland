@@ -20,7 +20,6 @@ import java.util.Properties;
 @PropertySource({"classpath:application.properties"})
 @ComponentScan({"db2.onlineshop.dao"})
 public class PersistenceConfig {
-
     @Autowired
     private BasicDataSource dataSource;
 

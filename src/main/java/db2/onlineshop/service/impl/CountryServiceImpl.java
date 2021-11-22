@@ -1,6 +1,6 @@
 package db2.onlineshop.service.impl;
 
-import db2.onlineshop.dao.CountryDao;
+import db2.onlineshop.dao.GenericDao;
 import db2.onlineshop.dao.MovieCountryDao;
 import db2.onlineshop.entity.common.Country;
 import db2.onlineshop.entity.Movie;
@@ -16,10 +16,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class BasicCountryService implements CountryService, Child<Movie> {
+public class CountryServiceImpl implements CountryService, Child<Movie> {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private CountryDao countryDao;
+    @Autowired
+    private GenericDao<Country> countryDao;
+    @Autowired
     private MovieCountryDao movieCountryDao;
 
     @Override
@@ -62,13 +64,4 @@ public class BasicCountryService implements CountryService, Child<Movie> {
         }
     }
 
-    @Autowired
-    public void setCountryDao(CountryDao countryDao) {
-        this.countryDao = countryDao;
-    }
-
-    @Autowired
-    public void setMovieCountryDao(MovieCountryDao movieCountryDao) {
-        this.movieCountryDao = movieCountryDao;
-    }
 }
