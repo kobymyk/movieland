@@ -1,10 +1,7 @@
 package db2.onlineshop.service.enricher;
 
 import db2.onlineshop.entity.Movie;
-import db2.onlineshop.service.CountryService;
-import db2.onlineshop.service.GenreService;
 import db2.onlineshop.service.MovieEnricher;
-import db2.onlineshop.service.ReviewService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

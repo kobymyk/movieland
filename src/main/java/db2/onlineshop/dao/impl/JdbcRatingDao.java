@@ -1,5 +1,6 @@
 package db2.onlineshop.dao.impl;
 
+import db2.onlineshop.dao.AbstractGenericDao;
 import db2.onlineshop.dao.RatingDao;
 import db2.onlineshop.entity.MovieRating;
 import org.hibernate.Query;

@@ -1,6 +1,6 @@
 package db2.onlineshop.dao.common;
 
-import db2.onlineshop.config.PersistenceCommonConfiguration;
+import db2.onlineshop.config.CommonJpaConfiguration;
 import db2.onlineshop.entity.common.Country;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,7 +12,7 @@ import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @EnableTransactionManagement
-@ContextConfiguration(classes = PersistenceCommonConfiguration.class)
+@ContextConfiguration(classes = CommonJpaConfiguration.class)
 public class CountryRepositoryTest {
 
     @Autowired

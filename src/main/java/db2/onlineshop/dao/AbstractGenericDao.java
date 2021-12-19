@@ -1,6 +1,5 @@
-package db2.onlineshop.dao.impl;
+package db2.onlineshop.dao;
 
-import db2.onlineshop.dao.GenericDao;
 import org.hibernate.*;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;

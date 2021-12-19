@@ -1,6 +1,6 @@
 package db2.onlineshop.dao.main;
 
-import db2.onlineshop.config.PersistenceMainConfiguration;
+import db2.onlineshop.config.MainJpaConfiguration;
 import db2.onlineshop.entity.main.User;
 import db2.onlineshop.service.security.entity.Role;
 import org.junit.Test;
@@ -17,7 +17,7 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @EnableTransactionManagement
-@ContextConfiguration(classes = PersistenceMainConfiguration.class)
+@ContextConfiguration(classes = MainJpaConfiguration.class)
 public class UserRepositoryTest {
     @Autowired
     private UserRepository userRepository;
