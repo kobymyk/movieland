@@ -1,15 +1,12 @@
 package db2.onlineshop.web.controller;
 
-import db2.onlineshop.entity.Movie;
+import db2.onlineshop.entity.main.Movie;
 import db2.onlineshop.entity.SortOrder;
-import db2.onlineshop.entity.Ordering;
 import db2.onlineshop.service.MovieService;
-import db2.onlineshop.service.security.entity.Role;
 import db2.onlineshop.web.data.MovieAddRequest;
 import db2.onlineshop.web.data.MovieEditRequest;
 import db2.onlineshop.web.data.MovieResponse;
 import db2.onlineshop.web.data.ResponseMapper;
-import db2.onlineshop.web.handler.Permission;
 import db2.onlineshop.web.utils.SortOrderSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,19 +31,10 @@ public class MovieController {
     }
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-    public List<MovieResponse> getAll(@RequestParam(value = "rating", required = false) SortOrder ratingOrder,
-                                      @RequestParam(value = "price", required = false) SortOrder priceOrder) {
+    public List<MovieResponse> getAll() {
         long startTime = System.currentTimeMillis();
-        Ordering ordering = null;
-        if (ratingOrder != null) {
-            log.info("getAll:ratingOrder={}", ratingOrder);
-            ordering = new Ordering("rating", ratingOrder);
-        } else if (priceOrder != null) {
-            log.info("getAll:priceOrder={}", priceOrder);
-            ordering = new Ordering("price", priceOrder);
-        }
 
-        List<Movie> movies = movieService.getAll(ordering);
+        List<Movie> movies = movieService.getAll();
         List<MovieResponse> result = MOVIE_MAPPER.mapList(movies);
         log.info("getAll:duration={}", System.currentTimeMillis() - startTime);
 

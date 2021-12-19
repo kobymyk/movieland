@@ -28,6 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     //private static final String ADMIN_ENDPOINT = "/v1/user/**";
     private static final String LOGIN_ENDPOINT = "/v1/login";
+    private static final String LOGOUT_ENDPOINT = "/v1/logout";
 
     @Override
     protected void configure(AuthenticationManagerBuilder managerBuilder) throws Exception {
@@ -40,6 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
                     .antMatchers(LOGIN_ENDPOINT).permitAll()
+                    .antMatchers(LOGOUT_ENDPOINT).permitAll()
                     //.antMatchers(ADMIN_ENDPOINT).hasRole("ADMIN")
                     .anyRequest().authenticated();
 

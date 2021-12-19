@@ -2,7 +2,7 @@ package db2.onlineshop.web.data;
 
 import db2.onlineshop.entity.common.Country;
 import db2.onlineshop.entity.main.Genre;
-import db2.onlineshop.entity.Movie;
+import db2.onlineshop.entity.main.Movie;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,6 @@ public class MovieEditRequest {
     private String nameNative;
     private String picturePath;
 
-    private List<Integer> countries;
     private List<Integer> genres;
 
     public Movie getMovie() {
@@ -21,18 +20,7 @@ public class MovieEditRequest {
         result.setNameNative(nameNative);
         result.setPicturePath(picturePath);
 
-        result.setCountries(getCountries());
         result.setGenres(getGenres());
-
-        return result;
-    }
-
-    public List<Country> getCountries(){
-        List<Country> result = new ArrayList<>();
-        for (Integer countryId : countries) {
-            Country country = new Country(countryId, null);
-            result.add(country);
-        }
 
         return result;
     }
@@ -59,10 +47,6 @@ public class MovieEditRequest {
         this.picturePath = picturePath;
     }
 
-    public void setCountries(List<Integer> countries) {
-        this.countries = countries;
-    }
-
     public void setGenres(List<Integer> genres) {
         this.genres = genres;
     }
@@ -73,7 +57,6 @@ public class MovieEditRequest {
                 "nameRussian='" + nameRussian + '\'' +
                 ", nameNative='" + nameNative + '\'' +
                 ", picturePath='" + picturePath + '\'' +
-                ", countries=" + countries +
                 ", genres=" + genres +
                 '}';
     }

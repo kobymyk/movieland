@@ -1,8 +1,9 @@
 package db2.onlineshop.service.impl;
 
-import db2.onlineshop.dao.GenericDao;
-import db2.onlineshop.dao.MovieGenreDao;
-import db2.onlineshop.entity.*;
+import db2.onlineshop.dao.generic.GenericDao;
+import db2.onlineshop.dao.generic.MovieGenreDao;
+import db2.onlineshop.entity.main.Movie;
+import db2.onlineshop.entity.main.MovieGenre;
 import db2.onlineshop.entity.main.Genre;
 import db2.onlineshop.service.GenreService;
 import db2.onlineshop.service.Child;

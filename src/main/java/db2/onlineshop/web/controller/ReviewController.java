@@ -1,12 +1,10 @@
 package db2.onlineshop.web.controller;
 
-import db2.onlineshop.entity.MovieReview;
+import db2.onlineshop.entity.main.MovieReview;
 import db2.onlineshop.entity.main.User;
 import db2.onlineshop.service.ReviewService;
-import db2.onlineshop.service.security.entity.Role;
 import db2.onlineshop.service.security.holder.SecurityHolder;
 import db2.onlineshop.web.data.ReviewRequest;
-import db2.onlineshop.web.handler.Permission;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

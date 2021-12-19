@@ -1,8 +1,7 @@
 package db2.onlineshop.service.impl;
 
-import db2.onlineshop.dao.MovieDao;
-import db2.onlineshop.entity.Movie;
-import db2.onlineshop.entity.Ordering;
+import db2.onlineshop.dao.generic.MovieDao;
+import db2.onlineshop.entity.main.Movie;
 import db2.onlineshop.service.MovieEnricher;
 import db2.onlineshop.service.ServiceFactory;
 import db2.onlineshop.service.enricher.MovieEnrichExecutor;
@@ -33,8 +32,7 @@ public class BasicMovieService implements MovieService {
     }
 
     @Override
-    public List<Movie> getAll(Ordering ordering) {
-        movieDao.setOrdering(ordering);
+    public List<Movie> getAll() {
         List<Movie> result = movieDao.getAll();
         log.info("getAll:result.size={}", result.size());
 

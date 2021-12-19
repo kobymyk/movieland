@@ -1,5 +1,6 @@
 package db2.onlineshop.entity.common;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -8,29 +9,30 @@ import javax.persistence.Table;
 @Table(name = "country", schema = "mysql")
 public class Country {
     @Id
-    private int id;
+    @Column(name = "country_code")
+    private String countryCode;
     private String name;
-
-    public int getId() {
-        return id;
-    }
 
     public String getName() {
         return name;
     }
 
-    public Country() {
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public Country(int id, String name) {
-        this.id = id;
-        this.name = name;
+    public String getCountryCode() {
+        return countryCode;
+    }
+
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
     }
 
     @Override
     public String toString() {
         return "Country{" +
-                "id=" + id +
+                "countryCode=" + countryCode +
                 ", name='" + name + '\'' +
                 '}';
     }

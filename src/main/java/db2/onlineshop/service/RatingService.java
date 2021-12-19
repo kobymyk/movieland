@@ -1,6 +1,6 @@
 package db2.onlineshop.service;
 
-import db2.onlineshop.entity.MovieRating;
+import db2.onlineshop.entity.main.MovieRating;
 
 public interface RatingService {
     void add(MovieRating movieRating);
