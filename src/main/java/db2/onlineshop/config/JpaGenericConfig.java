@@ -17,8 +17,8 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 @PropertySource({"classpath:application.properties"})
-@ComponentScan({"db2.onlineshop.dao", "db2.onlineshop.dao.impl"})
-public class PersistenceConfig {
+@ComponentScan({"db2.onlineshop.dao.generic"})
+public class JpaGenericConfig {
     @Autowired
     private DataSource dataSource;
 

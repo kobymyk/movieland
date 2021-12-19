@@ -1,6 +1,7 @@
 package db2.onlineshop.dao.main;
 
 import db2.onlineshop.config.JpaMainConfig;
+import db2.onlineshop.dao.generic.impl.MovieDaoImpl;
 import db2.onlineshop.entity.main.Movie;
 import org.junit.Test;
 import org.junit.runner.RunWith;

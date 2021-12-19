@@ -1,6 +1,6 @@
 package db2.onlineshop.service.impl;
 
-import db2.onlineshop.dao.main.ReviewDao;
+import db2.onlineshop.dao.generic.ReviewDao;
 import db2.onlineshop.entity.main.Review;
 import db2.onlineshop.entity.main.MovieReview;
 import db2.onlineshop.entity.main.Movie;

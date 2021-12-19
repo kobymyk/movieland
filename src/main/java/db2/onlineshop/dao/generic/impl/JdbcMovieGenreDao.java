@@ -1,7 +1,6 @@
-package db2.onlineshop.dao.impl;
+package db2.onlineshop.dao.generic.impl;
 
-import db2.onlineshop.dao.main.AbstractGenericDao;
-import db2.onlineshop.dao.main.MovieGenreDao;
+import db2.onlineshop.dao.generic.MovieGenreDao;
 import db2.onlineshop.entity.main.MovieGenre;
 import org.springframework.stereotype.Repository;
 

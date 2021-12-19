@@ -1,4 +1,4 @@
-package db2.onlineshop.dao.main;
+package db2.onlineshop.dao.generic;
 
 import db2.onlineshop.entity.main.MovieCountry;
 

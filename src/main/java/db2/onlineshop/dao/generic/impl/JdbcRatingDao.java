@@ -1,7 +1,6 @@
-package db2.onlineshop.dao.impl;
+package db2.onlineshop.dao.generic.impl;
 
-import db2.onlineshop.dao.main.AbstractGenericDao;
-import db2.onlineshop.dao.main.RatingDao;
+import db2.onlineshop.dao.generic.RatingDao;
 import db2.onlineshop.entity.main.MovieRating;
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;

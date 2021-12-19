@@ -1,6 +1,6 @@
 package db2.onlineshop.service.impl;
 
-import db2.onlineshop.dao.main.MovieDao;
+import db2.onlineshop.dao.generic.MovieDao;
 import db2.onlineshop.entity.main.Movie;
 import db2.onlineshop.service.MovieEnricher;
 import db2.onlineshop.service.ServiceFactory;

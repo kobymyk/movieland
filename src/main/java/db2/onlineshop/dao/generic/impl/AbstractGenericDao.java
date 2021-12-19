@@ -1,5 +1,6 @@
-package db2.onlineshop.dao.main;
+package db2.onlineshop.dao.generic.impl;
 
+import db2.onlineshop.dao.generic.GenericDao;
 import org.hibernate.*;
 import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
@@ -28,12 +29,10 @@ public abstract class AbstractGenericDao<T> implements GenericDao<T> {
     }
 
     @Override
-    public final T edit(T entity) {
+    public final void edit(T entity) {
         log.trace("edit:entity={}", entity);
         T result = (T) getSession().merge(entity);
         log.trace("edit:result={}", result);
-
-        return result;
     }
 
     @Override
