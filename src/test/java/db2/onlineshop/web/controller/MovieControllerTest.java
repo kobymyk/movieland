@@ -1,6 +1,6 @@
 package db2.onlineshop.web.controller;
 
-import db2.onlineshop.entity.Movie;
+import db2.onlineshop.entity.main.Movie;
 import db2.onlineshop.service.MovieService;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,7 +32,7 @@ public class MovieControllerTest {
 
     @Test
     public void getAll() throws Exception {
-        when(movieService.getAll(any())).thenReturn(new ArrayList<>());
+        when(movieService.getAll()).thenReturn(new ArrayList<>());
         //todo: CallRealMethod
         //when(movieService.getAll(any())).thenCallRealMethod();
 
@@ -40,7 +40,7 @@ public class MovieControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
 
-        verify(movieService, times(1)).getAll(null);
+        verify(movieService, times(1)).getAll();
         verifyNoMoreInteractions(movieService);
     }
 
@@ -60,16 +60,6 @@ public class MovieControllerTest {
         mockMvc.perform(get("/v1/movie/1"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
-    }
-
-    @Test
-    public void getAllSorted() throws Exception {
-        when(movieService.getAll(any())).thenReturn(new ArrayList<>());
-
-        mockMvc.perform(get("/v1/movie?rating=asc")).andExpect(status().isOk());
-        mockMvc.perform(get("/v1/movie?rating=desc")).andExpect(status().isOk());
-        mockMvc.perform(get("/v1/movie?price=asc")).andExpect(status().isOk());
-        mockMvc.perform(get("/v1/movie?price=desc")).andExpect(status().isOk());
     }
 
 }

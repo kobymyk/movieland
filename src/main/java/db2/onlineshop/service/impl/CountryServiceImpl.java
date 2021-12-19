@@ -1,10 +1,10 @@
 package db2.onlineshop.service.impl;
 
-import db2.onlineshop.dao.GenericDao;
-import db2.onlineshop.dao.MovieCountryDao;
+import db2.onlineshop.dao.main.GenericDao;
+import db2.onlineshop.dao.main.MovieCountryDao;
 import db2.onlineshop.entity.common.Country;
-import db2.onlineshop.entity.Movie;
-import db2.onlineshop.entity.MovieCountry;
+import db2.onlineshop.entity.main.Movie;
+import db2.onlineshop.entity.main.MovieCountry;
 import db2.onlineshop.service.CountryService;
 import db2.onlineshop.service.Child;
 import org.slf4j.Logger;
@@ -40,7 +40,10 @@ public class CountryServiceImpl implements CountryService, Child<Movie> {
         List<MovieCountry> movieCountries = movieCountryDao.listByKey("movieId", movieId);
         List<Country> countries = new ArrayList<>(movieCountries.size());
         for (MovieCountry movieCountry : movieCountries) {
-            countries.add(movieCountry.getCountry());
+            //todo:
+            Country country = new Country();
+            country.setCountryCode(movieCountry.getCountryCode());
+            countries.add(country);
         }
         log.debug("enrich:countries={}", countries);
         movie.setCountries(countries);
@@ -59,7 +62,7 @@ public class CountryServiceImpl implements CountryService, Child<Movie> {
         for (Country country : movie.getCountries()) {
             MovieCountry movieCountry = new MovieCountry();
             movieCountry.setMovieId(movieId);
-            movieCountry.setCountry(country);
+            //movieCountry.setCountryCode(country);
             movieCountryDao.add(movieCountry);
         }
     }

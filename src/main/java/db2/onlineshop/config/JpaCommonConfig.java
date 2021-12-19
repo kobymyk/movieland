@@ -2,6 +2,7 @@ package db2.onlineshop.config;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -12,6 +13,7 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Properties;
 
@@ -23,16 +25,21 @@ import static db2.onlineshop.config.Constants.jpaCommon.REPO_PACKAGE_PATH;
 @PropertySource({"classpath:application.properties"})
 @EnableJpaRepositories(
         basePackages = REPO_PACKAGE_PATH,
-        entityManagerFactoryRef = "commonEntityManager",
-        transactionManagerRef = "commonTransactionManager"
+        entityManagerFactoryRef = "entityManagerCommon",
+        transactionManagerRef = "transactionManagerCommon"
 )
-public class CommonJpaConfiguration extends AbstractJpaConfig{
+public class JpaCommonConfig extends AbstractJpaConfig{
     @Autowired
     private Environment env;
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean commonEntityManager() {
-        return super.getEntityManagerFactory(commonDataSource(), ENTITY_PACKAGE_PATH, getProperties(env));
+    public PlatformTransactionManager transactionManagerCommon(@Qualifier("entityManagerCommon") EntityManagerFactory emf) {
+        return super.getTransactionManager(emf);
+    }
+
+    @Bean(name = "entityManagerCommon")
+    public LocalContainerEntityManagerFactoryBean entityManagerCommon(@Qualifier("dataSourceCommon") DataSource dataSource) {
+        return super.getEntityManagerFactory(dataSource, ENTITY_PACKAGE_PATH, getProperties(env));
     }
 
     @Override
@@ -42,8 +49,8 @@ public class CommonJpaConfiguration extends AbstractJpaConfig{
         return result;
     }
 
-    @Bean
-    public DataSource commonDataSource() {
+    @Bean(name = "dataSourceCommon")
+    public DataSource dataSourceCommon() {
         BasicDataSource result = new BasicDataSource();
         //todo: "jdbc.driverClassName"
         result.setDriverClassName(env.getProperty("mySql.jdbc.driver"));
@@ -52,13 +59,6 @@ public class CommonJpaConfiguration extends AbstractJpaConfig{
         result.setPassword(env.getProperty("mySql.jdbc.password"));
         result.setInitialSize(Integer.parseInt(env.getProperty("mySql.jdbc.poolsize")));
 
-        return result;
-    }
-
-    @Bean
-    public PlatformTransactionManager commonTransactionManager() {
-        JpaTransactionManager result = new JpaTransactionManager();
-        result.setEntityManagerFactory(commonEntityManager().getObject());
         return result;
     }
 

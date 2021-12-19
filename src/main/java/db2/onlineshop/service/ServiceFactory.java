@@ -1,6 +1,6 @@
 package db2.onlineshop.service;
 
-import db2.onlineshop.entity.Movie;
+import db2.onlineshop.entity.main.Movie;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;

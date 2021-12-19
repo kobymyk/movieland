@@ -1,9 +1,12 @@
 package db2.onlineshop.config;
 
 import org.springframework.core.env.Environment;
+import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.PlatformTransactionManager;
 
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Properties;
 
@@ -15,8 +18,14 @@ public abstract class AbstractJpaConfig {
         result.setDataSource(dataSource);
         result.setPackagesToScan(entityPackagePath);
         result.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
-
         result.setJpaProperties(properties);
+
+        return result;
+    }
+
+    protected PlatformTransactionManager getTransactionManager(EntityManagerFactory emf) {
+        JpaTransactionManager result = new JpaTransactionManager();
+        result.setEntityManagerFactory(emf);
 
         return result;
     }

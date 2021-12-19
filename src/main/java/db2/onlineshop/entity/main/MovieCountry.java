@@ -1,4 +1,4 @@
-package db2.onlineshop.entity;
+package db2.onlineshop.entity.main;
 
 import db2.onlineshop.entity.common.Country;
 
@@ -13,9 +13,8 @@ public class MovieCountry {
     private int id;
     @Column(name = "movie_id")
     private int movieId;
-    @OneToOne(cascade = CascadeType.REFRESH)
-    @JoinColumn(name="country_id")
-    private Country country;
+    @Column(name="country_code")
+    private String countryCode;
 
     public int getId() {
         return id;
@@ -33,12 +32,12 @@ public class MovieCountry {
         this.movieId = movieId;
     }
 
-    public Country getCountry() {
-        return country;
+    public String getCountryCode() {
+        return countryCode;
     }
 
-    public void setCountry(Country country) {
-        this.country = country;
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
     }
 
     @Override
@@ -46,7 +45,7 @@ public class MovieCountry {
         return "MovieCountry{" +
                 "id=" + id +
                 ", movieId=" + movieId +
-                ", country=" + country +
+                ", countryCode=" + countryCode +
                 '}';
     }
 }

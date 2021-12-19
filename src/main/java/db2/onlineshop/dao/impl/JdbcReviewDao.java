@@ -1,8 +1,8 @@
 package db2.onlineshop.dao.impl;
 
-import db2.onlineshop.dao.AbstractGenericDao;
-import db2.onlineshop.dao.ReviewDao;
-import db2.onlineshop.entity.Review;
+import db2.onlineshop.dao.main.AbstractGenericDao;
+import db2.onlineshop.dao.main.ReviewDao;
+import db2.onlineshop.entity.main.Review;
 import org.springframework.stereotype.Repository;
 
 

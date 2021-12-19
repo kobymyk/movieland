@@ -1,6 +1,6 @@
 package db2.onlineshop.dao.impl;
 
-import db2.onlineshop.dao.GenericDao;
+import db2.onlineshop.dao.main.GenericDao;
 import db2.onlineshop.entity.main.Genre;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

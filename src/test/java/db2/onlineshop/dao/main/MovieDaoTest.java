@@ -1,8 +1,7 @@
 package db2.onlineshop.dao.main;
 
-import db2.onlineshop.config.MainJpaConfiguration;
-import db2.onlineshop.dao.GenericDao;
-import db2.onlineshop.entity.main.Genre;
+import db2.onlineshop.config.JpaMainConfig;
+import db2.onlineshop.entity.main.Movie;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,14 +14,14 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @EnableTransactionManagement
-@ContextConfiguration(classes = MainJpaConfiguration.class)
-public class GenreDaoTest {
+@ContextConfiguration(classes = JpaMainConfig.class)
+public class MovieDaoTest {
     @Autowired
-    private GenericDao<Genre> genreDao;
+    private MovieDaoImpl movieDao;
 
     @Test
     public void getById() {
-        Genre actual = genreDao.getById(1);
+        Movie actual = movieDao.getById(1);
         assertNotNull(actual);
     }
 }

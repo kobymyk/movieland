@@ -1,4 +1,4 @@
-package db2.onlineshop.dao;
+package db2.onlineshop.dao.main;
 
 import org.hibernate.*;
 import org.hibernate.criterion.Restrictions;

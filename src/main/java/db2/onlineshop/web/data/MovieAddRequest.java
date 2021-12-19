@@ -2,7 +2,7 @@ package db2.onlineshop.web.data;
 
 import db2.onlineshop.entity.common.Country;
 import db2.onlineshop.entity.main.Genre;
-import db2.onlineshop.entity.Movie;
+import db2.onlineshop.entity.main.Movie;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +15,7 @@ public class MovieAddRequest {
     private Double price;
     private String picturePath;
 
-    private List<Integer> countries;
+    private List<String> countries;
     private List<Integer> genres;
 
     public Movie getMovie() {
@@ -36,8 +36,9 @@ public class MovieAddRequest {
 
     public List<Country> getCountries(){
         List<Country> result = new ArrayList<>();
-        for (Integer countryId : countries) {
-            Country item = new Country(countryId, null);
+        for (String countryCode : countries) {
+            Country item = new Country();
+            item.setCountryCode(countryCode);
             result.add(item);
         }
 
@@ -78,7 +79,7 @@ public class MovieAddRequest {
         this.picturePath = picturePath;
     }
 
-    public void setCountries(List<Integer> countries) {
+    public void setCountries(List<String> countries) {
         this.countries = countries;
     }
 

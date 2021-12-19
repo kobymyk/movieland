@@ -1,4 +1,4 @@
-package db2.onlineshop.entity;
+package db2.onlineshop.entity.main;
 
 import db2.onlineshop.entity.main.User;
 

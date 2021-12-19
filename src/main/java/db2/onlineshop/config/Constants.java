@@ -5,7 +5,7 @@ public final class Constants {
 
     public static class jpaCommon {
         public static final String REPO_PACKAGE_PATH = "db2.onlineshop.dao.common";
-        public static final String ENTITY_PACKAGE_PATH = "db2/onlineshop/entity/common";
+        public static final String ENTITY_PACKAGE_PATH = "db2.onlineshop.entity.common";
         private jpaCommon() {}
     }
 

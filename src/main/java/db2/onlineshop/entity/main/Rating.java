@@ -1,4 +1,4 @@
-package db2.onlineshop.entity;
+package db2.onlineshop.entity.main;
 
 import org.hibernate.annotations.NaturalId;
 
