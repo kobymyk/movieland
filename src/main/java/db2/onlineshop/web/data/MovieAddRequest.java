@@ -1,6 +1,5 @@
 package db2.onlineshop.web.data;
 
-import db2.onlineshop.entity.common.Country;
 import db2.onlineshop.entity.main.Genre;
 import db2.onlineshop.entity.main.Movie;
 
@@ -14,8 +13,8 @@ public class MovieAddRequest {
     private String description;
     private Double price;
     private String picturePath;
+    private String countryCode;
 
-    private List<String> countries;
     private List<Integer> genres;
 
     public Movie getMovie() {
@@ -24,23 +23,11 @@ public class MovieAddRequest {
         result.setNameNative(nameNative);
         result.setPicturePath(picturePath);
         result.setDescription(description);
-
         result.setYearOfRelease(yearOfRelease);
         result.setPrice(price);
+        result.setCountryCode(countryCode);
 
-        result.setCountries(getCountries());
         result.setGenres(getGenres());
-
-        return result;
-    }
-
-    public List<Country> getCountries(){
-        List<Country> result = new ArrayList<>();
-        for (String countryCode : countries) {
-            Country item = new Country();
-            item.setCountryCode(countryCode);
-            result.add(item);
-        }
 
         return result;
     }
@@ -79,13 +66,11 @@ public class MovieAddRequest {
         this.picturePath = picturePath;
     }
 
-    public void setCountries(List<String> countries) {
-        this.countries = countries;
-    }
-
     public void setGenres(List<Integer> genres) {
         this.genres = genres;
     }
+
+
 
     @Override
     public String toString() {
@@ -96,7 +81,7 @@ public class MovieAddRequest {
                 ", picturePath='" + picturePath + '\'' +
                 ", yearOfRelease=" + yearOfRelease +
                 ", price=" + price +
-                ", countries=" + countries +
+                ", countryCode=" + countryCode +
                 ", genres=" + genres +
                 '}';
     }

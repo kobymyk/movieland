@@ -1,7 +1,5 @@
 package db2.onlineshop.entity.main;
 
-import db2.onlineshop.entity.common.Country;
-
 import javax.persistence.*;
 import java.util.List;
 
@@ -11,20 +9,20 @@ public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "movieSequence")
     @SequenceGenerator(name = "movieSequence", sequenceName = "movie_seq", allocationSize = 1)
-    protected int id;
+    private int id;
     @Column(name = "release_year")
-    protected int yearOfRelease;
-    protected String name;
+    private int yearOfRelease;
+    private String name;
     @Column(name = "name_native")
-    protected String nameNative;
-    protected String description;
+    private String nameNative;
+    private String description;
     @Column(name = "picture_path")
-    protected String picturePath;
-    protected double rating;
-    protected double price;
+    private String picturePath;
+    private double rating;
+    private double price;
+    @Column(name = "country_code")
+    private String countryCode;
 
-    @Transient
-    private List<Country> countries;
     @Transient
     private List<Genre> genres;
     @Transient
@@ -60,7 +58,6 @@ public class Movie {
 
     public String getDescription() { return description; }
 
-
     public void setId(int id) {
         this.id = id;
     }
@@ -91,10 +88,6 @@ public class Movie {
 
     public void setDescription(String description) { this.description = description; }
 
-    public List<Country> getCountries() {
-        return countries;
-    }
-
     public List<Review> getReviews() {
         return reviews;
     }
@@ -103,16 +96,20 @@ public class Movie {
         return genres;
     }
 
-    public void setCountries(List<Country> countries) {
-        this.countries = countries;
-    }
-
     public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
     }
 
     public void setGenres(List<Genre> genres) {
         this.genres = genres;
+    }
+
+    public String getCountryCode() {
+        return countryCode;
+    }
+
+    public void setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
     }
 
     @Override
@@ -126,7 +123,7 @@ public class Movie {
                 ", picturePath='" + picturePath + '\'' +
                 ", rating=" + rating +
                 ", price=" + price +
-                ", countries=" + countries +
+                ", countryCode=" + countryCode +
                 ", genres=" + genres +
                 ", reviews=" + reviews +
                 '}';

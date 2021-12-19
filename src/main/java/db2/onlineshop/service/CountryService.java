@@ -4,6 +4,6 @@ import db2.onlineshop.entity.common.Country;
 
 import java.util.List;
 
-public interface CountryService extends MovieEnricher {
+public interface CountryService {
     List<Country> getAll();
 }

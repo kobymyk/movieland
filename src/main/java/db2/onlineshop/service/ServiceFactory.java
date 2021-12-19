@@ -2,6 +2,7 @@ package db2.onlineshop.service;
 
 import db2.onlineshop.entity.main.Movie;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -16,7 +17,7 @@ public class ServiceFactory {
         this.enrichers = enrichers;
         this.movieChildren = movieChildren;
         //todo:
-        this.services = Collections.EMPTY_LIST;
+        this.services = Collections.emptyList();
     }
 
     public List<MovieEnricher> getEnrichers() {
