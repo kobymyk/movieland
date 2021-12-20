@@ -17,7 +17,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
-public class BasicMovieService implements MovieService {
+public class MovieServiceImpl implements MovieService {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final ServiceFactory serviceFactory;
@@ -26,13 +26,14 @@ public class BasicMovieService implements MovieService {
     private final MovieRepository movieRepository;
 
     @Autowired
-    public BasicMovieService(ServiceFactory serviceFactory, CurrencyService currencyService, MovieRepository movieRepository) {
+    public MovieServiceImpl(ServiceFactory serviceFactory, CurrencyService currencyService, MovieRepository movieRepository) {
         this.serviceFactory = serviceFactory;
         this.currencyService = currencyService;
         this.movieRepository = movieRepository;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Movie> getAll() {
         List<Movie> result = movieRepository.findAll();
         log.info("getAll:result.size={}", result.size());
@@ -41,6 +42,7 @@ public class BasicMovieService implements MovieService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Movie> getByGenre(int genreId) {
         List<Movie> result = Collections.emptyList();
         //todo: movieRepository.findByGenreId(genreId);
@@ -50,6 +52,7 @@ public class BasicMovieService implements MovieService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Movie getById(int id, String currency) {
         Movie result = movieRepository.getById(id);
         log.trace("getById:movie={}", result);

@@ -26,12 +26,14 @@ public class MovieRepositoryTest {
     private MovieRepository movieRepository;
 
     @Test
+    @Transactional(readOnly = true)
     public void findAll() {
         List<Movie> actual = movieRepository.findAll();
         assertNotNull(actual);
     }
 
     @Test
+    @Transactional(readOnly = true)
     public void getById() {
         Movie movie = movieRepository.getById(1);
         assertNotNull(movie);
@@ -40,6 +42,7 @@ public class MovieRepositoryTest {
     }
 
     @Test
+    @Transactional(readOnly = true)
     public void findByGenreId() {
         List<Movie> actual = movieRepository.findByGenreId(1);
         assertNotNull(actual);

@@ -44,8 +44,8 @@ public class MovieGenre {
     public String toString() {
         return "MovieGenre{" +
                 "id=" + id +
-                ", movie=" + movie +
-                ", genre=" + genre +
+                ", movie.id=" + movie.getId() +
+                ", genre.id=" + genre.getId() +
                 '}';
     }
 }
