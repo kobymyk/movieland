@@ -36,8 +36,7 @@ public class MovieRepositoryTest {
 
     @Test
     public void findByGenreId() {
-        //todo: movieRepository.findByGenreId(1);
-        List<Movie> actual = Collections.emptyList();
+        List<Movie> actual = movieRepository.findByGenreId(1);
         assertNotNull(actual);
     }
 
