@@ -2,6 +2,7 @@ package db2.onlineshop.entity.main;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "movie")
@@ -22,9 +23,8 @@ public class Movie {
     private double price;
     @Column(name = "country_code")
     private String countryCode;
-
-    @Transient
-    private List<Genre> genres;
+    @OneToMany(mappedBy = "movie", fetch = FetchType.LAZY)
+    private Set<MovieGenre> movieGenres;
     @Transient
     private List<Review> reviews;
 
@@ -92,16 +92,8 @@ public class Movie {
         return reviews;
     }
 
-    public List<Genre> getGenres() {
-        return genres;
-    }
-
     public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
-    }
-
-    public void setGenres(List<Genre> genres) {
-        this.genres = genres;
     }
 
     public String getCountryCode() {
@@ -110,6 +102,14 @@ public class Movie {
 
     public void setCountryCode(String countryCode) {
         this.countryCode = countryCode;
+    }
+
+    public Set<MovieGenre> getMovieGenres() {
+        return movieGenres;
+    }
+
+    public void setMovieGenres(Set<MovieGenre> movieGenres) {
+        this.movieGenres = movieGenres;
     }
 
     @Override
@@ -124,7 +124,7 @@ public class Movie {
                 ", rating=" + rating +
                 ", price=" + price +
                 ", countryCode=" + countryCode +
-                ", genres=" + genres +
+                ", movieGenres=" + movieGenres +
                 ", reviews=" + reviews +
                 '}';
     }

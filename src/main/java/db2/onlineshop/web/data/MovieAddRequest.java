@@ -2,6 +2,7 @@ package db2.onlineshop.web.data;
 
 import db2.onlineshop.entity.main.Genre;
 import db2.onlineshop.entity.main.Movie;
+import db2.onlineshop.entity.main.MovieGenre;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,20 +27,20 @@ public class MovieAddRequest {
         result.setYearOfRelease(yearOfRelease);
         result.setPrice(price);
         result.setCountryCode(countryCode);
-
-        result.setGenres(getGenres());
+        //todo:
+        //result.setGenres(getGenres());
 
         return result;
     }
 
-    public List<Genre> getGenres(){
-        List<Genre> result = new ArrayList<>();
+    public List<Genre> mapMovieGenres() {
+        List<MovieGenre> result = new ArrayList<>();
         for (Integer genreId : genres) {
-            Genre item = new Genre(genreId, null);
-            result.add(item);
+            Genre item = new Genre();
+            //result.add(item);
         }
 
-        return result;
+        return null;
     }
 
     public void setNameRussian(String nameRussian) {

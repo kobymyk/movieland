@@ -2,15 +2,18 @@ package db2.onlineshop.dao.main;
 
 import db2.onlineshop.config.JpaMainConfig;
 import db2.onlineshop.entity.main.Movie;
+import db2.onlineshop.entity.main.MovieGenre;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -30,8 +33,10 @@ public class MovieRepositoryTest {
 
     @Test
     public void getById() {
-        Movie actual = movieRepository.getById(1);
-        assertNotNull(actual);
+        Movie movie = movieRepository.getById(1);
+        assertNotNull(movie);
+        Set<MovieGenre> movieGenres = movie.getMovieGenres();
+        assertNotNull(movieGenres);
     }
 
     @Test

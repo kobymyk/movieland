@@ -9,10 +9,11 @@ public class MovieGenre {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "movieGenreSequence")
     @SequenceGenerator(name = "movieGenreSequence", sequenceName = "movie_genre_seq", allocationSize = 1)
     private int id;
-    @Column(name = "movie_id")
-    private int movieId;
-    @OneToOne(cascade = CascadeType.REFRESH)
-    @JoinColumn(name="genre_id")
+    @ManyToOne
+    @JoinColumn(name = "movie_id")
+    private Movie movie;
+    @ManyToOne
+    @JoinColumn(name = "genre_id")
     private Genre genre;
 
     public int getId() {
@@ -23,14 +24,6 @@ public class MovieGenre {
         this.id = id;
     }
 
-    public int getMovieId() {
-        return movieId;
-    }
-
-    public void setMovieId(int movieId) {
-        this.movieId = movieId;
-    }
-
     public Genre getGenre() {
         return genre;
     }
@@ -39,11 +32,19 @@ public class MovieGenre {
         this.genre = genre;
     }
 
+    public Movie getMovie() {
+        return movie;
+    }
+
+    public void setMovie(Movie movie) {
+        this.movie = movie;
+    }
+
     @Override
     public String toString() {
         return "MovieGenre{" +
                 "id=" + id +
-                ", movieId=" + movieId +
+                ", movie=" + movie +
                 ", genre=" + genre +
                 '}';
     }

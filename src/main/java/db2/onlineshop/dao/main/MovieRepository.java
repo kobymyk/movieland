@@ -8,7 +8,6 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface MovieRepository extends JpaRepository<Movie, Integer> {
-    @Query("from Movie m where m.id in (" +
-        "select x.movieId from MovieGenre x where x.genre.id = :genreId)")
+    @Query("select m from Movie m join MovieGenre x where x.genre.id = :genreId")
     List<Movie> findByGenreId(@Param("genreId") Integer genreId);
 }
