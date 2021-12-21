@@ -1,70 +1,29 @@
 package db2.onlineshop.service.impl;
 
-import db2.onlineshop.dao.generic.GenericDao;
-import db2.onlineshop.dao.generic.MovieCountryDao;
+import db2.onlineshop.dao.common.CountryRepository;
 import db2.onlineshop.entity.common.Country;
-import db2.onlineshop.entity.main.Movie;
-import db2.onlineshop.entity.main.MovieCountry;
 import db2.onlineshop.service.CountryService;
-import db2.onlineshop.service.Child;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class CountryServiceImpl implements CountryService, Child<Movie> {
+public class CountryServiceImpl implements CountryService {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    private GenericDao<Country> countryDao;
-    @Autowired
-    private MovieCountryDao movieCountryDao;
+    private CountryRepository countryRepository;
 
     @Override
     public List<Country> getAll() {
         log.debug("getAll");
-        List<Country> result = countryDao.getAll();
+        List<Country> result = countryRepository.findAll();
         log.debug("getAll:result.size={}", result.size());
 
         return result;
-    }
-
-    @Override
-    public void enrich(Movie movie) {
-        int movieId = movie.getId();
-        log.debug("enrich:movieId={}", movieId);
-        List<MovieCountry> movieCountries = movieCountryDao.listByKey("movieId", movieId);
-        List<Country> countries = new ArrayList<>(movieCountries.size());
-        for (MovieCountry movieCountry : movieCountries) {
-            //todo:
-            Country country = new Country();
-            country.setCountryCode(movieCountry.getCountryCode());
-            countries.add(country);
-        }
-        log.debug("enrich:countries={}", countries);
-        movie.setCountries(countries);
-    }
-
-    @Override
-    public void merge(Movie movie, Movie result) {
-        result.setCountries(movie.getCountries());
-    }
-
-    @Override
-    public void addReference(Movie movie) {
-        int movieId = movie.getId();
-        log.debug("addReference:movieId={}", movieId);
-
-        for (Country country : movie.getCountries()) {
-            MovieCountry movieCountry = new MovieCountry();
-            movieCountry.setMovieId(movieId);
-            //movieCountry.setCountryCode(country);
-            movieCountryDao.add(movieCountry);
-        }
     }
 
 }

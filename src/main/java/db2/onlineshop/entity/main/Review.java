@@ -1,9 +1,10 @@
 package db2.onlineshop.entity.main;
 
-import db2.onlineshop.entity.main.User;
+import lombok.Data;
 
 import javax.persistence.*;
 
+@Data
 @MappedSuperclass
 public class Review {
     @Id
@@ -16,45 +17,4 @@ public class Review {
     @JoinColumn(name="user_id")
     protected User user;
 
-    public Review() {
-    }
-
-    public Review(int id, String text, User user) {
-        this.id = id;
-        this.text = text;
-        this.user = user;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    @Override
-    public String toString() {
-        return "ReviewItem{" +
-                "id=" + id +
-                ", text='" + text + '\'' +
-                ", user=" + user +
-                '}';
-    }
 }

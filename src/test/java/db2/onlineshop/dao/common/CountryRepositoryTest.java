@@ -20,7 +20,7 @@ public class CountryRepositoryTest {
 
     @Test
     @Transactional
-    public void whenCreatingCountry_thenCreated() {
+    public void save() {
         Country country = new Country();
         country.setCountryCode("MEX");
         country.setName("Mexico");

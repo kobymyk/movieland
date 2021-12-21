@@ -1,8 +1,8 @@
 package db2.onlineshop.web.data;
 
-import db2.onlineshop.entity.common.Country;
 import db2.onlineshop.entity.main.Genre;
 import db2.onlineshop.entity.main.Movie;
+import db2.onlineshop.entity.main.MovieGenre;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,17 +19,20 @@ public class MovieEditRequest {
         result.setName(nameRussian);
         result.setNameNative(nameNative);
         result.setPicturePath(picturePath);
-
-        result.setGenres(getGenres());
+        //todo:
+        //result.setGenres(getGenres());
 
         return result;
     }
 
-    public List<Genre> getGenres(){
-        List<Genre> result = new ArrayList<>();
+    public List<MovieGenre> mapMovieGenres() {
+        List<MovieGenre> result = new ArrayList<>();
         for (Integer genreId : genres) {
-            Genre genre = new Genre(genreId, null);
-            result.add(genre);
+            MovieGenre movieGenre = new MovieGenre();
+            movieGenre.setGenre(new Genre());
+            movieGenre.getGenre().setId(genreId);
+
+            result.add(movieGenre);
         }
 
         return result;

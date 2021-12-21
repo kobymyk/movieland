@@ -1,6 +1,6 @@
 package db2.onlineshop.service.impl;
 
-import db2.onlineshop.dao.generic.MovieDao;
+import db2.onlineshop.dao.main.MovieRepository;
 import db2.onlineshop.entity.main.Movie;
 import db2.onlineshop.service.MovieEnricher;
 import db2.onlineshop.service.ServiceFactory;
@@ -13,45 +13,50 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
-public class BasicMovieService implements MovieService {
+public class MovieServiceImpl implements MovieService {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final ServiceFactory serviceFactory;
     // todo: enrich
     private final CurrencyService currencyService;
-    private final MovieDao movieDao;
+    private final MovieRepository movieRepository;
 
     @Autowired
-    public BasicMovieService(ServiceFactory serviceFactory, CurrencyService currencyService, MovieDao movieDao) {
+    public MovieServiceImpl(ServiceFactory serviceFactory, CurrencyService currencyService, MovieRepository movieRepository) {
         this.serviceFactory = serviceFactory;
         this.currencyService = currencyService;
-        this.movieDao = movieDao;
+        this.movieRepository = movieRepository;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Movie> getAll() {
-        List<Movie> result = movieDao.getAll();
+        List<Movie> result = movieRepository.findAll();
         log.info("getAll:result.size={}", result.size());
 
         return result;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Movie> getByGenre(int genreId) {
-        List<Movie> result = movieDao.listByKey("genreId", genreId);
+        List<Movie> result = Collections.emptyList();
+        //todo: movieRepository.findByGenreId(genreId);
         log.info("getByGenre:result.size={}", result.size());
 
         return result;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Movie getById(int id, String currency) {
-        Movie result = movieDao.getById(id);
+        Movie result = movieRepository.getById(id);
         log.trace("getById:movie={}", result);
-
+        //todo: transformers
         List<MovieEnricher> enrichers = serviceFactory.getEnrichers();
         MovieEnrichExecutor enrichExecutor = new MovieEnrichExecutor(enrichers);
         enrichExecutor.enrich(result);
@@ -70,7 +75,7 @@ public class BasicMovieService implements MovieService {
     @Transactional
     public void add(Movie movie) {
         log.trace("add:movie={}", movie);
-        movieDao.add(movie);
+        movieRepository.save(movie);
 
         serviceFactory.getMovieChildren().forEach(child -> child.addReference(movie));
     }
@@ -79,7 +84,8 @@ public class BasicMovieService implements MovieService {
     @Transactional
     public void edit(Movie movie) {
         log.trace("edit:movie={}", movie);
-        movieDao.edit(movie);
+        //todo:
+        movieRepository.save(movie);
     }
 
 }
