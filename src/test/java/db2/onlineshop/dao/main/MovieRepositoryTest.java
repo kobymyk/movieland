@@ -15,8 +15,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @EnableTransactionManagement
@@ -38,7 +37,9 @@ public class MovieRepositoryTest {
         Movie movie = movieRepository.getById(1);
         assertNotNull(movie);
         Set<MovieGenre> movieGenres = movie.getMovieGenres();
-        assertNotNull(movieGenres);
+        assertFalse(movieGenres.isEmpty());
+        MovieGenre movieGenre = movieGenres.iterator().next();
+        assertNotNull(movieGenre);
     }
 
     @Test

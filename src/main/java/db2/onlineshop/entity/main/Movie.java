@@ -1,9 +1,13 @@
 package db2.onlineshop.entity.main;
 
+import lombok.Data;
+import lombok.ToString;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.Set;
 
+@Data
 @Entity
 @Table(name = "movie")
 public class Movie {
@@ -16,116 +20,18 @@ public class Movie {
     private String name;
     @Column(name = "name_native")
     private String nameNative;
+    @ToString.Exclude
     private String description;
+    @ToString.Exclude
     @Column(name = "picture_path")
     private String picturePath;
     private double rating;
     private double price;
     @Column(name = "country_code")
     private String countryCode;
+    //@ToString.Exclude
     @OneToMany(mappedBy = "movie", fetch = FetchType.LAZY)
     private Set<MovieGenre> movieGenres;
     @Transient
     private List<Review> reviews;
-
-    public int getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getNameNative() {
-        return nameNative;
-    }
-
-    public int getYearOfRelease() {
-        return yearOfRelease;
-    }
-
-    public double getRating() {
-        return rating;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public String getPicturePath() {
-        return picturePath;
-    }
-
-    public String getDescription() { return description; }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setNameNative(String nameNative) {
-        this.nameNative = nameNative;
-    }
-
-    public void setYearOfRelease(int yearOfRelease) {
-        this.yearOfRelease = yearOfRelease;
-    }
-
-    public void setRating(double rating) {
-        this.rating = rating;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public void setPicturePath(String picturePath) {
-        this.picturePath = picturePath;
-    }
-
-    public void setDescription(String description) { this.description = description; }
-
-    public List<Review> getReviews() {
-        return reviews;
-    }
-
-    public void setReviews(List<Review> reviews) {
-        this.reviews = reviews;
-    }
-
-    public String getCountryCode() {
-        return countryCode;
-    }
-
-    public void setCountryCode(String countryCode) {
-        this.countryCode = countryCode;
-    }
-
-    public Set<MovieGenre> getMovieGenres() {
-        return movieGenres;
-    }
-
-    public void setMovieGenres(Set<MovieGenre> movieGenres) {
-        this.movieGenres = movieGenres;
-    }
-
-    @Override
-    public String toString() {
-        return "Movie{" +
-                "id=" + id +
-                ", yearOfRelease=" + yearOfRelease +
-                ", name='" + name + '\'' +
-                ", nameNative='" + nameNative + '\'' +
-                ", description='" + description + '\'' +
-                ", picturePath='" + picturePath + '\'' +
-                ", rating=" + rating +
-                ", price=" + price +
-                ", countryCode=" + countryCode +
-                ", movieGenres=" + movieGenres +
-                ", reviews=" + reviews +
-                '}';
-    }
 }

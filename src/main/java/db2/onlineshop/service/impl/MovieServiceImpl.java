@@ -56,7 +56,7 @@ public class MovieServiceImpl implements MovieService {
     public Movie getById(int id, String currency) {
         Movie result = movieRepository.getById(id);
         log.trace("getById:movie={}", result);
-
+        //todo: transformers
         List<MovieEnricher> enrichers = serviceFactory.getEnrichers();
         MovieEnrichExecutor enrichExecutor = new MovieEnrichExecutor(enrichers);
         enrichExecutor.enrich(result);
