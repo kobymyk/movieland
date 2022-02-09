@@ -12,7 +12,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.version>5.3.11</spring.version>
         <spring-security.version>5.5.1</spring-security.version>
-        <hibernate.version>5.4.9.Final</hibernate.version>
+        <hibernate.version>5.4.24.Final</hibernate.version>
         <tomcat.version>9.0.29</tomcat.version>
         <jwt.version>0.9.1</jwt.version>
     </properties>
